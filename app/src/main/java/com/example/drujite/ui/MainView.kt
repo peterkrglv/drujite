@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import com.example.compose.AppTheme
 import com.example.drujite.ui.greeting.Greeting
 import com.example.drujite.ui.login.Login
+import com.example.drujite.ui.session_selection.Session
 
 class MainView : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +15,7 @@ class MainView : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-                Greeting()
+                Session()
             }
         }
     }

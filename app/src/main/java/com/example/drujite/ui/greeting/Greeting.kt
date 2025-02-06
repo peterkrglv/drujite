@@ -49,7 +49,7 @@ fun MainState() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(24.dp, 40.dp),
         verticalArrangement = Arrangement.Bottom
     )
     {

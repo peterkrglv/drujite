@@ -1,4 +1,4 @@
-package com.example.drujite.ui.login
+package com.example.drujite.ui.signup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.AppTheme
+import com.example.drujite.ui.GenderChoice
 import com.example.drujite.ui.MyButton
 import com.example.drujite.ui.MyText
 import com.example.drujite.ui.MyTextButton
@@ -29,17 +30,20 @@ import com.example.drujite.ui.MyTitle2
 
 
 @Composable
-fun Login() {
+fun Signup() {
     MainState()
 }
 
 
 @Composable
 fun MainState(
-    //state: LoginState.Main
+    //state: SignupState.Main
 ) {
+    val name: MutableState<String> = remember { mutableStateOf("") } //state.name
     val phone: MutableState<String> = remember { mutableStateOf("") } //state.phone
     val password: MutableState<String> = remember { mutableStateOf("") }
+    val repeatedPassword: MutableState<String> = remember { mutableStateOf("") }
+    val gender: MutableState<String> = remember { mutableStateOf("M") }
 
     Column(
         modifier = Modifier
@@ -56,13 +60,19 @@ fun MainState(
             verticalArrangement = Arrangement.Bottom
         )
         {
-            Spacer(modifier = Modifier.height(128.dp))
-            MyTitle(text = "Вход")
-            MyTitle2(text = "Если ты уже не первый раз у нас, то у тебя наверняка есть аккаунт")
+            MyTitle(text = "Создадим аккаунт?")
+            MyTitle2(text = "Lorem Ipsum - это текст-\"рыба\", часто используемый в печати и вэб-дизайне.")
             Spacer(modifier = Modifier.height(32.dp))
             MyTextField(
+                value = name.value,
+                label = "Имя и Фамилия",
+                isError = false,
+                onValueChange = {
+                    name.value = it
+                })
+            MyTextField(
                 value = phone.value,
-                label = "Телефон",
+                label = "Твой телефон",
                 isError = false,
                 onValueChange = {
                     phone.value = it
@@ -74,6 +84,23 @@ fun MainState(
                 onValueChange = {
                     password.value = it
                 })
+            MyTextField(
+                value = repeatedPassword.value,
+                label = "Подтвердите пароль",
+                isError = false
+            )
+            {
+                repeatedPassword.value = it
+            }
+            GenderChoice(
+                onFClick = {
+                    gender.value = "M"
+                },
+                onMClick = {
+                    gender.value = "F"
+                },
+                gender = gender.value
+            )
             MyButton(text = "Дальше", onClick = {})
         }
         Row(
@@ -82,8 +109,8 @@ fun MainState(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            MyText(text = "Нет аккаунта?")
-            MyTextButton(text = "Зарегистрироваться", onClick = {})
+            MyText(text = "Уже есть аккаунт?")
+            MyTextButton(text = "Войти", onClick = {})
         }
     }
 }
@@ -93,7 +120,7 @@ fun MainState(
 fun MainPreview() {
     AppTheme {
         MainState(
-            //state = LoginState.Main()
+            //state = SignupState.Main()
         )
     }
 }
