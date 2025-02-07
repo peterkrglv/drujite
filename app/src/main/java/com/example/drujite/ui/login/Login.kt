@@ -3,13 +3,11 @@ package com.example.drujite.ui.login
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -21,11 +19,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.AppTheme
 import com.example.drujite.ui.MyButton
-import com.example.drujite.ui.MyText
-import com.example.drujite.ui.MyTextButton
 import com.example.drujite.ui.MyTextField
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
+import com.example.drujite.ui.TextButtonNavigation
 
 
 @Composable
@@ -44,19 +41,18 @@ fun MainState(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(0.dp, 64.dp),
+            .background(MaterialTheme.colorScheme.surface),
         verticalArrangement = Arrangement.SpaceBetween
 
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(top = 192.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
         )
         {
-            Spacer(modifier = Modifier.height(128.dp))
             MyTitle(text = "Вход")
             MyTitle2(text = "Если ты уже не первый раз у нас, то у тебя наверняка есть аккаунт")
             Spacer(modifier = Modifier.height(32.dp))
@@ -76,15 +72,11 @@ fun MainState(
                 })
             MyButton(text = "Дальше", onClick = {})
         }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            MyText(text = "Нет аккаунта?")
-            MyTextButton(text = "Зарегистрироваться", onClick = {})
-        }
+        TextButtonNavigation(
+            text = "Нет аккаунта?",
+            buttonText = "Зарегистрироваться",
+            onClick = {}
+        )
     }
 }
 

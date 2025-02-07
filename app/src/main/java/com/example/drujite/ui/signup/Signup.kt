@@ -3,13 +3,11 @@ package com.example.drujite.ui.signup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -22,11 +20,10 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.AppTheme
 import com.example.drujite.ui.GenderChoice
 import com.example.drujite.ui.MyButton
-import com.example.drujite.ui.MyText
-import com.example.drujite.ui.MyTextButton
 import com.example.drujite.ui.MyTextField
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
+import com.example.drujite.ui.TextButtonNavigation
 
 
 @Composable
@@ -49,7 +46,7 @@ fun MainState(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(0.dp, 64.dp),
+            .padding(top = 128.dp),
         verticalArrangement = Arrangement.SpaceBetween
 
     ) {
@@ -65,7 +62,7 @@ fun MainState(
             Spacer(modifier = Modifier.height(32.dp))
             MyTextField(
                 value = name.value,
-                label = "Имя и Фамилия",
+                label = "Имя и фамилия",
                 isError = false,
                 onValueChange = {
                     name.value = it
@@ -94,24 +91,20 @@ fun MainState(
             }
             GenderChoice(
                 onFClick = {
-                    gender.value = "M"
+                    gender.value = "F"
                 },
                 onMClick = {
-                    gender.value = "F"
+                    gender.value = "M"
                 },
                 gender = gender.value
             )
             MyButton(text = "Дальше", onClick = {})
         }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            MyText(text = "Уже есть аккаунт?")
-            MyTextButton(text = "Войти", onClick = {})
-        }
+        TextButtonNavigation(
+            text = "Уже есть аккаунт?",
+            buttonText = "Войти",
+            onClick = {}
+        )
     }
 }
 
