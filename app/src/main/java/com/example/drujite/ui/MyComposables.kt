@@ -1,10 +1,10 @@
 package com.example.drujite.ui
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +26,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -132,6 +133,31 @@ fun MyTextField(
         shape = RoundedCornerShape(12.dp),
         onValueChange = onValueChange,
         singleLine = true
+    )
+}
+
+@Composable
+fun MyTextFieldWhite(
+    value: String,
+    label: String,
+    isError: Boolean,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .width(340.dp)
+            .padding(8.dp),
+        value = value,
+        label = { Text(text = label) },
+        isError = isError,
+        shape = RoundedCornerShape(12.dp),
+        onValueChange = onValueChange,
+        singleLine = true,
+        colors = TextFieldDefaults.colors(
+            disabledContainerColor = Color.White,
+            focusedContainerColor = Color.White,
+            unfocusedContainerColor = Color.White,
+        )
     )
 }
 
@@ -303,7 +329,11 @@ fun DropdownTextField(
             readOnly = true,
         )
         ExposedDropdownMenu(
-            modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp)),
+            modifier = Modifier.border(
+                1.dp,
+                MaterialTheme.colorScheme.primary,
+                RoundedCornerShape(12.dp)
+            ),
             expanded = expanded.value,
             onDismissRequest = { expanded.value = false },
             containerColor = MaterialTheme.colorScheme.surface,
