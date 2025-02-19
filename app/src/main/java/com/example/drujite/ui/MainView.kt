@@ -5,8 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.compose.AppTheme
-import com.example.drujite.ui.character_customisation.Customisation
-import com.example.drujite.ui.login.Login
+import com.example.drujite.ui.character.CharacterView
 
 class MainView : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +13,7 @@ class MainView : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-                Customisation()
+                CharacterView()
             }
         }
     }
