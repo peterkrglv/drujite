@@ -27,7 +27,7 @@ import com.example.compose.AppTheme
 import com.example.drujite.R
 
 @Composable
-fun Customisation() {
+fun CustomisationView() {
     MainState()
 }
 
@@ -140,6 +140,6 @@ fun ItemChoice(title: String, items: List<Int>, chosenItem: Int, onItemChosen: (
 @Composable
 fun CustomisationPreview() {
     AppTheme {
-        Customisation()
+        CustomisationView()
     }
 }

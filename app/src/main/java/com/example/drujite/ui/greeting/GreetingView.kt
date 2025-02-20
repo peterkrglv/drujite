@@ -24,7 +24,7 @@ import com.example.drujite.ui.MyButtonSmall
 
 
 @Composable
-fun Greeting() {
+fun GreetingView() {
     MainState()
 }
 

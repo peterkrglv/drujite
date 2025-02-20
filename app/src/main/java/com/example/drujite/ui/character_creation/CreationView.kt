@@ -10,7 +10,7 @@ import com.example.compose.AppTheme
 import com.example.drujite.ui.*
 
 @Composable
-fun Creation() {
+fun CreationView() {
     MainState()
 }
 
@@ -64,6 +64,6 @@ fun MainState() {
 @Composable
 fun CreationPreview() {
     AppTheme {
-        Creation()
+        CreationView()
     }
 }

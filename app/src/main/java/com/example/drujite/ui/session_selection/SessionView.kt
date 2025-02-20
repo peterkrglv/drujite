@@ -32,7 +32,7 @@ import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
 
 @Composable
-fun Session() {
+fun SessionView() {
     MainState()
 }
 

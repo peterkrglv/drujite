@@ -26,7 +26,7 @@ import com.example.drujite.ui.MyTitle2
 import com.example.drujite.ui.TextButtonNavigation
 
 @Composable
-fun Transfer() {
+fun TransferView() {
     MainState()
 }
 
@@ -81,6 +81,6 @@ fun MainState() {
 @Composable
 fun TransferPreview() {
     AppTheme {
-        Transfer()
+        TransferView()
     }
 }

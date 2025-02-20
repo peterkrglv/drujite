@@ -26,7 +26,7 @@ import com.example.drujite.ui.TextButtonNavigation
 
 
 @Composable
-fun Login() {
+fun LoginView() {
     MainState()
 }
 
