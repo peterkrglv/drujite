@@ -69,7 +69,8 @@ fun MainState() {
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(24.dp)
+            .padding(horizontal = 24.dp, vertical = 32.dp)
+            .padding(bottom = 32.dp)
             .verticalScroll(rememberScrollState())
 
     ) {
@@ -159,7 +160,7 @@ fun MainState() {
                 shape = RoundedCornerShape(12.dp)
             ) {
                 ShortenedTextBig(
-                    text = "Мирон истинный уроженец Гранатовой ветви. Будучи выращенным вблизи вулканов, он с детства познавал дикую магию, подвергался изнуряющим тренировкам и был свидетелем...",
+                    text = "Мирон истинный уроженец Гранатовой ветви. Будучи выращенным вблизи вулканов, он с детства познавал дикую магию, подвергался изнуряющим тренировкам и был свидетелем...\n\n\n\n\n\n\n\nОчень длинное поле",
                     maxLines = 4
                 )
             }

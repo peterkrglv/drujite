@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Drujite"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainView"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

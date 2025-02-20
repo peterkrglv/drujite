@@ -110,7 +110,7 @@ fun MyText(
 fun ShortenedTextBig(text: String, maxLines: Int) {
     val isTextOverFlow = remember { mutableStateOf(false) }
     val isTextShortened = remember { mutableStateOf(true) }
-    val lines = remember { mutableStateOf(4) }
+    val lines = remember { mutableStateOf(maxLines) }
     val textButtonText = remember { mutableStateOf("Подробнее") }
 
     Column(
@@ -120,8 +120,7 @@ fun ShortenedTextBig(text: String, maxLines: Int) {
             modifier = Modifier,
             text = text,
             fontSize = 16.sp,
-            maxLines = 4,
-            overflow = TextOverflow.Ellipsis,
+            maxLines = lines.value,
             onTextLayout = { textLayoutResult ->
                 if (textLayoutResult.didOverflowHeight) {
                     isTextOverFlow.value = true
