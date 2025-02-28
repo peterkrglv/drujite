@@ -393,9 +393,7 @@ fun DropdownTextField(
                         selectedState.value = item
                         expanded.value = false
                     }
-                )
-                //Divider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = MaterialTheme.colorScheme.primary)
-            }
+                )}
         }
     }
 }
