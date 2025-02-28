@@ -1,4 +1,4 @@
-package com.example.drujite.AboutSession
+package com.example.drujite.ui.about_session
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

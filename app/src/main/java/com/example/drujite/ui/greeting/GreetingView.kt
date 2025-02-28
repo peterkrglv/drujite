@@ -21,10 +21,13 @@ import com.example.drujite.R
 import com.example.drujite.ui.GreetingText1
 import com.example.drujite.ui.GreetingText2
 import com.example.drujite.ui.MyButtonSmall
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun GreetingView() {
+fun GreetingView(
+    greetingViewModel : GreetingViewModel = koinViewModel()
+) {
     MainState()
 }
 

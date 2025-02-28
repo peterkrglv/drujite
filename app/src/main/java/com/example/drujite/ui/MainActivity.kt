@@ -5,9 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.compose.AppTheme
-import com.example.drujite.AboutSession.AboutSessionView
-import com.example.drujite.ui.Timetable.TimeTableView
-import com.example.drujite.ui.character.CharacterView
 import com.example.drujite.ui.other_characters.OtherCharactersView
 
 class MainActivity : ComponentActivity() {
