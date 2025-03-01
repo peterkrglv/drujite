@@ -1,4 +1,4 @@
-package com.example.drujite.ui.Timetable
+package com.example.drujite.ui.timetable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

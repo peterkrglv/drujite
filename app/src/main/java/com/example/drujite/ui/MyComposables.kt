@@ -1,22 +1,23 @@
 package com.example.drujite.ui
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,7 +39,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -114,7 +114,9 @@ fun ShortenedTextBig(text: String, maxLines: Int) {
     val textButtonText = remember { mutableStateOf("Подробнее") }
 
     Column(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
     ) {
         Text(
             modifier = Modifier,
@@ -177,7 +179,8 @@ fun MyTextField(
         isError = isError,
         shape = RoundedCornerShape(12.dp),
         onValueChange = onValueChange,
-        singleLine = true
+        singleLine = true,
+        supportingText = { if (isError) Text("Неправильный логин или пароль") }
     )
 }
 
@@ -393,8 +396,22 @@ fun DropdownTextField(
                         selectedState.value = item
                         expanded.value = false
                     }
-                )}
+                )
+            }
         }
+    }
+}
+
+@Composable
+fun LoadingScreen() {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.surface)
+            .fillMaxSize()
+    ) {
+        CircularProgressIndicator()
     }
 }
 
@@ -402,6 +419,9 @@ fun DropdownTextField(
 @Composable
 fun MyPreview() {
     MaterialTheme {
-        ShortenedTextBig(text = "Мирон истинный уроженец Гранатовой ветви. Будучи выращенным вблизи вулканов, он с детства познавал дикую магию, подвергался изнуряющим тренировкам и был свидетелем...", 4)
+        ShortenedTextBig(
+            text = "Мирон истинный уроженец Гранатовой ветви. Будучи выращенным вблизи вулканов, он с детства познавал дикую магию, подвергался изнуряющим тренировкам и был свидетелем...",
+            4
+        )
     }
 }

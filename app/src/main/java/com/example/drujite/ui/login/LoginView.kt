@@ -1,5 +1,6 @@
 package com.example.drujite.ui.login
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,32 +12,74 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.compose.AppTheme
+import com.example.drujite.ui.LoadingScreen
 import com.example.drujite.ui.MyButton
 import com.example.drujite.ui.MyTextField
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
+import com.example.drujite.ui.Screen
 import com.example.drujite.ui.TextButtonNavigation
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun LoginView() {
-    MainState()
+fun LoginView(
+    navController: NavController,
+    viewModel: LoginViewModel = koinViewModel()
+) {
+    val viewState = viewModel.viewState.collectAsState()
+    val viewAction = viewModel.viewAction.collectAsState()
+
+    when(val action = viewAction.value) {
+        is LoginAction.NavigateToSignup -> {
+            navController.navigate(Screen.SignUp.route)
+            viewModel.clearAction()
+        }
+        is LoginAction.NavigateToSessionSelection -> {
+            //navController.navigate(Screen.SessionSelection.route)
+            Log.d("aaa", "NavigateToSessionSelection")
+            viewModel.clearAction()
+        }
+        else -> {}
+    }
+
+    when (val state = viewState.value) {
+        is LoginState.Main -> {
+            MainState(
+                state = state,
+                onPhoneChanged = { viewModel.obtainEvent(LoginEvent.PhoneChanged(it)) },
+                onPasswordChanged = { viewModel.obtainEvent(LoginEvent.PasswordChanged(it)) },
+                onProceedClicked = { viewModel.obtainEvent(LoginEvent.ProceedClicked) },
+                onSignUpClicked = { viewModel.obtainEvent(LoginEvent.SignupClicked) }
+                )
+        }
+        is LoginState.Loading -> {
+            LoadingScreen()
+        }
+    }
+
 }
 
 
 @Composable
 fun MainState(
-    //state: LoginState.Main
+    state: LoginState.Main,
+    onPhoneChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onProceedClicked: () -> Unit,
+    onSignUpClicked: () -> Unit
 ) {
-    val phone: MutableState<String> = remember { mutableStateOf("") } //state.phone
-    val password: MutableState<String> = remember { mutableStateOf("") }
+    val phone = state.phone
+    val password = state.password
 
     Column(
         modifier = Modifier
@@ -57,25 +100,25 @@ fun MainState(
             MyTitle2(text = "Если ты уже не первый раз у нас, то у тебя наверняка есть аккаунт")
             Spacer(modifier = Modifier.height(32.dp))
             MyTextField(
-                value = phone.value,
+                value = phone,
                 label = "Телефон",
-                isError = false,
+                isError = state.isError,
                 onValueChange = {
-                    phone.value = it
+                    onPhoneChanged(it)
                 })
             MyTextField(
-                value = password.value,
+                value = password,
                 label = "Пароль",
-                isError = false,
+                isError = state.isError,
                 onValueChange = {
-                    password.value = it
+                    onPasswordChanged(it)
                 })
-            MyButton(text = "Дальше", onClick = {})
+            MyButton(text = "Дальше", onClick = onProceedClicked)
         }
         TextButtonNavigation(
             text = "Нет аккаунта?",
             buttonText = "Зарегистрироваться",
-            onClick = {}
+            onClick = onSignUpClicked
         )
     }
 }
@@ -85,7 +128,15 @@ fun MainState(
 fun MainPreview() {
     AppTheme {
         MainState(
-            //state = LoginState.Main()
+            state = LoginState.Main(
+                phone = "",
+                password = "",
+                isError = false
+            ),
+            onPhoneChanged = {},
+            onPasswordChanged = {},
+            onProceedClicked = {},
+            onSignUpClicked = {}
         )
     }
 }
