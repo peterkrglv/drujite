@@ -10,37 +10,92 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.compose.AppTheme
+import com.example.drujite.domain.SignupResult
 import com.example.drujite.ui.GenderChoice
+import com.example.drujite.ui.LoadingScreen
 import com.example.drujite.ui.MyButton
 import com.example.drujite.ui.MyTextField
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
+import com.example.drujite.ui.Screen
 import com.example.drujite.ui.TextButtonNavigation
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun SignupView() {
-    MainState()
+fun SignupView(
+    navController: NavController,
+    viewModel: SignupViewModel = koinViewModel()
+) {
+    val viewState = viewModel.viewState.collectAsState()
+    val viewAction = viewModel.viewAction.collectAsState()
+
+    when (val action = viewAction.value) {
+        is SignupAction.NavigateToLogin -> {
+            navController.navigate(Screen.Login.route)
+            viewModel.clearAction()
+        }
+
+        is SignupAction.NavigateToSessionSelection -> {
+            navController.navigate(Screen.SessionSelection.route)
+            viewModel.clearAction()
+        }
+
+        else -> {
+        }
+    }
+
+    when (val state = viewState.value) {
+        is SignupState.Main -> {
+            MainState(
+                state = state,
+                onNameChanged = { viewModel.obtainEvent(SignupEvent.NameChanged(it)) },
+                onPhoneChanged = { viewModel.obtainEvent(SignupEvent.PhoneChanged(it)) },
+                onPasswordChanged = { viewModel.obtainEvent(SignupEvent.PasswordChanged(it)) },
+                onRepeatedPasswordChanged = {
+                    viewModel.obtainEvent(
+                        SignupEvent.PasswordRepeatedChanged(
+                            it
+                        )
+                    )
+                },
+                onGenderChanged = { viewModel.obtainEvent(SignupEvent.GenderChanged(it)) },
+                onProceedClicked = { viewModel.obtainEvent(SignupEvent.ProceedClicked) },
+                onLoginClicked = { viewModel.obtainEvent(SignupEvent.LoginClicked) }
+            )
+        }
+
+        is SignupState.Loading -> {
+            LoadingScreen()
+        }
+    }
 }
 
 
 @Composable
 fun MainState(
-    //state: SignupState.Main
+    state: SignupState.Main,
+    onNameChanged: (String) -> Unit,
+    onPhoneChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onRepeatedPasswordChanged: (String) -> Unit,
+    onGenderChanged: (Gender) -> Unit,
+    onProceedClicked: () -> Unit,
+    onLoginClicked: () -> Unit
 ) {
-    val name: MutableState<String> = remember { mutableStateOf("") } //state.name
-    val phone: MutableState<String> = remember { mutableStateOf("") } //state.phone
-    val password: MutableState<String> = remember { mutableStateOf("") }
-    val repeatedPassword: MutableState<String> = remember { mutableStateOf("") }
-    val gender: MutableState<String> = remember { mutableStateOf("M") }
+    val name = state.name
+    val phone = state.phone
+    val password = state.password
+    val repeatedPassword = state.passwordRepeated
+    val gender = state.gender
+    val error = state.error
 
     Column(
         modifier = Modifier
@@ -61,49 +116,43 @@ fun MainState(
             MyTitle2(text = "Lorem Ipsum - это текст-\"рыба\", часто используемый в печати и вэб-дизайне.")
             Spacer(modifier = Modifier.height(32.dp))
             MyTextField(
-                value = name.value,
+                value = name,
                 label = "Имя и фамилия",
-                isError = false,
+                errorText = null,
                 onValueChange = {
-                    name.value = it
+                    onNameChanged(it)
                 })
             MyTextField(
-                value = phone.value,
+                value = phone,
                 label = "Твой телефон",
-                isError = false,
+                errorText = if (error == SignupResult.INVALID_PHONE || error == SignupResult.PHONE_ALREADY_REGISTERED) error.message else null,
                 onValueChange = {
-                    phone.value = it
+                    onPhoneChanged(it)
                 })
             MyTextField(
-                value = password.value,
+                value = password,
                 label = "Пароль",
-                isError = false,
+                errorText = if (error == SignupResult.INVALID_PASSWORD) error.message else null,
                 onValueChange = {
-                    password.value = it
+                    onPasswordChanged(it)
                 })
             MyTextField(
-                value = repeatedPassword.value,
+                value = repeatedPassword,
                 label = "Подтвердите пароль",
-                isError = false
-            )
-            {
-                repeatedPassword.value = it
-            }
+                errorText = if (error == SignupResult.PASSWORDS_DO_NOT_MATCH) error.message else null,
+                onValueChange = {
+                    onRepeatedPasswordChanged(it)
+                })
             GenderChoice(
-                onFClick = {
-                    gender.value = "F"
-                },
-                onMClick = {
-                    gender.value = "M"
-                },
-                gender = gender.value
+                onGenderClick = onGenderChanged,
+                gender = gender
             )
-            MyButton(text = "Дальше", onClick = {})
+            MyButton(text = "Дальше", onClick = onProceedClicked)
         }
         TextButtonNavigation(
             text = "Уже есть аккаунт?",
             buttonText = "Войти",
-            onClick = {}
+            onClick = onLoginClicked
         )
     }
 }
@@ -113,7 +162,21 @@ fun MainState(
 fun MainPreview() {
     AppTheme {
         MainState(
-            //state = SignupState.Main()
+            state = SignupState.Main(
+                name = "",
+                phone = "",
+                password = "",
+                passwordRepeated = "",
+                gender = Gender.MALE,
+                error = null
+            ),
+            onNameChanged = {},
+            onPhoneChanged = {},
+            onPasswordChanged = {},
+            onRepeatedPasswordChanged = {},
+            onGenderChanged = {},
+            onProceedClicked = {},
+            onLoginClicked = {}
         )
     }
 }

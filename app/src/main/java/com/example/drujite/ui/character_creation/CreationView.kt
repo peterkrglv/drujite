@@ -38,7 +38,7 @@ fun MainState() {
             MyTextField(
                 value = name.value,
                 label = "Имя и фамилия персонажа",
-                isError = false,
+                errorText = null,
             ) {
                 name.value = it
             }

@@ -2,6 +2,7 @@ package com.example.drujite.ui
 
 import com.example.drujite.data.UserResitoryImpl
 import com.example.drujite.domain.LoginUseCase
+import com.example.drujite.domain.SignupUseCase
 import com.example.drujite.domain.UserRepository
 import com.example.drujite.ui.greeting.GreetingViewModel
 import com.example.drujite.ui.login.LoginViewModel
@@ -15,10 +16,11 @@ val dataModule = module {
 
 val domainModule = module {
     factory<LoginUseCase> { LoginUseCase(get()) }
+    factory<SignupUseCase> { SignupUseCase(get()) }
 }
 
 val appModule = module {
     viewModel<GreetingViewModel> {GreetingViewModel()}
     viewModel<LoginViewModel> {LoginViewModel(get())}
-    viewModel<SignupViewModel> {SignupViewModel()}
+    viewModel<SignupViewModel> {SignupViewModel(get())}
 }

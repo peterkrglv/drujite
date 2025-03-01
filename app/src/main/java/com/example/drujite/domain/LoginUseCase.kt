@@ -9,17 +9,14 @@ class LoginUseCase(
             return LoginResult.INVALID_PHONE
         }
         val result = repo.login(phone, password)
-        return if (result) {
-            LoginResult.SUCCESS
-        } else {
-            LoginResult.WRONG_PHONE_OR_PASSWORD
-        }
+        return result
     }
 }
 
-enum class LoginResult {
-    SUCCESS,
-    INVALID_PHONE,
-    WRONG_PHONE_OR_PASSWORD,
-    NETWORK_ERROR,
+enum class LoginResult(val message: String) {
+    SUCCESS(""),
+    INVALID_PHONE("Введите номер в формате +7XXXXXXXXXX"),
+    WRONG_PHONE("Пользователя с таким номером телефона не существует"),
+    WRONG_PASSWORD("Неверный пароль"),
+    NETWORK_ERROR("Ошибка сети,"),
 }

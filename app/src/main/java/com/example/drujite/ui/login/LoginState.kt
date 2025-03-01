@@ -1,11 +1,13 @@
 package com.example.drujite.ui.login
 
+import com.example.drujite.domain.LoginResult
+
 sealed class LoginState {
     data object Loading : LoginState()
     data class Main(
         val phone: String = "",
         val password: String = "",
-        val isError: Boolean = false
+        val error: LoginResult? = null
     ): LoginState()
 }
 

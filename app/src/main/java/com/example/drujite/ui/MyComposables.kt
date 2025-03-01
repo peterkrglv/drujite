@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.drujite.ui.signup.Gender
 
 @Composable
 fun MyTitle(
@@ -167,7 +168,7 @@ fun MySmallText(
 fun MyTextField(
     value: String,
     label: String,
-    isError: Boolean,
+    errorText: String?,
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -176,11 +177,11 @@ fun MyTextField(
             .padding(8.dp),
         value = value,
         label = { Text(text = label) },
-        isError = isError,
+        isError = errorText != null,
         shape = RoundedCornerShape(12.dp),
         onValueChange = onValueChange,
         singleLine = true,
-        supportingText = { if (isError) Text("Неправильный логин или пароль") }
+        supportingText = { if (errorText != null) Text(errorText) }
     )
 }
 
@@ -294,9 +295,8 @@ fun MyTextButton(
 
 @Composable
 fun GenderChoice(
-    onMClick: () -> Unit,
-    onFClick: () -> Unit,
-    gender: String
+    onGenderClick: (Gender) -> Unit,
+    gender: Gender
 ) {
     Row(
         modifier = Modifier.width(300.dp),
@@ -309,16 +309,16 @@ fun GenderChoice(
             verticalAlignment = Alignment.CenterVertically
         ) {
             RadioButton(
-                selected = (gender == "M"),
-                onClick = onMClick
+                selected = (gender == Gender.MALE),
+                onClick = { onGenderClick(Gender.MALE) }
             )
-            Text(text = "М")
+            Text(text = Gender.MALE.name)
             Spacer(modifier = Modifier.width(16.dp))
             RadioButton(
-                selected = (gender == "F"),
-                onClick = onFClick
+                selected = (gender == Gender.FEMALE),
+                onClick = { onGenderClick(Gender.FEMALE)}
             )
-            Text(text = "Ж")
+            Text(text = Gender.FEMALE.name)
         }
     }
 }

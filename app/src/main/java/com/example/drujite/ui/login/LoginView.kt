@@ -11,16 +11,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
+import com.example.drujite.domain.LoginResult
 import com.example.drujite.ui.LoadingScreen
 import com.example.drujite.ui.MyButton
 import com.example.drujite.ui.MyTextField
@@ -39,16 +37,19 @@ fun LoginView(
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
 
-    when(val action = viewAction.value) {
+    Log.d("aaaa", "state: $viewState, action: $viewAction")
+    when (val action = viewAction.value) {
         is LoginAction.NavigateToSignup -> {
             navController.navigate(Screen.SignUp.route)
             viewModel.clearAction()
         }
+
         is LoginAction.NavigateToSessionSelection -> {
-            //navController.navigate(Screen.SessionSelection.route)
+            navController.navigate(Screen.SessionSelection.route)
             Log.d("aaa", "NavigateToSessionSelection")
             viewModel.clearAction()
         }
+
         else -> {}
     }
 
@@ -60,8 +61,9 @@ fun LoginView(
                 onPasswordChanged = { viewModel.obtainEvent(LoginEvent.PasswordChanged(it)) },
                 onProceedClicked = { viewModel.obtainEvent(LoginEvent.ProceedClicked) },
                 onSignUpClicked = { viewModel.obtainEvent(LoginEvent.SignupClicked) }
-                )
+            )
         }
+
         is LoginState.Loading -> {
             LoadingScreen()
         }
@@ -80,13 +82,13 @@ fun MainState(
 ) {
     val phone = state.phone
     val password = state.password
+    val error = state.error
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface),
         verticalArrangement = Arrangement.SpaceBetween
-
     ) {
         Column(
             modifier = Modifier
@@ -102,14 +104,14 @@ fun MainState(
             MyTextField(
                 value = phone,
                 label = "Телефон",
-                isError = state.isError,
+                errorText = if (error == LoginResult.WRONG_PHONE || error == LoginResult.INVALID_PHONE) error.message else null,
                 onValueChange = {
                     onPhoneChanged(it)
                 })
             MyTextField(
                 value = password,
                 label = "Пароль",
-                isError = state.isError,
+                errorText = if (error == LoginResult.WRONG_PASSWORD) error.message else null,
                 onValueChange = {
                     onPasswordChanged(it)
                 })
@@ -131,7 +133,7 @@ fun MainPreview() {
             state = LoginState.Main(
                 phone = "",
                 password = "",
-                isError = false
+                error = null,
             ),
             onPhoneChanged = {},
             onPasswordChanged = {},

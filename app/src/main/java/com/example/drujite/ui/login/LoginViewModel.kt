@@ -1,6 +1,5 @@
 package com.example.drujite.ui.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.drujite.domain.LoginResult
@@ -14,20 +13,12 @@ import kotlinx.coroutines.withContext
 class LoginViewModel(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
-    private val startingViewState = LoginState.Main(
-        phone = "",
-        password = "",
-        isError = false
-    )
-    private val _viewState = MutableStateFlow<LoginState>(startingViewState)
+    private val _viewState = MutableStateFlow<LoginState>(LoginState.Main())
     val viewState: StateFlow<LoginState>
         get() = _viewState
     private val _viewAction = MutableStateFlow<LoginAction?>(null)
     val viewAction: StateFlow<LoginAction?>
         get() = _viewAction
-
-    init {
-    }
 
     fun obtainEvent(event: LoginEvent) {
         when (event) {
@@ -58,9 +49,9 @@ class LoginViewModel(
                 val loginResult = loginUseCase.execute(state.phone, state.password)
                 if (loginResult == LoginResult.SUCCESS) {
                     _viewAction.value = LoginAction.NavigateToSessionSelection
-                    _viewState.value = startingViewState
+                    _viewState.value = LoginState.Main()
                 } else {
-                    _viewState.value = state.copy(isError = true)
+                    _viewState.value = state.copy(error = loginResult)
                 }
             }
         }
@@ -69,14 +60,14 @@ class LoginViewModel(
     private fun passwordChanged(password: String) {
         val state = _viewState.value
         if (state is LoginState.Main) {
-            _viewState.value = state.copy(password = password, isError = false)
+            _viewState.value = state.copy(password = password, error = null)
         }
     }
 
     private fun phoneChanged(phone: String) {
         val state = _viewState.value
         if (state is LoginState.Main) {
-            _viewState.value = state.copy(phone = phone, isError = false)
+            _viewState.value = state.copy(phone = phone, error = null)
         }
     }
 }
