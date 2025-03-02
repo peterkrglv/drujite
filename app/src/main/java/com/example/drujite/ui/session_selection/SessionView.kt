@@ -25,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.drujite.R
 import com.example.drujite.ui.MyButton
@@ -32,7 +33,7 @@ import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
 
 @Composable
-fun SessionView() {
+fun SessionView(navController: NavController) {
     MainState()
 }
 

@@ -1,22 +1,23 @@
 package com.example.drujite.ui
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,10 +39,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.drujite.ui.signup.Gender
 
 @Composable
 fun MyTitle(
@@ -114,7 +115,9 @@ fun ShortenedTextBig(text: String, maxLines: Int) {
     val textButtonText = remember { mutableStateOf("Подробнее") }
 
     Column(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
     ) {
         Text(
             modifier = Modifier,
@@ -165,7 +168,7 @@ fun MySmallText(
 fun MyTextField(
     value: String,
     label: String,
-    isError: Boolean,
+    errorText: String?,
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -174,10 +177,11 @@ fun MyTextField(
             .padding(8.dp),
         value = value,
         label = { Text(text = label) },
-        isError = isError,
+        isError = errorText != null,
         shape = RoundedCornerShape(12.dp),
         onValueChange = onValueChange,
-        singleLine = true
+        singleLine = true,
+        supportingText = { if (errorText != null) Text(errorText) }
     )
 }
 
@@ -291,9 +295,8 @@ fun MyTextButton(
 
 @Composable
 fun GenderChoice(
-    onMClick: () -> Unit,
-    onFClick: () -> Unit,
-    gender: String
+    onGenderClick: (Gender) -> Unit,
+    gender: Gender
 ) {
     Row(
         modifier = Modifier.width(300.dp),
@@ -306,16 +309,16 @@ fun GenderChoice(
             verticalAlignment = Alignment.CenterVertically
         ) {
             RadioButton(
-                selected = (gender == "M"),
-                onClick = onMClick
+                selected = (gender == Gender.MALE),
+                onClick = { onGenderClick(Gender.MALE) }
             )
-            Text(text = "М")
+            Text(text = Gender.MALE.name)
             Spacer(modifier = Modifier.width(16.dp))
             RadioButton(
-                selected = (gender == "F"),
-                onClick = onFClick
+                selected = (gender == Gender.FEMALE),
+                onClick = { onGenderClick(Gender.FEMALE)}
             )
-            Text(text = "Ж")
+            Text(text = Gender.FEMALE.name)
         }
     }
 }
@@ -393,8 +396,22 @@ fun DropdownTextField(
                         selectedState.value = item
                         expanded.value = false
                     }
-                )}
+                )
+            }
         }
+    }
+}
+
+@Composable
+fun LoadingScreen() {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.surface)
+            .fillMaxSize()
+    ) {
+        CircularProgressIndicator()
     }
 }
 
@@ -402,6 +419,9 @@ fun DropdownTextField(
 @Composable
 fun MyPreview() {
     MaterialTheme {
-        ShortenedTextBig(text = "Мирон истинный уроженец Гранатовой ветви. Будучи выращенным вблизи вулканов, он с детства познавал дикую магию, подвергался изнуряющим тренировкам и был свидетелем...", 4)
+        ShortenedTextBig(
+            text = "Мирон истинный уроженец Гранатовой ветви. Будучи выращенным вблизи вулканов, он с детства познавал дикую магию, подвергался изнуряющим тренировкам и был свидетелем...",
+            4
+        )
     }
 }
