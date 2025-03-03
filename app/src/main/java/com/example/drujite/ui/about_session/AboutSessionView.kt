@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.AppTheme
-import com.example.drujite.domain.SessionModel
+import com.example.domain.SessionModel
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
 
@@ -37,7 +37,7 @@ fun MainState() {
                 "Ученики славянской школы будут обучаться магии древних шаманов, прибывших из болот. Древние ритуалы и обряды ждут своего часа, а особо сильные зелья уже готовы к использованию.",
         dates = "01.06  - 12.06",
         nOfPlayers = 31,
-        image = null
+        imageUrl = null
     )
     Column(
         modifier = Modifier

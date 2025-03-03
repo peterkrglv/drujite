@@ -1,6 +1,6 @@
 package com.example.drujite.ui.login
 
-import com.example.drujite.domain.LoginResult
+import com.example.domain.LoginResult
 
 sealed class LoginState {
     data object Loading : LoginState()

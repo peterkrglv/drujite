@@ -1,4 +1,4 @@
-package com.example.drujite.domain
+package com.example.domain
 
 class LoginUseCase(
     private val repo: UserRepository
