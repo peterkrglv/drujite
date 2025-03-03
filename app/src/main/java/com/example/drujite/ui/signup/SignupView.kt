@@ -39,7 +39,8 @@ fun SignupView(
 
     when (val action = viewAction.value) {
         is SignupAction.NavigateToLogin -> {
-            navController.navigate(Screen.Login.route)
+//            navController.navigate(Screen.Login.route)
+            navController.popBackStack()
             viewModel.clearAction()
         }
 
