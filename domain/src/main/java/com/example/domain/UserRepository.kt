@@ -1,4 +1,4 @@
-package com.example.drujite.domain
+package com.example.domain
 
 interface UserRepository {
     suspend fun login(phone: String, password: String): LoginResult

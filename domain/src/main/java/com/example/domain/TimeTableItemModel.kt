@@ -1,4 +1,4 @@
-package com.example.drujite.domain
+package com.example.domain
 
 data class TimeTableItemModel(val item: String, val time: String?, val isTitle: Boolean)
 

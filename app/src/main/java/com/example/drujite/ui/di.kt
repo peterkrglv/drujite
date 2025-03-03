@@ -1,12 +1,12 @@
 package com.example.drujite.ui
 
-import com.example.drujite.data.SessionRepositoryImpl
-import com.example.drujite.data.UserResitoryImpl
-import com.example.drujite.domain.GetSessionsUseCase
-import com.example.drujite.domain.LoginUseCase
-import com.example.drujite.domain.SessionRepository
-import com.example.drujite.domain.SignupUseCase
-import com.example.drujite.domain.UserRepository
+import com.example.data.SessionRepositoryImpl
+import com.example.data.UserResitoryImpl
+import com.example.domain.GetSessionsUseCase
+import com.example.domain.LoginUseCase
+import com.example.domain.SessionRepository
+import com.example.domain.SignupUseCase
+import com.example.domain.UserRepository
 import com.example.drujite.ui.greeting.GreetingViewModel
 import com.example.drujite.ui.login.LoginViewModel
 import com.example.drujite.ui.session_selection.SessionViewModel

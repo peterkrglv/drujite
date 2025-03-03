@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.drujite.R
-import com.example.drujite.domain.SessionModel
+import com.example.domain.SessionModel
 import com.example.drujite.ui.LoadingScreen
 import com.example.drujite.ui.MyButton
 import com.example.drujite.ui.MyTitle

@@ -1,6 +1,6 @@
 package com.example.drujite.ui.session_selection
 
-import com.example.drujite.domain.SessionModel
+import com.example.domain.SessionModel
 
 sealed class SessionState {
     data object Loading: SessionState()

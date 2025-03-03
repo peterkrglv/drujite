@@ -1,11 +1,9 @@
-package com.example.drujite.domain
-
-import android.graphics.Bitmap
+package com.example.domain
 
 data class SessionModel(
     val name: String,
     val description: String,
     val dates: String,
     val nOfPlayers: Int,
-    val image: Bitmap?
+    val imageUrl: String?
 )

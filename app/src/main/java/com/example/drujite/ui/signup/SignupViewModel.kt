@@ -2,8 +2,8 @@ package com.example.drujite.ui.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.drujite.domain.SignupResult
-import com.example.drujite.domain.SignupUseCase
+import com.example.domain.SignupResult
+import com.example.domain.SignupUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

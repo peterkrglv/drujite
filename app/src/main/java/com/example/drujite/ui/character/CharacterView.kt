@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.AppTheme
 import com.example.drujite.R
-import com.example.drujite.domain.GoalModel
+import com.example.domain.GoalModel
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
 import com.example.drujite.ui.ShortenedTextBig
@@ -57,7 +57,10 @@ fun MainState() {
         mutableStateOf(
             listOf(
                 GoalModel("Найти артефакт Слытко", true),
-                GoalModel("Узнать тайны директрисы Колдовстворца - Хозяйки Медной горы", false),
+                GoalModel(
+                    "Узнать тайны директрисы Колдовстворца - Хозяйки Медной горы",
+                    false
+                ),
                 GoalModel(
                     "Раскрыть тайну природы теней, пришедших в школу вслед за певцами теней",
                     false

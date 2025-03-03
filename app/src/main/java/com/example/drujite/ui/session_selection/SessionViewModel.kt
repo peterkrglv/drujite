@@ -2,8 +2,8 @@ package com.example.drujite.ui.session_selection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.drujite.domain.GetSessionsUseCase
-import com.example.drujite.domain.SessionModel
+import com.example.domain.GetSessionsUseCase
+import com.example.domain.SessionModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
