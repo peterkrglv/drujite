@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.AppTheme
-import com.example.domain.SessionModel
+import com.example.domain.models.SessionModel
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
 

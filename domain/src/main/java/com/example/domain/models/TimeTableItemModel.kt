@@ -1,4 +1,4 @@
-package com.example.domain
+package com.example.domain.models
 
 data class TimeTableItemModel(val item: String, val time: String?, val isTitle: Boolean)
 

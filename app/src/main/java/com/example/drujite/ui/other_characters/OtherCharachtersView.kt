@@ -36,8 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.AppTheme
-import com.example.domain.CharacterModel
-import com.example.domain.getCharactersTest
+import com.example.domain.models.CharacterModel
+import com.example.domain.models.getCharactersTest
 import com.example.drujite.R
 import com.example.drujite.ui.icons.ExpandArrow
 

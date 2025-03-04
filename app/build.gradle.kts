@@ -53,6 +53,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    //modules
+    implementation(project(":domain"))
+    implementation(project(":data"))
+
     //compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
@@ -63,6 +67,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(project(":domain"))
-    implementation(project(":data"))
+
+    //qr
+
+    implementation(libs.play.services.code.scanner)
 }

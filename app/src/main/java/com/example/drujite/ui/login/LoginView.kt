@@ -1,6 +1,5 @@
 package com.example.drujite.ui.login
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
-import com.example.domain.LoginResult
+import com.example.domain.use_cases.LoginResult
 import com.example.drujite.ui.LoadingScreen
 import com.example.drujite.ui.MyButton
 import com.example.drujite.ui.MyTextField
@@ -37,7 +36,6 @@ fun LoginView(
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
 
-    Log.d("aaaa", "state: $viewState, action: $viewAction")
     when (val action = viewAction.value) {
         is LoginAction.NavigateToSignup -> {
             navController.navigate(Screen.SignUp.route)
@@ -46,7 +44,6 @@ fun LoginView(
 
         is LoginAction.NavigateToSessionSelection -> {
             navController.navigate(Screen.SessionSelection.route)
-            Log.d("aaa", "NavigateToSessionSelection")
             viewModel.clearAction()
         }
 
