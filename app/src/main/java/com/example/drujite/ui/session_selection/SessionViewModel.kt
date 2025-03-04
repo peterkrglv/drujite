@@ -1,5 +1,6 @@
 package com.example.drujite.ui.session_selection
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.GetSessionsUseCase
@@ -23,7 +24,7 @@ class SessionViewModel(
     fun obtainEvent(event: SessionEvent) {
         when (event) {
             is SessionEvent.LoadSessions -> loadSessions()
-            is SessionEvent.SessionSelected -> sessionSelected(event.session)
+            is SessionEvent.SessionpRoceed -> sessionSelected(event.session)
         }
     }
 
@@ -43,5 +44,6 @@ class SessionViewModel(
 
     private fun sessionSelected(session: SessionModel) {
         _viewAction.value = SessionAction.NavigateToCharacterCreation(session)
+        Log.d("SessionViewModel", "sessionSelected: $session")
     }
 }

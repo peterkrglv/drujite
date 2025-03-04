@@ -11,7 +11,7 @@ sealed class SessionState {
 
 sealed class SessionEvent {
     data object LoadSessions: SessionEvent()
-    data class SessionSelected(val session: SessionModel): SessionEvent()
+    data class SessionpRoceed(val session: SessionModel): SessionEvent()
 }
 
 sealed class SessionAction {
