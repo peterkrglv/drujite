@@ -312,13 +312,13 @@ fun GenderChoice(
                 selected = (gender == Gender.MALE),
                 onClick = { onGenderClick(Gender.MALE) }
             )
-            Text(text = Gender.MALE.name)
+            Text(text = Gender.MALE.value)
             Spacer(modifier = Modifier.width(16.dp))
             RadioButton(
                 selected = (gender == Gender.FEMALE),
                 onClick = { onGenderClick(Gender.FEMALE)}
             )
-            Text(text = Gender.FEMALE.name)
+            Text(text = Gender.FEMALE.value)
         }
     }
 }
