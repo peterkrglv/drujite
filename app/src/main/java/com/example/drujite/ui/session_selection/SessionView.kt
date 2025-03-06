@@ -1,6 +1,5 @@
 package com.example.drujite.ui.session_selection
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -61,7 +60,6 @@ fun SessionView(
     when (val action = viewAction.value) {
         is SessionAction.NavigateToCharacterCreation -> {
             //navController.navigate("character_creation")
-            Log.d("aaaa", "SessionView: ${action.session}")
             viewModel.clearAction()
         }
 
@@ -110,12 +108,13 @@ fun MainState(
         )
     }
     val carouselState = rememberCarouselState { items.count() }
-    val chosenSession = remember { mutableStateOf<SessionModel?>(null) }
+    val currentItem = remember { mutableStateOf<Item>(items[0]) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(vertical = 64.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -128,7 +127,7 @@ fun MainState(
         ) {
             MyTitle("Выбери смену")
             MyTitle2("Выбери одну из смен, на которых ты был, либо отсканируй QR-код новой смены.")
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             HorizontalMultiBrowseCarousel(
                 state = carouselState,
                 modifier = Modifier.padding(40.dp, 20.dp),
@@ -136,113 +135,69 @@ fun MainState(
                 itemSpacing = 16.dp,
             ) { i ->
                 val item = items[i]
-                if (i == 0) {
-                    QRItem(
-                        onQRCodeClicked = onQRCodeClicked,
-                        qrError = state.qrError
-                    )
-                } else {
-                    CarouselItem(
-                        item = item,
-                        onSessionSelected = { session ->
-                            chosenSession.value = session
-                        }
-                    )
-                }
+                CarouselItem(
+                    item = item,
+                    currentItem = currentItem.value,
+                    onItemSelected = { item ->
+                        currentItem.value = item
+                    },
+                    qrError = state.qrError
+                )
             }
         }
         Box(
-            modifier = Modifier.padding(bottom = 64.dp)
+            modifier = Modifier
         ) {
             MyButton("Выбрать") {
-                if (chosenSession.value == null) {
+                if (currentItem.value.id == 0) {
                     onQRCodeClicked()
-                }
-                else {
-                    chosenSession.value?.let { onProceedClicked(it) }
+                } else {
+                    currentItem.value.session?.let { onProceedClicked(it) }
                 }
             }
         }
     }
-}
-
-@Composable
-fun QRItem(
-    onQRCodeClicked: () -> Unit,
-    qrError: String
-) {
-    Column {
-        Image(
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-                .aspectRatio(1f)
-                .clip(RoundedCornerShape(32.dp))
-                .border(1.dp, Color.Black, RoundedCornerShape(32.dp))
-                .clickable {
-                    onQRCodeClicked()
-                },
-            painter = painterResource(id = R.drawable.qr_code),
-            contentDescription = "GreetingImage",
-            contentScale = ContentScale.Crop
-        )
-
-
-        Text(
-            text = qrError,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(8.dp),
-            maxLines = 1,
-            minLines = 1,
-            color = MaterialTheme.colorScheme.error
-
-        )
-        Text(
-            text = "",
-            fontSize = 15.sp,
-            modifier = Modifier.padding(8.dp),
-            maxLines = 5,
-            minLines = 5,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-
 }
 
 @Composable
 fun CarouselItem(
     item: Item,
-    onSessionSelected: (SessionModel) -> Unit
+    currentItem: Item,
+    onItemSelected: (Item) -> Unit,
+    qrError: String
 ) {
-    if (item.session == null) return
+    val borderColor =
+        if (item.id == currentItem.id) MaterialTheme.colorScheme.primary else Color.Black
+    val title = if(item.session == null) qrError else item.session.name
+    val text = item.session?.description ?: ""
     Column {
         Image(
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(32.dp))
-                .border(1.dp, Color.Black, RoundedCornerShape(32.dp))
+                .border(1.dp, borderColor, RoundedCornerShape(32.dp))
                 .clickable {
-                    onSessionSelected(item.session)
+                    onItemSelected(item)
                 },
             painter = painterResource(id = item.imageResId),
             contentDescription = "GreetingImage",
-            contentScale = ContentScale.Inside
+            contentScale = ContentScale.Crop
         )
         Text(
-            text = item.session?.name ?: "",
+            text = title,
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(4.dp),
             maxLines = 1,
             minLines = 1,
             overflow = TextOverflow.Ellipsis
 
         )
         Text(
-            text = item.session?.description ?: "",
+            text = text,
             fontSize = 15.sp,
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(4.dp),
             maxLines = 5,
             minLines = 5,
             overflow = TextOverflow.Ellipsis

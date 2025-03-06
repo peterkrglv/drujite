@@ -75,7 +75,7 @@ fun GreetingText1(
     text: String
 ) {
     Text(
-        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
+        modifier = Modifier.padding(vertical = 4.dp),
         textAlign = androidx.compose.ui.text.style.TextAlign.Center,
         text = text,
         fontWeight = FontWeight.Bold,
