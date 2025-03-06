@@ -15,6 +15,7 @@ sealed class Screen(val route: String) {
     data object Login: Screen("login")
     data object SignUp: Screen("signup")
     data object SessionSelection: Screen("session_selection")
+    data object MainView: Screen("main_view")
 }
 
 @Composable
