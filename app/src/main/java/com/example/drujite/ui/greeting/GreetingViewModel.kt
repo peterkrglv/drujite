@@ -27,9 +27,13 @@ class GreetingViewModel(
     }
 
     private fun checkIfUserIsLoggedIn() {
+        _viewState.value = GreetingState.Idle
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                Thread.sleep(1000)
                 val userId = prefsUseCase.getUserId()
+                val sessionId = prefsUseCase.getSessionId()
+                val characterId = prefsUseCase.getCharacterId()
                 if (userId != -1) {
                     _viewAction.value = GreetingAction.NavigateToMainView
                 } else {

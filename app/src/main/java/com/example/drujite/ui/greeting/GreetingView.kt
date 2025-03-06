@@ -49,7 +49,7 @@ fun GreetingView(
 
         is GreetingAction.NavigateToMainView -> {
             viewModel.resetAction()
-            navController.navigate(Screen.MainView) {
+            navController.navigate(Screen.MainView.route) {
                 popUpTo(Screen.Greeting.route) { inclusive = true }
             }
         }
@@ -68,6 +68,9 @@ fun GreetingView(
 
         is GreetingState.Loading -> {
             viewModel.obtainEvent(GreetingEvent.CheckIfUserIsLoggedIn)
+        }
+
+        is GreetingState.Idle -> {
             LoadingState()
         }
     }

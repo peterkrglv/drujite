@@ -25,8 +25,8 @@ val dataModule = module {
 }
 
 val domainModule = module {
-    factory<LoginUseCase> { LoginUseCase(get()) }
-    factory<SignupUseCase> { SignupUseCase(get()) }
+    factory<LoginUseCase> { LoginUseCase(get(), get()) }
+    factory<SignupUseCase> { SignupUseCase(get(), get()) }
     factory<GetSessionsUseCase> { GetSessionsUseCase(get()) }
     factory<GetSessionByCodeUseCase> { GetSessionByCodeUseCase(get()) }
     factory<AccessSharedPrefsUseCase> { AccessSharedPrefsUseCase(get()) }

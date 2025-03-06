@@ -12,10 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.compose.AppTheme
 
 @Composable
-fun MainView() {
+fun MainView(navController: NavController) {
     MainState()
 }
 
