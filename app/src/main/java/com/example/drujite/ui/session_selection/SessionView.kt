@@ -88,7 +88,6 @@ fun SessionView(
             LoadingScreen()
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
