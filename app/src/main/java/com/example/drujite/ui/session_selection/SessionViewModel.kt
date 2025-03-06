@@ -60,7 +60,6 @@ class SessionViewModel(
                 QRScannerResult.Canceled -> {
                     _viewState.value = state.copy(qrError = "")
                 }
-
                 QRScannerResult.Failure -> {
                     _viewState.value = state.copy(qrError = "Ошибка при сканировании QR-кода")
 
