@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,12 +40,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
-import com.example.domain.SessionModel
+import com.example.domain.models.SessionModel
 import com.example.drujite.R
 import com.example.drujite.ui.LoadingScreen
 import com.example.drujite.ui.MyButton
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
+import com.example.drujite.ui.startQRScanner
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -54,12 +56,19 @@ fun SessionView(
 ) {
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
+    val context = LocalContext.current
 
     when (val action = viewAction.value) {
         is SessionAction.NavigateToCharacterCreation -> {
             //navController.navigate("character_creation")
             Log.d("aaaa", "SessionView: ${action.session}")
             viewModel.clearAction()
+        }
+
+        is SessionAction.StartQRScanner -> {
+            startQRScanner(context) { result, sessionNum ->
+                viewModel.obtainEvent(SessionEvent.OnQRScannerClosed(result, sessionNum))
+            }
         }
 
         else -> {}
@@ -69,8 +78,8 @@ fun SessionView(
         is SessionState.Main -> {
             MainState(
                 state = state,
-                onQRCodeClicked = { },
-                onProceedClicked = { viewModel.obtainEvent(SessionEvent.SessionpRoceed(it)) }
+                onQRCodeClicked = { viewModel.obtainEvent(SessionEvent.QRScannerClicked) },
+                onProceedClicked = { viewModel.obtainEvent(SessionEvent.SessionpRroceed(it)) }
             )
         }
 
@@ -79,7 +88,6 @@ fun SessionView(
             LoadingScreen()
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -128,8 +136,18 @@ fun MainState(
                 itemSpacing = 16.dp,
             ) { i ->
                 val item = items[i]
-                CarouselItem(item) {
-                    chosenSession.value = it
+                if (i == 0) {
+                    QRItem(
+                        onQRCodeClicked = onQRCodeClicked,
+                        qrError = state.qrError
+                    )
+                } else {
+                    CarouselItem(
+                        item = item,
+                        onSessionSelected = { session ->
+                            chosenSession.value = session
+                        }
+                    )
                 }
             }
         }
@@ -137,37 +155,80 @@ fun MainState(
             modifier = Modifier.padding(bottom = 64.dp)
         ) {
             MyButton("Выбрать") {
-                chosenSession.value?.let { onProceedClicked(it) }
+                if (chosenSession.value == null) {
+                    onQRCodeClicked()
+                }
+                else {
+                    chosenSession.value?.let { onProceedClicked(it) }
+                }
             }
         }
     }
 }
 
 @Composable
-fun CarouselItem(item: Item, onSessionSelected: (SessionModel) -> Unit) {
+fun QRItem(
+    onQRCodeClicked: () -> Unit,
+    qrError: String
+) {
     Column {
-        Column(
+        Image(
             modifier = Modifier
+                .padding(vertical = 16.dp)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(32.dp))
                 .border(1.dp, Color.Black, RoundedCornerShape(32.dp))
                 .clickable {
-                    if (item.id == 0) {
-                        Log.d("aaaa", "QR code")
-                    } else {
-                        item.session?.let { onSessionSelected(it) }
-                    }
+                    onQRCodeClicked()
                 },
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = painterResource(id = item.imageResId),
-                contentDescription = "GreetingImage",
-                contentScale = ContentScale.Crop
-            )
+            painter = painterResource(id = R.drawable.qr_code),
+            contentDescription = "GreetingImage",
+            contentScale = ContentScale.Crop
+        )
 
-        }
+
+        Text(
+            text = qrError,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(8.dp),
+            maxLines = 1,
+            minLines = 1,
+            color = MaterialTheme.colorScheme.error
+
+        )
+        Text(
+            text = "",
+            fontSize = 15.sp,
+            modifier = Modifier.padding(8.dp),
+            maxLines = 5,
+            minLines = 5,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+
+}
+
+@Composable
+fun CarouselItem(
+    item: Item,
+    onSessionSelected: (SessionModel) -> Unit
+) {
+    if (item.session == null) return
+    Column {
+        Image(
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .aspectRatio(1f)
+                .clip(RoundedCornerShape(32.dp))
+                .border(1.dp, Color.Black, RoundedCornerShape(32.dp))
+                .clickable {
+                    onSessionSelected(item.session)
+                },
+            painter = painterResource(id = item.imageResId),
+            contentDescription = "GreetingImage",
+            contentScale = ContentScale.Inside
+        )
         Text(
             text = item.session?.name ?: "",
             fontSize = 24.sp,
@@ -182,8 +243,8 @@ fun CarouselItem(item: Item, onSessionSelected: (SessionModel) -> Unit) {
             text = item.session?.description ?: "",
             fontSize = 15.sp,
             modifier = Modifier.padding(8.dp),
-            maxLines = 3,
-            minLines = 3,
+            maxLines = 5,
+            minLines = 5,
             overflow = TextOverflow.Ellipsis
         )
     }

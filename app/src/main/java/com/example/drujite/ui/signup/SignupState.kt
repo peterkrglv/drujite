@@ -1,6 +1,6 @@
 package com.example.drujite.ui.signup
 
-import com.example.domain.SignupResult
+import com.example.domain.use_cases.SignupResult
 
 sealed class SignupState {
     data object Loading : SignupState()

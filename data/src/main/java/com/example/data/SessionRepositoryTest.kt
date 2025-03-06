@@ -1,9 +1,9 @@
 package com.example.data
 
-import com.example.domain.SessionModel
-import com.example.domain.SessionRepository
+import com.example.domain.models.SessionModel
+import com.example.domain.repos.SessionRepository
 
-class SessionRepositoryImpl: SessionRepository {
+class SessionRepositoryTest: SessionRepository {
     override suspend fun getSessions(): List<SessionModel> {
         return listOf(
             SessionModel(
@@ -21,5 +21,9 @@ class SessionRepositoryImpl: SessionRepository {
                 imageUrl = null
             ),
         )
+    }
+
+    override suspend fun getSessionByCode(code: String): SessionModel? {
+        return null
     }
 }

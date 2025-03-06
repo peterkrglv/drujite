@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.AppTheme
 import com.example.drujite.R
-import com.example.domain.GoalModel
+import com.example.domain.models.GoalModel
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
 import com.example.drujite.ui.ShortenedTextBig

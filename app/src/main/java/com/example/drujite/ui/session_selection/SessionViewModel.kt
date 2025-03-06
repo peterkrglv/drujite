@@ -3,8 +3,10 @@ package com.example.drujite.ui.session_selection
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.GetSessionsUseCase
-import com.example.domain.SessionModel
+import com.example.domain.models.SessionModel
+import com.example.domain.use_cases.GetSessionByCodeUseCase
+import com.example.domain.use_cases.GetSessionsUseCase
+import com.example.drujite.ui.QRScannerResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SessionViewModel(
-    private val getSessionsUseCase: GetSessionsUseCase
+    private val getSessionsUseCase: GetSessionsUseCase,
+    private val getSessionByCodeUseCase: GetSessionByCodeUseCase
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<SessionState>(SessionState.Loading)
     val viewState: StateFlow<SessionState>
@@ -24,8 +27,51 @@ class SessionViewModel(
     fun obtainEvent(event: SessionEvent) {
         when (event) {
             is SessionEvent.LoadSessions -> loadSessions()
-            is SessionEvent.SessionpRoceed -> sessionSelected(event.session)
+            is SessionEvent.SessionpRroceed -> sessionSelected(event.session)
+            is SessionEvent.QRScannerClicked -> qrScannerClicked()
+            is SessionEvent.OnQRScannerClosed -> handleQRScannerResult(
+                event.result,
+                event.sessionNum
+            )
         }
+    }
+
+    private fun handleQRScannerResult(result: QRScannerResult, sessionNum: String?) {
+        val state = _viewState.value
+        _viewAction.value = null
+        if (sessionNum != null) {
+            if (state !is SessionState.Main) {
+                return
+            }
+            when (result) {
+                QRScannerResult.Success -> {
+                    viewModelScope.launch {
+                        withContext(Dispatchers.IO) {
+                            val session = getSessionByCodeUseCase.execute(sessionNum)
+                            if (session != null) {
+                                _viewAction.value =
+                                    SessionAction.NavigateToCharacterCreation(session)
+                            } else {
+                                _viewState.value = state.copy(qrError = "Смена не найдена")
+                            }
+                        }
+                    }
+                }
+                QRScannerResult.Canceled -> {
+                    _viewState.value = state.copy(qrError = "")
+                }
+                QRScannerResult.Failure -> {
+                    _viewState.value = state.copy(qrError = "Ошибка при сканировании QR-кода")
+
+                }
+            }
+        } else {
+            Log.e("SessionViewModel", "QR Scanner Result is null")
+        }
+    }
+
+    private fun qrScannerClicked() {
+        _viewAction.value = SessionAction.StartQRScanner
     }
 
     fun clearAction() {

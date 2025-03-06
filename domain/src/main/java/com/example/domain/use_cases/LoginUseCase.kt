@@ -1,4 +1,6 @@
-package com.example.domain
+package com.example.domain.use_cases
+
+import com.example.domain.repos.UserRepository
 
 class LoginUseCase(
     private val repo: UserRepository
