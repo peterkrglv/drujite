@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -182,6 +183,28 @@ fun MyTextField(
         onValueChange = onValueChange,
         singleLine = true,
         supportingText = { if (errorText != null) Text(errorText) }
+    )
+}
+
+@Composable
+fun MyPasswordField(
+    value: String,
+    label: String,
+    errorText: String?,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .width(340.dp)
+            .padding(8.dp),
+        value = value,
+        label = { Text(text = label) },
+        isError = errorText != null,
+        shape = RoundedCornerShape(12.dp),
+        onValueChange = onValueChange,
+        singleLine = true,
+        supportingText = { if (errorText != null) Text(errorText) },
+        visualTransformation = PasswordVisualTransformation()
     )
 }
 

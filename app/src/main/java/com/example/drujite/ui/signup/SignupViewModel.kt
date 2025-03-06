@@ -58,7 +58,6 @@ class SignupViewModel(
                 )
                 if (signupResult == SignupResult.SUCCESS) {
                     _viewAction.value = SignupAction.NavigateToSessionSelection
-                    _viewState.value = SignupState.Main()
                 } else {
                     _viewState.value = state.copy(error = signupResult)
                 }

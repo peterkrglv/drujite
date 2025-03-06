@@ -49,7 +49,6 @@ class LoginViewModel(
                 val loginResult = loginUseCase.execute(state.phone, state.password)
                 if (loginResult == LoginResult.SUCCESS) {
                     _viewAction.value = LoginAction.NavigateToSessionSelection
-                    _viewState.value = LoginState.Main()
                 } else {
                     _viewState.value = state.copy(error = loginResult)
                 }

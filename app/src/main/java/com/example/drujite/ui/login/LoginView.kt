@@ -20,6 +20,7 @@ import com.example.compose.AppTheme
 import com.example.domain.use_cases.LoginResult
 import com.example.drujite.ui.LoadingScreen
 import com.example.drujite.ui.MyButton
+import com.example.drujite.ui.MyPasswordField
 import com.example.drujite.ui.MyTextField
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
@@ -43,7 +44,9 @@ fun LoginView(
         }
 
         is LoginAction.NavigateToSessionSelection -> {
-            navController.navigate(Screen.SessionSelection.route)
+            navController.navigate(Screen.SessionSelection.route) {
+                popUpTo(Screen.Login.route) { inclusive = true }
+            }
             viewModel.clearAction()
         }
 
@@ -105,7 +108,7 @@ fun MainState(
                 onValueChange = {
                     onPhoneChanged(it)
                 })
-            MyTextField(
+            MyPasswordField(
                 value = password,
                 label = "Пароль",
                 errorText = if (error == LoginResult.WRONG_PASSWORD) error.message else null,

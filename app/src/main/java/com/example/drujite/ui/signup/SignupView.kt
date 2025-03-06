@@ -21,6 +21,7 @@ import com.example.domain.use_cases.SignupResult
 import com.example.drujite.ui.GenderChoice
 import com.example.drujite.ui.LoadingScreen
 import com.example.drujite.ui.MyButton
+import com.example.drujite.ui.MyPasswordField
 import com.example.drujite.ui.MyTextField
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
@@ -39,13 +40,14 @@ fun SignupView(
 
     when (val action = viewAction.value) {
         is SignupAction.NavigateToLogin -> {
-//            navController.navigate(Screen.Login.route)
             navController.popBackStack()
             viewModel.clearAction()
         }
 
         is SignupAction.NavigateToSessionSelection -> {
-            navController.navigate(Screen.SessionSelection.route)
+            navController.navigate(Screen.SessionSelection.route) {
+                popUpTo(Screen.SignUp.route) { inclusive = true }
+            }
             viewModel.clearAction()
         }
 
@@ -130,14 +132,14 @@ fun MainState(
                 onValueChange = {
                     onPhoneChanged(it)
                 })
-            MyTextField(
+            MyPasswordField(
                 value = password,
                 label = "Пароль",
                 errorText = if (error == SignupResult.INVALID_PASSWORD) error.message else null,
                 onValueChange = {
                     onPasswordChanged(it)
                 })
-            MyTextField(
+            MyPasswordField(
                 value = repeatedPassword,
                 label = "Подтвердите пароль",
                 errorText = if (error == SignupResult.PASSWORDS_DO_NOT_MATCH) error.message else null,

@@ -38,8 +38,10 @@ fun GreetingView(
 
     when (val action = viewAction.value) {
         is GreetingAction.NavigateToLogin -> {
-            navController.navigate(Screen.Login.route)
             viewModel.resetAction()
+            navController.navigate(Screen.Login.route) {
+                popUpTo(Screen.Greeting.route) { inclusive = true }
+            }
         }
         else -> {}
     }
