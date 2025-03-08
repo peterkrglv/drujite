@@ -244,8 +244,8 @@ fun MyExpandedTextField(
 
     OutlinedTextField(
         modifier = Modifier
-            .padding(8.dp)
             .size(340.dp, 170.dp)
+            .padding(8.dp)
             .verticalScroll(scrollState),
         value = value,
         label = { Text(text = label) },
@@ -339,7 +339,7 @@ fun GenderChoice(
             Spacer(modifier = Modifier.width(16.dp))
             RadioButton(
                 selected = (gender == Gender.FEMALE),
-                onClick = { onGenderClick(Gender.FEMALE)}
+                onClick = { onGenderClick(Gender.FEMALE) }
             )
             Text(text = Gender.FEMALE.value)
         }
@@ -378,13 +378,14 @@ fun DropdownTextField(
     val isError = remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.width(340.dp),
         expanded = expanded.value,
         onExpandedChange = { expanded.value = !expanded.value }
     ) {
         OutlinedTextField(
             modifier = Modifier
-                .width(340.dp)
+                .padding(8.dp)
+                .fillMaxWidth()
                 .clickable {
                     Log.d("DropdownTextField", "Clicked")
                     expanded.value = true
@@ -400,7 +401,7 @@ fun DropdownTextField(
             readOnly = true,
         )
         ExposedDropdownMenu(
-            modifier = Modifier.border(
+            modifier = Modifier.padding(8.dp).border(
                 1.dp,
                 MaterialTheme.colorScheme.primary,
                 RoundedCornerShape(12.dp)
@@ -442,9 +443,17 @@ fun LoadingScreen() {
 @Composable
 fun MyPreview() {
     MaterialTheme {
-        ShortenedTextBig(
-            text = "Мирон истинный уроженец Гранатовой ветви. Будучи выращенным вблизи вулканов, он с детства познавал дикую магию, подвергался изнуряющим тренировкам и был свидетелем...",
-            4
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            MyTextField(value = ",le", label = "f,wkem", errorText = "", onValueChange = {})
+            DropdownTextField(
+                label = "",
+                options = emptyList(),
+                selected = "",
+                onOptionSelected = {})
+        }
     }
 }

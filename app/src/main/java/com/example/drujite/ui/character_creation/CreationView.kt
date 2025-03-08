@@ -1,4 +1,3 @@
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,7 +44,9 @@ fun CreationView(
     when (val action = viewAction.value) {
         is CreationAction.NavigateToCustomisation -> {
             viewModel.clearAction()
-            //navController.navigate()
+            navController.navigate(Screen.CharacterCustomisation.route) {
+                popUpTo(Screen.CharacterCreation.route) { inclusive = true }
+            }
         }
 
         is CreationAction.NavigateToTransfer -> {

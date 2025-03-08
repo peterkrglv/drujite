@@ -23,11 +23,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.drujite.R
+import com.example.drujite.ui.MyButton
+import com.example.drujite.ui.timetable.MainView
 
 @Composable
-fun CustomisationView() {
+fun CustomisationView(
+    navController: NavController,
+) {
     MainState()
 }
 
@@ -131,6 +136,9 @@ fun ItemChoice(title: String, items: List<Int>, chosenItem: Int, onItemChosen: (
                         }
                 )
             }
+            item {
+                MyButton(text = "Закончить", onClick = {})
+            }
         }
     }
 }
@@ -139,6 +147,6 @@ fun ItemChoice(title: String, items: List<Int>, chosenItem: Int, onItemChosen: (
 @Composable
 fun CustomisationPreview() {
     AppTheme {
-        CustomisationView()
+        MainState()
     }
 }

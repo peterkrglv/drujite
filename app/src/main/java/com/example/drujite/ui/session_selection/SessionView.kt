@@ -60,7 +60,9 @@ fun SessionView(
 
     when (val action = viewAction.value) {
         is SessionAction.NavigateToCharacterCreation -> {
-            navController.navigate(Screen.CharacterCreation.route)
+            navController.navigate(Screen.CharacterCreation.route) {
+                popUpTo(Screen.SessionSelection.route) { inclusive = true }
+            }
             viewModel.clearAction()
         }
 
@@ -169,7 +171,7 @@ fun CarouselItem(
 ) {
     val borderColor =
         if (item.id == currentItem.id) MaterialTheme.colorScheme.primary else Color.Black
-    val title = if(item.session == null) qrError else item.session.name
+    val title = if (item.session == null) qrError else item.session.name
     val text = item.session?.description ?: ""
     Column {
         Image(
