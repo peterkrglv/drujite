@@ -36,5 +36,5 @@ val appModule = module {
     viewModel<GreetingViewModel> { GreetingViewModel(get()) }
     viewModel<LoginViewModel> { LoginViewModel(get()) }
     viewModel<SignupViewModel> { SignupViewModel(get()) }
-    viewModel<SessionViewModel> { SessionViewModel(get(), get()) }
+    viewModel<SessionViewModel> { SessionViewModel(get(), get(), get()) }
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.SessionModel
+import com.example.domain.use_cases.AccessSharedPrefsUseCase
 import com.example.domain.use_cases.GetSessionByCodeUseCase
 import com.example.domain.use_cases.GetSessionsUseCase
 import com.example.drujite.ui.QRScannerResult
@@ -15,7 +16,8 @@ import kotlinx.coroutines.withContext
 
 class SessionViewModel(
     private val getSessionsUseCase: GetSessionsUseCase,
-    private val getSessionByCodeUseCase: GetSessionByCodeUseCase
+    private val getSessionByCodeUseCase: GetSessionByCodeUseCase,
+    private val accessSharedPrefsUseCase: AccessSharedPrefsUseCase
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<SessionState>(SessionState.Loading)
     val viewState: StateFlow<SessionState>
@@ -49,8 +51,7 @@ class SessionViewModel(
                         withContext(Dispatchers.IO) {
                             val session = getSessionByCodeUseCase.execute(sessionNum)
                             if (session != null) {
-                                _viewAction.value =
-                                    SessionAction.NavigateToCharacterCreation(session)
+                                sessionSelected(session = session)
                             } else {
                                 _viewState.value = state.copy(qrError = "Смена не найдена")
                             }
@@ -65,8 +66,6 @@ class SessionViewModel(
 
                 }
             }
-        } else {
-            Log.e("SessionViewModel", "QR Scanner Result is null")
         }
     }
 
@@ -90,6 +89,10 @@ class SessionViewModel(
 
     private fun sessionSelected(session: SessionModel) {
         _viewAction.value = SessionAction.NavigateToCharacterCreation(session)
-        Log.d("SessionViewModel", "sessionSelected: $session")
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                accessSharedPrefsUseCase.saveSessionId(id = session.id)
+            }
+        }
     }
 }
