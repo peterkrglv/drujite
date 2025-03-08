@@ -1,16 +1,23 @@
 package com.example.drujite.ui
 
+import com.example.data.CharacterReposirotyTest
+import com.example.data.ClanRepositoryTest
 import com.example.data.SessionRepositoryTest
 import com.example.data.SharedPrefsRepositoryImpl
 import com.example.data.UserResitoryTest
+import com.example.domain.repos.CharacterRepository
+import com.example.domain.repos.ClanRepository
 import com.example.domain.repos.SessionRepository
 import com.example.domain.repos.SharedPrefsRepository
 import com.example.domain.repos.UserRepository
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
+import com.example.domain.use_cases.CreateCharacterUseCase
+import com.example.domain.use_cases.GetClansBySessionIdUseCase
 import com.example.domain.use_cases.GetSessionByCodeUseCase
 import com.example.domain.use_cases.GetSessionsUseCase
 import com.example.domain.use_cases.LoginUseCase
 import com.example.domain.use_cases.SignupUseCase
+import com.example.drujite.ui.character_creation.CreationViewModel
 import com.example.drujite.ui.greeting.GreetingViewModel
 import com.example.drujite.ui.login.LoginViewModel
 import com.example.drujite.ui.session_selection.SessionViewModel
@@ -22,6 +29,8 @@ val dataModule = module {
     single<UserRepository> { UserResitoryTest() }
     single<SessionRepository> { SessionRepositoryTest() }
     single<SharedPrefsRepository> { SharedPrefsRepositoryImpl(get()) }
+    single<ClanRepository> { ClanRepositoryTest() }
+    single<CharacterRepository> { CharacterReposirotyTest() }
 }
 
 val domainModule = module {
@@ -30,6 +39,8 @@ val domainModule = module {
     factory<GetSessionsUseCase> { GetSessionsUseCase(get()) }
     factory<GetSessionByCodeUseCase> { GetSessionByCodeUseCase(get()) }
     factory<AccessSharedPrefsUseCase> { AccessSharedPrefsUseCase(get()) }
+    factory<GetClansBySessionIdUseCase> { GetClansBySessionIdUseCase(get()) }
+    factory<CreateCharacterUseCase> { CreateCharacterUseCase(get()) }
 }
 
 val appModule = module {
@@ -37,4 +48,5 @@ val appModule = module {
     viewModel<LoginViewModel> { LoginViewModel(get()) }
     viewModel<SignupViewModel> { SignupViewModel(get()) }
     viewModel<SessionViewModel> { SessionViewModel(get(), get(), get()) }
+    viewModel<CreationViewModel> { CreationViewModel(get(), get(), get()) }
 }

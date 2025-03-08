@@ -45,6 +45,7 @@ import com.example.drujite.ui.LoadingScreen
 import com.example.drujite.ui.MyButton
 import com.example.drujite.ui.MyTitle
 import com.example.drujite.ui.MyTitle2
+import com.example.drujite.ui.Screen
 import com.example.drujite.ui.startQRScanner
 import org.koin.androidx.compose.koinViewModel
 
@@ -59,7 +60,7 @@ fun SessionView(
 
     when (val action = viewAction.value) {
         is SessionAction.NavigateToCharacterCreation -> {
-            //navController.navigate("character_creation")
+            navController.navigate(Screen.CharacterCreation.route)
             viewModel.clearAction()
         }
 

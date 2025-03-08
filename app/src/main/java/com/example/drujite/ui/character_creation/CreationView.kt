@@ -1,24 +1,94 @@
+
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.compose.AppTheme
-import com.example.drujite.ui.*
+import com.example.domain.models.ClanModel
+import com.example.drujite.ui.DropdownTextField
+import com.example.drujite.ui.LoadingScreen
+import com.example.drujite.ui.MyButton
+import com.example.drujite.ui.MyTextField
+import com.example.drujite.ui.MyTitle
+import com.example.drujite.ui.MyTitle2
+import com.example.drujite.ui.Screen
+import com.example.drujite.ui.TextButtonNavigation
+import com.example.drujite.ui.character_creation.CreationAction
+import com.example.drujite.ui.character_creation.CreationEvent
+import com.example.drujite.ui.character_creation.CreationState
+import com.example.drujite.ui.character_creation.CreationViewModel
+import com.example.drujite.ui.timetable.MainView
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CreationView() {
-    MainState()
+fun CreationView(
+    navController: NavController,
+    viewModel: CreationViewModel = koinViewModel()
+) {
+    val viewState = viewModel.viewState.collectAsState()
+    val viewAction = viewModel.viewAction.collectAsState()
+
+    when (val action = viewAction.value) {
+        is CreationAction.NavigateToCustomisation -> {
+            viewModel.clearAction()
+            //navController.navigate()
+        }
+
+        is CreationAction.NavigateToTransfer -> {
+            viewModel.clearAction()
+            navController.navigate(Screen.CharacterTransfer.route)
+        }
+
+        else -> {}
+    }
+
+    when (val state = viewState.value) {
+        is CreationState.Main -> {
+            MainState(
+                state = state,
+                onNameChanged = { viewModel.obtainEvent(CreationEvent.NameChanged(it)) },
+                onClanChosen = { viewModel.obtainEvent(CreationEvent.ClanChosen(it)) },
+                onTransferClicked = { viewModel.obtainEvent(CreationEvent.TransferClicked) },
+                onProceedClicked = { viewModel.obtainEvent(CreationEvent.ProceedClicked) }
+            )
+        }
+
+        is CreationState.Initialization -> {
+            viewModel.obtainEvent(CreationEvent.LoadClans)
+            LoadingScreen()
+        }
+
+        is CreationState.Loading -> {
+            LoadingScreen()
+        }
+    }
 }
 
 @Composable
-fun MainState() {
-    val name = remember { mutableStateOf("") }
-    val clan = remember { mutableStateOf("") }
-    val clans = listOf("Клан 1", "Клан 2", "Клан 3", "Клан 4", "Клан 5", "Клан 6", "Клан 7", "Клан 8", "Клан 9", "Клан 10", "Клан 11")
+fun MainState(
+    state: CreationState.Main,
+    onNameChanged: (String) -> Unit,
+    onClanChosen: (ClanModel) -> Unit,
+    onTransferClicked: () -> Unit,
+    onProceedClicked: () -> Unit,
+) {
+    val name = remember { mutableStateOf(state.name) }
+    val chosenClan = remember { mutableStateOf(state.chosenClan) }
+    val clans = remember { mutableStateOf(state.clans) }
 
     Column(
         modifier = Modifier
@@ -27,7 +97,9 @@ fun MainState() {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(top = 128.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 128.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom,
         ) {
@@ -44,17 +116,19 @@ fun MainState() {
             }
             DropdownTextField(
                 label = "Выбери клан",
-                options = clans,
-                selected = ""
-            ) {
-                clan.value = it
+                options = clans.value.map { it.name },
+                selected = chosenClan.value?.name ?: "Выбери клан"
+            ) { selectedName ->
+                val selectedClan = clans.value.find { it.name == selectedName }
+                chosenClan.value = selectedClan
+                onClanChosen(selectedClan!!)
             }
-            MyButton(text = "Дальше", onClick = {})
+            MyButton(text = "Дальше", onClick = onProceedClicked)
         }
         TextButtonNavigation(
             text = "Хочешь перенести персонажа?",
             buttonText = "Перенос",
-            onClick = {}
+            onClick = onTransferClicked
         )
     }
 }
@@ -64,6 +138,6 @@ fun MainState() {
 @Composable
 fun CreationPreview() {
     AppTheme {
-        CreationView()
+        MainView()
     }
 }

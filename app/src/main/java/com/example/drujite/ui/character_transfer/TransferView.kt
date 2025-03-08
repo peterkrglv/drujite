@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.drujite.ui.DropdownTextField
 import com.example.drujite.ui.MyButton
@@ -26,13 +27,12 @@ import com.example.drujite.ui.MyTitle2
 import com.example.drujite.ui.TextButtonNavigation
 
 @Composable
-fun TransferView() {
+fun TransferView(navController: NavController) {
     MainState()
 }
 
 @Composable
 fun MainState() {
-
     val characterName = remember { mutableStateOf("") }
     val reason = remember { mutableStateOf("") }
     val characters = listOf("Персонаж 1", "Персонаж 2", "Персонаж 3", "Персонаж 4", "Персонаж 5", "Персонаж 6", "Персонаж 7", "Персонаж 8", "Персонаж 9", "Персонаж 10", "Персонаж 11")
@@ -81,6 +81,6 @@ fun MainState() {
 @Composable
 fun TransferPreview() {
     AppTheme {
-        TransferView()
+        MainState()
     }
 }

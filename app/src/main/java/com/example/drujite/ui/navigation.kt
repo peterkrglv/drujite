@@ -1,9 +1,11 @@
 package com.example.drujite.ui
 
+import CreationView
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.drujite.ui.character_transfer.TransferView
 import com.example.drujite.ui.greeting.GreetingView
 import com.example.drujite.ui.login.LoginView
 import com.example.drujite.ui.main_view.MainView
@@ -17,6 +19,8 @@ sealed class Screen(val route: String) {
     data object SignUp : Screen("signup")
     data object SessionSelection : Screen("session_selection")
     data object MainView : Screen("main_view")
+    data object CharacterCreation : Screen("character_creation")
+    data object CharacterTransfer : Screen("character_transfer")
 }
 
 @Composable
@@ -28,5 +32,7 @@ fun SetUpNavHost() {
         composable(route = Screen.SignUp.route) { SignupView(navController) }
         composable(route = Screen.SessionSelection.route) { SessionView(navController) }
         composable(route = Screen.MainView.route) { MainView(navController) }
+        composable(route = Screen.CharacterCreation.route) { CreationView(navController)}
+        composable(route = Screen.CharacterTransfer.route) { TransferView(navController) }
     }
 }

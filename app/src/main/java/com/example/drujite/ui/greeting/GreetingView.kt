@@ -41,14 +41,14 @@ fun GreetingView(
 
     when (val action = viewAction.value) {
         is GreetingAction.NavigateToLogin -> {
-            viewModel.resetAction()
+            viewModel.clearAction()
             navController.navigate(Screen.Login.route) {
                 popUpTo(Screen.Greeting.route) { inclusive = true }
             }
         }
 
         is GreetingAction.NavigateToMainView -> {
-            viewModel.resetAction()
+            viewModel.clearAction()
             navController.navigate(Screen.MainView.route) {
                 popUpTo(Screen.Greeting.route) { inclusive = true }
             }

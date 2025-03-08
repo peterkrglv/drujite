@@ -244,8 +244,8 @@ fun MyExpandedTextField(
 
     OutlinedTextField(
         modifier = Modifier
-            .size(340.dp, 170.dp)
             .padding(8.dp)
+            .size(340.dp, 170.dp)
             .verticalScroll(scrollState),
         value = value,
         label = { Text(text = label) },
@@ -378,13 +378,13 @@ fun DropdownTextField(
     val isError = remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
+        modifier = Modifier.padding(8.dp),
         expanded = expanded.value,
         onExpandedChange = { expanded.value = !expanded.value }
     ) {
         OutlinedTextField(
             modifier = Modifier
                 .width(340.dp)
-                .padding(8.dp)
                 .clickable {
                     Log.d("DropdownTextField", "Clicked")
                     expanded.value = true
