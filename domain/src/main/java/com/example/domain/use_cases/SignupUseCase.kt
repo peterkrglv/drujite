@@ -40,4 +40,3 @@ data class SignupResponse(
     val result: SignupResult,
     val id: Int? = null
 )
-

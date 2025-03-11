@@ -3,7 +3,18 @@ package com.example.data
 import com.example.domain.models.SessionModel
 import com.example.domain.repos.SessionRepository
 
-class SessionRepositoryTest: SessionRepository {
+class SessionRepositoryTest : SessionRepository {
+    override suspend fun getSessionById(id: Int): SessionModel? {
+        return SessionModel(
+            id = 1,
+            name = "Тайны топей",
+            description = "Погрузитесь в мир магии школы колдовстворец, где ученики учатся древним шаманским ритуалам...",
+            dates = "23.03.2025 - 29.03.2025",
+            nOfPlayers = 30,
+            imageUrl = null
+        )
+    }
+
     override suspend fun getSessions(): List<SessionModel> {
         return listOf(
             SessionModel(
