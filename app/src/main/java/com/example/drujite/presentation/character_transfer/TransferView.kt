@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.character_transfer
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,36 +11,82 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
+import com.example.domain.models.CharacterModel
 import com.example.drujite.presentation.DropdownTextField
+import com.example.drujite.presentation.LoadingScreen
 import com.example.drujite.presentation.MyButton
 import com.example.drujite.presentation.MyExpandedTextField
 import com.example.drujite.presentation.MySmallText
 import com.example.drujite.presentation.MyTitle
 import com.example.drujite.presentation.MyTitle2
+import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.TextButtonNavigation
+import com.example.drujite.presentation.signup.SignupAction
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TransferView(
     navController: NavController,
     sessionId: Int,
-    userId: Int
+    userId: Int,
+    viewModel: TransferViewModel = koinViewModel()
 ) {
-    MainState()
+    val viewState = viewModel.viewState.collectAsState()
+    val viewAction = viewModel.viewAction.collectAsState()
+
+    Log.d("current view", "TransferView")
+
+    when (val action = viewAction.value) {
+        is TransferAction.NavigateToMain -> {
+            viewModel.clearAction()
+            navController.navigate("${Screen.MainView.route}/${action.userId}/${action.sessionId}/${action.characterId}") {
+                popUpTo("${Screen.CharacterCreation.route}/${sessionId}/${userId}") {
+                    inclusive = true
+                }
+            }
+
+        }
+        is TransferAction.NavigateToCreation -> {
+            viewModel.clearAction()
+            navController.popBackStack()
+        }
+        else -> {}
+    }
+
+    when (val state = viewState.value) {
+        is TransferState.Initialization -> {
+            viewModel.obtainEvent(TransferEvent.LoadCharacters(userId, sessionId))
+            LoadingScreen()
+        }
+        is TransferState.Loading -> LoadingScreen()
+        is TransferState.Main -> MainState(
+            state = state,
+            onCharacterChosen = { viewModel.obtainEvent(TransferEvent.CharacterChosen(it)) },
+            onReasonChanged = { viewModel.obtainEvent(TransferEvent.ReasonChanged(it)) },
+            onProceedClicked = { viewModel.obtainEvent(TransferEvent.ProceedClicked) },
+            onCharacterCreationClicked = { viewModel.obtainEvent(TransferEvent.CharacterCreationClicked) }
+        )
+    }
 }
 
 @Composable
-fun MainState() {
-    val characterName = remember { mutableStateOf("") }
-    val reason = remember { mutableStateOf("") }
-    val characters = listOf("Персонаж 1", "Персонаж 2", "Персонаж 3", "Персонаж 4", "Персонаж 5", "Персонаж 6", "Персонаж 7", "Персонаж 8", "Персонаж 9", "Персонаж 10", "Персонаж 11")
+fun MainState(
+    state: TransferState.Main,
+    onCharacterChosen: (CharacterModel) -> Unit,
+    onReasonChanged: (String) -> Unit,
+    onProceedClicked: () -> Unit,
+    onCharacterCreationClicked: () -> Unit
+) {
+    val characters = state.characters
+    val chosenCharacter = state.chosenCharacter
+    val reason = state.reason
 
     Column(
         modifier = Modifier
@@ -48,7 +95,9 @@ fun MainState() {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom,
         ) {
@@ -58,25 +107,28 @@ fun MainState() {
             Spacer(modifier = Modifier.height(32.dp))
             DropdownTextField(
                 label = "Выбери персонажа",
-                options = characters,
-                selected = "",
-            ) {
-                characterName.value = it
-            }
+                options = characters.map { it.name },
+                selected = chosenCharacter?.name ?: "",
+                onOptionSelected = { name ->
+                    val character = characters.find { it.name == name }
+                    if (character != null) {
+                        onCharacterChosen(character)
+                    }
+                }
+            )
             MyExpandedTextField(
-                value = reason.value,
+                value = reason,
                 label = "Причина",
                 isError = false,
-            ) {
-                reason.value = it
-            }
+                onValueChange = { onReasonChanged(it) }
+            )
             MySmallText(text = "Важно: если временные промежутки этой смены и смены, с которой ты хочешь перенести персонажа, не совпадают или есть другие нюансы, куратор может отказать в переносе персонажа в целях сохранения логики игровых миров.")
-            MyButton(text = "Дальше", onClick = {})
+            MyButton(text = "Дальше", onClick = onProceedClicked)
         }
         TextButtonNavigation(
             text = "Передумал?)",
             buttonText = "Назад",
-            onClick = {}
+            onClick = onCharacterCreationClicked
         )
     }
 }
@@ -85,6 +137,12 @@ fun MainState() {
 @Composable
 fun TransferPreview() {
     AppTheme {
-        MainState()
+        MainState(
+            state = TransferState.Main(),
+            onCharacterChosen = {},
+            onReasonChanged = {},
+            onProceedClicked = {},
+            onCharacterCreationClicked = {}
+        )
     }
 }

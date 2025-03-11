@@ -2,6 +2,7 @@ package com.example.drujite.presentation.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.use_cases.SignupResponse
 import com.example.domain.use_cases.SignupResult
 import com.example.domain.use_cases.SignupUseCase
 import kotlinx.coroutines.Dispatchers
@@ -50,14 +51,17 @@ class SignupViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 Thread.sleep(2000)
-                val signupResult = signupUseCase.execute(
+                val signupResponce = signupUseCase.execute(
                     state.name,
                     state.phone,
                     state.password,
-                    state.passwordRepeated
+                    state.passwordRepeated,
+                    state.gender.value
                 )
-                if (signupResult == SignupResult.SUCCESS) {
-                    _viewAction.value = SignupAction.NavigateToSessionSelection
+                val signupResult = signupResponce.result
+                val userId = signupResponce.id
+                if (signupResult == SignupResult.SUCCESS && userId != null) {
+                    _viewAction.value = SignupAction.NavigateToSessionSelection(userId)
                 } else {
                     _viewState.value = state.copy(error = signupResult)
                 }

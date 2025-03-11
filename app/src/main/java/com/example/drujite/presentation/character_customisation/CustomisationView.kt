@@ -31,6 +31,9 @@ import com.example.drujite.presentation.MyButton
 @Composable
 fun CustomisationView(
     navController: NavController,
+    userId: Int,
+    sessionId: Int,
+    characterId: Int
 ) {
     MainState()
 }

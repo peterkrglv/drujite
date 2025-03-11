@@ -39,4 +39,8 @@ class SessionRepositoryTest : SessionRepository {
     override suspend fun getSessionByCode(code: String): SessionModel? {
         return null
     }
+
+    override suspend fun addCharacterToSession(sessionId: Int, characterId: Int): Boolean {
+        return true
+    }
 }

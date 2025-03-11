@@ -35,7 +35,7 @@ class GreetingViewModel(
                 val sessionId = prefsUseCase.getSessionId()
                 val characterId = prefsUseCase.getCharacterId()
                 if (userId != -1 && sessionId != -1 && characterId != -1) {
-                    _viewAction.value = GreetingAction.NavigateToMainView
+                    _viewAction.value = GreetingAction.NavigateToMainView(userId, sessionId, characterId)
                 } else {
                     _viewState.value = GreetingState.Main
                 }

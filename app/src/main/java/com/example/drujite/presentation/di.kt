@@ -11,13 +11,16 @@ import com.example.domain.repos.SessionRepository
 import com.example.domain.repos.SharedPrefsRepository
 import com.example.domain.repos.UserRepository
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
+import com.example.domain.use_cases.AddCharacterToSessionUseCase
 import com.example.domain.use_cases.CreateCharacterUseCase
+import com.example.domain.use_cases.GetCharactersByUserIdUseCase
 import com.example.domain.use_cases.GetClansBySessionIdUseCase
 import com.example.domain.use_cases.GetSessionByCodeUseCase
 import com.example.domain.use_cases.GetSessionsUseCase
 import com.example.domain.use_cases.LoginUseCase
 import com.example.domain.use_cases.SignupUseCase
 import com.example.drujite.presentation.character_creation.CreationViewModel
+import com.example.drujite.presentation.character_transfer.TransferViewModel
 import com.example.drujite.presentation.greeting.GreetingViewModel
 import com.example.drujite.presentation.login.LoginViewModel
 import com.example.drujite.presentation.session_selection.SessionViewModel
@@ -41,6 +44,8 @@ val domainModule = module {
     factory<AccessSharedPrefsUseCase> { AccessSharedPrefsUseCase(get()) }
     factory<GetClansBySessionIdUseCase> { GetClansBySessionIdUseCase(get()) }
     factory<CreateCharacterUseCase> { CreateCharacterUseCase(get()) }
+    factory<GetCharactersByUserIdUseCase> { GetCharactersByUserIdUseCase(get()) }
+    factory<AddCharacterToSessionUseCase> { AddCharacterToSessionUseCase(get()) }
 }
 
 val appModule = module {
@@ -49,4 +54,5 @@ val appModule = module {
     viewModel<SignupViewModel> { SignupViewModel(get()) }
     viewModel<SessionViewModel> { SessionViewModel(get(), get(), get()) }
     viewModel<CreationViewModel> { CreationViewModel(get(), get(), get()) }
+    viewModel<TransferViewModel> { TransferViewModel(get(), get(), get()) }
 }

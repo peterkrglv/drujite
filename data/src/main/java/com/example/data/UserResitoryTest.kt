@@ -14,7 +14,8 @@ class UserResitoryTest : UserRepository {
     override suspend fun signup(
         name: String,
         phone: String,
-        password: String
+        password: String,
+        gender: String
     ): SignupResponse {
         return SignupResponse(result = SignupResult.SUCCESS, id = 1)
     }

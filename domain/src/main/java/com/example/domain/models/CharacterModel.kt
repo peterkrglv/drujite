@@ -10,21 +10,70 @@ data class CharacterModel(
 )
 
 fun getCharactersTest(): List<CharacterModel> {
-    val character1 = CharacterModel(
-        id = 1,
-        name = "Персонаж",
-        player = "Игрок",
-        story = "тут будет квента",
-        image = "",
-        clan = "Янтарная Ветвь"
+    return listOf(
+        CharacterModel(
+            id = 1,
+            name = "Персонаж",
+            player = "Игрок 1",
+            story = "тут будет квента",
+            image = "",
+            clan = "Янтарная Ветвь"
+        ),
+        CharacterModel(
+            id = 2,
+            name = "Персонаж 2",
+            player = "Игрок 1",
+            story = "",
+            image = "",
+            clan = "Ониксовая Ветвь"
+        ),
+        CharacterModel(
+            id = 3,
+            name = "Персонаж 3",
+            player = "Игрок 1",
+            story = "",
+            image = "",
+            clan = "Яшмовая ветвь"
+        ),
+        CharacterModel(
+            id = 4,
+            name = "Персонаж 4",
+            player = "Игрок 1",
+            story = "",
+            image = "",
+            clan = "Вивианитовая ветвь"
+        ),
+        CharacterModel(
+            id = 5,
+            name = "Персонаж 10",
+            player = "Игрок 2",
+            story = "",
+            image = "",
+            clan = "Вивианитовая ветвь"
+        ),
+        CharacterModel(
+            id = 6,
+            name = "Персонаж 11",
+            player = "Игрок 2",
+            story = "",
+            image = "",
+            clan = "Вивианитовая ветвь"
+        ),
+        CharacterModel(
+            id = 7,
+            name = "Персонаж 12",
+            player = "Игрок 2",
+            story = "",
+            image = "",
+            clan = "Вивианитовая ветвь"
+        ),
+        CharacterModel(
+            id = 8,
+            name = "Персонаж 3",
+            player = "Игрок 1",
+            story = "",
+            image = "",
+            clan = "Яшмовая ветвь"
+        )
     )
-    val character2 = CharacterModel(
-        id = 2,
-        name = "Персонаж 2",
-        player = "Игрок 2",
-        story = "",
-        image = "",
-        clan = "Ониксовая Ветвь"
-    )
-    return List(9) { character1 } + List(5) { character2 }
 }

@@ -61,10 +61,11 @@ fun SessionView(
 
     when (val action = viewAction.value) {
         is SessionAction.NavigateToCharacterCreation -> {
-            navController.navigate("${Screen.CharacterCreation.route}/${action.sessionId}/${userId}") {
-                popUpTo(Screen.SessionSelection.route) { inclusive = true }
-            }
             viewModel.clearAction()
+            navController.navigate("${Screen.CharacterCreation.route}/${action.sessionId}/${userId}") {
+                popUpTo("${Screen.SessionSelection.route}/${userId}") { inclusive = true }
+                launchSingleTop = true
+            }
         }
 
         is SessionAction.StartQRScanner -> {

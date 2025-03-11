@@ -7,23 +7,23 @@ class SignupUseCase(
     private val repo: UserRepository,
     private val sharedPrefs: SharedPrefsRepository
 ) {
-    suspend fun execute(name: String, phone: String, password: String, passwordRepeated: String): SignupResult {
+    suspend fun execute(name: String, phone: String, password: String, passwordRepeated: String, gender: String): SignupResponse {
         val phonePattern = "^\\+?\\d+$"
         if (!phone.matches(phonePattern.toRegex())) {
-            return SignupResult.INVALID_PHONE
+            return SignupResponse(SignupResult.INVALID_PHONE)
         }
         if (password.length < 6 || !password.any { it.isUpperCase() } || !password.any { it.isDigit() }) {
-            return SignupResult.INVALID_PASSWORD
+            return SignupResponse(SignupResult.INVALID_PASSWORD)
         }
         if (password != passwordRepeated) {
-            return SignupResult.PASSWORDS_DO_NOT_MATCH
+            return SignupResponse(SignupResult.PASSWORDS_DO_NOT_MATCH)
         }
-        val responce = repo.signup(name, phone, password)
-        val result = responce.result
-        if (result == SignupResult.SUCCESS && responce.id != null) {
-            sharedPrefs.saveUserId(responce.id)
+        val response = repo.signup(name, phone, password, gender)
+        val result = response.result
+        if (result == SignupResult.SUCCESS && response.id != null) {
+            sharedPrefs.saveUserId(response.id)
         }
-        return responce.result
+        return response
     }
 }
 

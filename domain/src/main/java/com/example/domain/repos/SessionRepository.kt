@@ -7,4 +7,5 @@ interface SessionRepository {
     suspend fun getSessionById(id: Int): SessionModel?
     suspend fun getSessions(): List<SessionModel>
     suspend fun getSessionByCode(code: String): SessionModel?
+    suspend fun addCharacterToSession(sessionId: Int, characterId: Int): Boolean
 }

@@ -73,19 +73,24 @@ class CreationViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 //really need to fix this....
-                if (state.chosenClan != null) {
-                    val creationResult = createCharacterUseCase.execute(
+                if (state.chosenClan == null) {
+                    _viewState.value = state.copy(error = "Выберите клан")
+                }
+                else if (state.name == "") {
+                    _viewState.value = state.copy(error = "Введите имя")
+                }
+                else {
+                    val characterId = createCharacterUseCase.execute(
                         userId = 0,
                         name = state.name,
                         clanId = state.chosenClan.id
                     )
-                    if (creationResult) {
-                        _viewAction.value = CreationAction.NavigateToCustomisation
+                    if (characterId != -1) {
+                        sharedPrefsUseCase.saveCharacterId(characterId)
+                        _viewAction.value = CreationAction.NavigateToCustomisation(characterId)
                     } else {
                         _viewState.value = state.copy(error = "Ошибка сети, попробуйте еще раз")
                     }
-                } else {
-                    _viewState.value = state.copy(error = "Выберите клан")
                 }
             }
         }

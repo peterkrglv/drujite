@@ -14,14 +14,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
+import com.example.drujite.presentation.MyButton
+import com.example.drujite.presentation.Screen
 
 @Composable
-fun MainView(navController: NavController) {
-    MainState()
+fun MainView(
+    navController: NavController,
+    userId: Int,
+    sessionId: Int,
+    characterId: Int
+    ) {
+    MainState(
+        onButtonClick = {
+            navController.navigate(Screen.Login.route) {
+                popUpTo("${Screen.MainView.route}/${userId}/${sessionId}/${characterId}") { inclusive = true }
+            }
+        }
+    )
 }
 
 @Composable
-fun MainState() {
+fun MainState(
+    onButtonClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,6 +48,10 @@ fun MainState() {
         Text(
             text = "Тут будет главная страничка с персонажем и с навигацией внизу"
         )
+        MyButton(
+            text = "Выйти из аккаунта",
+            onClick = onButtonClick
+        )
     }
 }
 
@@ -40,6 +59,6 @@ fun MainState() {
 @Composable
 fun MainViewPreview() {
     AppTheme {
-        MainState()
+        MainState({})
     }
 }

@@ -26,7 +26,7 @@ sealed class SignupEvent {
 
 sealed class SignupAction {
     data object NavigateToLogin: SignupAction()
-    data object NavigateToSessionSelection: SignupAction()
+    data class NavigateToSessionSelection(val userId: Int): SignupAction()
 }
 
 enum class Gender(val value: String) {

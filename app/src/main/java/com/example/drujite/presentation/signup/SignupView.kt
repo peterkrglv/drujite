@@ -45,9 +45,10 @@ fun SignupView(
         }
 
         is SignupAction.NavigateToSessionSelection -> {
-            navController.navigate(Screen.SessionSelection.route) {
-                popUpTo(Screen.SignUp.route) { inclusive = true }
+            navController.navigate("${Screen.SessionSelection.route}/${action.userId}") {
+                popUpTo(Screen.Login.route) { inclusive = true }
             }
+            viewModel.clearAction()
             viewModel.clearAction()
         }
 

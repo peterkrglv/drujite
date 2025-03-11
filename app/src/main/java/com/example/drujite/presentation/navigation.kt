@@ -1,6 +1,7 @@
 package com.example.drujite.presentation
 
 import CreationView
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,12 +38,17 @@ fun SetUpNavHost() {
             if (userId != null) {
                 SessionView(navController, userId)
             }
+            else {
+                Log.e("navigation", "Error while navigating to session selection")
+            }
         }
         composable(route = Screen.CharacterCreation.route + "/{sessionId}/{userId}") { backStackEntry ->
             val sessionId = backStackEntry.arguments?.getString("sessionId")?.toIntOrNull()
             val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull()
             if (sessionId != null && userId != null) {
                 CreationView(navController, sessionId, userId)
+            } else {
+                Log.e("navigation", "Error while navigating to character creation")
             }
         }
         composable(route = Screen.CharacterTransfer.route + "/{sessionId}/{userId}") { backStackEntry ->
@@ -50,9 +56,29 @@ fun SetUpNavHost() {
             val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull()
             if (sessionId != null && userId != null) {
                 TransferView(navController, sessionId, userId)
+            } else {
+                Log.e("navigation", "Error while navigating to character transfer")
             }
         }
-        composable(route = Screen.CharacterCustomisation.route) { CustomisationView(navController)}
-        composable(route = Screen.MainView.route) { MainView(navController) }
+        composable(route = Screen.CharacterCustomisation.route + "/{userId}/{sessionId}/{characterId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull()
+            val sessionId = backStackEntry.arguments?.getString("sessionId")?.toIntOrNull()
+            val characterId = backStackEntry.arguments?.getString("characterId")?.toIntOrNull()
+            if (userId != null && sessionId != null && characterId != null) {
+                CustomisationView(navController, userId, sessionId, characterId)
+            } else {
+                Log.e("navigation", "Error while navigating to Customisation view")
+            }
+        }
+        composable(route = Screen.MainView.route + "/{userId}/{sessionId}/{characterId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull()
+            val sessionId = backStackEntry.arguments?.getString("sessionId")?.toIntOrNull()
+            val characterId = backStackEntry.arguments?.getString("characterId")?.toIntOrNull()
+            if (userId != null && sessionId != null && characterId != null) {
+                MainView(navController, userId, sessionId, characterId)
+            } else {
+                Log.e("navigation", "Error while navigating to main view")
+            }
+        }
     }
 }

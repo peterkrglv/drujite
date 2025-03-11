@@ -13,5 +13,5 @@ sealed class GreetingEvent {
 
 sealed class GreetingAction {
     data object NavigateToLogin : GreetingAction()
-    data object NavigateToMainView: GreetingAction()
+    data class NavigateToMainView(val userId: Int, val sessionId: Int, val characterId: Int): GreetingAction()
 }

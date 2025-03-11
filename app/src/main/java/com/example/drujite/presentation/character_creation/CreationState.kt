@@ -23,5 +23,5 @@ sealed class CreationEvent {
 
 sealed class CreationAction {
     data object NavigateToTransfer: CreationAction()
-    data object NavigateToCustomisation: CreationAction()
+    data class NavigateToCustomisation(val characterId: Int): CreationAction()
 }

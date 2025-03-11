@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.greeting
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +40,8 @@ fun GreetingView(
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
 
+    Log.d("current view", "GreetingView")
+
     when (val action = viewAction.value) {
         is GreetingAction.NavigateToLogin -> {
             viewModel.clearAction()
@@ -49,7 +52,7 @@ fun GreetingView(
 
         is GreetingAction.NavigateToMainView -> {
             viewModel.clearAction()
-            navController.navigate(Screen.MainView.route) {
+            navController.navigate("${Screen.MainView.route}/${action.userId}/${action.sessionId}/${action.characterId}") {
                 popUpTo(Screen.Greeting.route) { inclusive = true }
             }
         }

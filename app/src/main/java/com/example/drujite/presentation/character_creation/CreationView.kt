@@ -46,14 +46,16 @@ fun CreationView(
     when (val action = viewAction.value) {
         is CreationAction.NavigateToCustomisation -> {
             viewModel.clearAction()
-            navController.navigate(Screen.CharacterCustomisation.route) {
-                popUpTo(Screen.CharacterCreation.route) { inclusive = true }
+            navController.navigate("${Screen.CharacterCustomisation.route}/${userId}/${sessionId}/${action.characterId}") {
+                popUpTo("${Screen.CharacterCreation.route}/${sessionId}/${userId}") {
+                    inclusive = true
+                }
             }
         }
 
         is CreationAction.NavigateToTransfer -> {
             viewModel.clearAction()
-            navController.navigate(Screen.CharacterTransfer.route)
+            navController.navigate("${Screen.CharacterTransfer.route}/${userId}/${sessionId}")
         }
 
         else -> {}
@@ -89,9 +91,9 @@ fun MainState(
     onTransferClicked: () -> Unit,
     onProceedClicked: () -> Unit,
 ) {
-    val name = remember { mutableStateOf(state.name) }
-    val chosenClan = remember { mutableStateOf(state.chosenClan) }
-    val clans = remember { mutableStateOf(state.clans) }
+    val name = state.name
+    val chosenClan = state.chosenClan
+    val clans = state.clans
 
     Column(
         modifier = Modifier
@@ -111,19 +113,17 @@ fun MainState(
             MyTitle2(text = "Lorem Ipsum - это текст-\"рыба\", часто используемый в печати и вэб-дизайне.")
             Spacer(modifier = Modifier.height(32.dp))
             MyTextField(
-                value = name.value,
+                value = name,
                 label = "Имя и фамилия персонажа",
                 errorText = null,
-            ) {
-                name.value = it
-            }
+                onValueChange = { onNameChanged(it) }
+            )
             DropdownTextField(
                 label = "Выбери клан",
-                options = clans.value.map { it.name },
-                selected = chosenClan.value?.name ?: "Выбери клан"
+                options = clans.map { it.name },
+                selected = chosenClan?.name ?: ""
             ) { selectedName ->
-                val selectedClan = clans.value.find { it.name == selectedName }
-                chosenClan.value = selectedClan
+                val selectedClan = clans.find { it.name == selectedName }
                 onClanChosen(selectedClan!!)
             }
             MyButton(text = "Дальше", onClick = onProceedClicked)
