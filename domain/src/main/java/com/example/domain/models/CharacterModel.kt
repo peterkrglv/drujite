@@ -1,6 +1,7 @@
 package com.example.domain.models
 
 data class CharacterModel(
+    val id: Int,
     val name: String,
     val player: String,
     val story: String,
@@ -10,6 +11,7 @@ data class CharacterModel(
 
 fun getCharactersTest(): List<CharacterModel> {
     val character1 = CharacterModel(
+        id = 1,
         name = "Персонаж",
         player = "Игрок",
         story = "тут будет квента",
@@ -17,6 +19,7 @@ fun getCharactersTest(): List<CharacterModel> {
         clan = "Янтарная Ветвь"
     )
     val character2 = CharacterModel(
+        id = 2,
         name = "Персонаж 2",
         player = "Игрок 2",
         story = "",
