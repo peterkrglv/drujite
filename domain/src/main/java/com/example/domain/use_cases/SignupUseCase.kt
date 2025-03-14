@@ -12,7 +12,7 @@ class SignupUseCase(
         if (!phone.matches(phonePattern.toRegex())) {
             return SignupResponse(SignupResult.INVALID_PHONE)
         }
-        if (password.length < 6 || !password.any { it.isUpperCase() } || !password.any { it.isDigit() }) {
+        if (password.length < 6 || !password.any { it.isUpperCase() }) {
             return SignupResponse(SignupResult.INVALID_PASSWORD)
         }
         if (password != passwordRepeated) {
