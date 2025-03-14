@@ -8,6 +8,7 @@ import com.example.domain.use_cases.AddCharacterToSessionUseCase
 import com.example.domain.use_cases.GetCharactersByUserIdUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -17,10 +18,10 @@ class TransferViewModel(
     private val addCharacterToSessionUseCase: AddCharacterToSessionUseCase
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<TransferState>(TransferState.Initialization)
-    val viewState: MutableStateFlow<TransferState>
+    val viewState: StateFlow<TransferState>
         get() = _viewState
     private val _viewAction = MutableStateFlow<TransferAction?>(null)
-    val viewAction: MutableStateFlow<TransferAction?>
+    val viewAction: StateFlow<TransferAction?>
         get() = _viewAction
 
     fun obtainEvent(event: TransferEvent) {

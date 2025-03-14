@@ -2,11 +2,13 @@ package com.example.drujite.presentation
 
 import com.example.data.CharacterReposirotyTest
 import com.example.data.ClanRepositoryTest
+import com.example.data.CustomisationRepositoryTest
 import com.example.data.SessionRepositoryTest
 import com.example.data.SharedPrefsRepositoryImpl
 import com.example.data.UserResitoryTest
 import com.example.domain.repos.CharacterRepository
 import com.example.domain.repos.ClanRepository
+import com.example.domain.repos.CustomisationRepository
 import com.example.domain.repos.SessionRepository
 import com.example.domain.repos.SharedPrefsRepository
 import com.example.domain.repos.UserRepository
@@ -15,11 +17,14 @@ import com.example.domain.use_cases.AddCharacterToSessionUseCase
 import com.example.domain.use_cases.CreateCharacterUseCase
 import com.example.domain.use_cases.GetCharactersByUserIdUseCase
 import com.example.domain.use_cases.GetClansBySessionIdUseCase
+import com.example.domain.use_cases.GetCustomisationOptions
 import com.example.domain.use_cases.GetSessionByCodeUseCase
 import com.example.domain.use_cases.GetSessionsUseCase
 import com.example.domain.use_cases.LoginUseCase
+import com.example.domain.use_cases.SaveCharacterCustomImageUseCase
 import com.example.domain.use_cases.SignupUseCase
 import com.example.drujite.presentation.character_creation.CreationViewModel
+import com.example.drujite.presentation.character_customisation.CustomisationViewModel
 import com.example.drujite.presentation.character_transfer.TransferViewModel
 import com.example.drujite.presentation.greeting.GreetingViewModel
 import com.example.drujite.presentation.login.LoginViewModel
@@ -34,6 +39,7 @@ val dataModule = module {
     single<SharedPrefsRepository> { SharedPrefsRepositoryImpl(get()) }
     single<ClanRepository> { ClanRepositoryTest() }
     single<CharacterRepository> { CharacterReposirotyTest() }
+    single<CustomisationRepository> { CustomisationRepositoryTest() }
 }
 
 val domainModule = module {
@@ -46,6 +52,8 @@ val domainModule = module {
     factory<CreateCharacterUseCase> { CreateCharacterUseCase(get()) }
     factory<GetCharactersByUserIdUseCase> { GetCharactersByUserIdUseCase(get()) }
     factory<AddCharacterToSessionUseCase> { AddCharacterToSessionUseCase(get()) }
+    factory<GetCustomisationOptions> { GetCustomisationOptions(get()) }
+    factory<SaveCharacterCustomImageUseCase> { SaveCharacterCustomImageUseCase( get() ) }
 }
 
 val appModule = module {
@@ -55,4 +63,5 @@ val appModule = module {
     viewModel<SessionViewModel> { SessionViewModel(get(), get(), get()) }
     viewModel<CreationViewModel> { CreationViewModel(get(), get(), get()) }
     viewModel<TransferViewModel> { TransferViewModel(get(), get(), get()) }
+    viewModel<CustomisationViewModel> { CustomisationViewModel(get(), get()) }
 }

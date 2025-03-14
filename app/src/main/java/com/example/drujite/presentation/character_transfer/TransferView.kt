@@ -41,8 +41,6 @@ fun TransferView(
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
 
-    Log.d("current view", "TransferView")
-
     when (val action = viewAction.value) {
         is TransferAction.NavigateToMain -> {
             viewModel.clearAction()

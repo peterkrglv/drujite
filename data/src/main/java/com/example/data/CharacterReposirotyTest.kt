@@ -15,7 +15,7 @@ class CharacterReposirotyTest: CharacterRepository {
                 name = "Персонаж",
                 player = "Игрок 1",
                 story = "тут будет квента",
-                image = "",
+                imageUrl = "",
                 clan = "Янтарная Ветвь"
             ),
             CharacterModel(
@@ -23,7 +23,7 @@ class CharacterReposirotyTest: CharacterRepository {
                 name = "Персонаж 2",
                 player = "Игрок 1",
                 story = "",
-                image = "",
+                imageUrl = "",
                 clan = "Ониксовая Ветвь"
             ),
             CharacterModel(
@@ -31,7 +31,7 @@ class CharacterReposirotyTest: CharacterRepository {
                 name = "Персонаж 3",
                 player = "Игрок 1",
                 story = "",
-                image = "",
+                imageUrl = "",
                 clan = "Яшмовая ветвь"
             ),
             CharacterModel(
@@ -39,7 +39,7 @@ class CharacterReposirotyTest: CharacterRepository {
                 name = "Персонаж 4",
                 player = "Игрок 1",
                 story = "",
-                image = "",
+                imageUrl = "",
                 clan = "Вивианитовая ветвь"
             )
         )

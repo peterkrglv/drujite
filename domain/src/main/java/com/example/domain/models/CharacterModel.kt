@@ -5,7 +5,7 @@ data class CharacterModel(
     val name: String,
     val player: String,
     val story: String,
-    val image: String,
+    val imageUrl: String,
     val clan: String
 )
 
@@ -16,7 +16,7 @@ fun getCharactersTest(): List<CharacterModel> {
             name = "Персонаж",
             player = "Игрок 1",
             story = "тут будет квента",
-            image = "",
+            imageUrl = "",
             clan = "Янтарная Ветвь"
         ),
         CharacterModel(
@@ -24,7 +24,7 @@ fun getCharactersTest(): List<CharacterModel> {
             name = "Персонаж 2",
             player = "Игрок 1",
             story = "",
-            image = "",
+            imageUrl = "",
             clan = "Ониксовая Ветвь"
         ),
         CharacterModel(
@@ -32,7 +32,7 @@ fun getCharactersTest(): List<CharacterModel> {
             name = "Персонаж 3",
             player = "Игрок 1",
             story = "",
-            image = "",
+            imageUrl = "",
             clan = "Яшмовая ветвь"
         ),
         CharacterModel(
@@ -40,7 +40,7 @@ fun getCharactersTest(): List<CharacterModel> {
             name = "Персонаж 4",
             player = "Игрок 1",
             story = "",
-            image = "",
+            imageUrl = "",
             clan = "Вивианитовая ветвь"
         ),
         CharacterModel(
@@ -48,7 +48,7 @@ fun getCharactersTest(): List<CharacterModel> {
             name = "Персонаж 10",
             player = "Игрок 2",
             story = "",
-            image = "",
+            imageUrl = "",
             clan = "Вивианитовая ветвь"
         ),
         CharacterModel(
@@ -56,7 +56,7 @@ fun getCharactersTest(): List<CharacterModel> {
             name = "Персонаж 11",
             player = "Игрок 2",
             story = "",
-            image = "",
+            imageUrl = "",
             clan = "Вивианитовая ветвь"
         ),
         CharacterModel(
@@ -64,7 +64,7 @@ fun getCharactersTest(): List<CharacterModel> {
             name = "Персонаж 12",
             player = "Игрок 2",
             story = "",
-            image = "",
+            imageUrl = "",
             clan = "Вивианитовая ветвь"
         ),
         CharacterModel(
@@ -72,7 +72,7 @@ fun getCharactersTest(): List<CharacterModel> {
             name = "Персонаж 3",
             player = "Игрок 1",
             story = "",
-            image = "",
+            imageUrl = "",
             clan = "Яшмовая ветвь"
         )
     )
