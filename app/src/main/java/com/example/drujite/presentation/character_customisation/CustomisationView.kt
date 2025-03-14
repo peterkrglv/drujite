@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,33 +26,57 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
+import com.example.domain.use_cases.CustomisationCategory
 import com.example.drujite.R
+import com.example.drujite.presentation.LoadingScreen
 import com.example.drujite.presentation.MyButton
+import com.example.drujite.presentation.Screen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CustomisationView(
     navController: NavController,
     userId: Int,
     sessionId: Int,
-    characterId: Int
+    characterId: Int,
+    viewModel: CustomisationViewModel = koinViewModel()
 ) {
-    MainState()
+    val viewState = viewModel.viewState.collectAsState()
+    val viewAction = viewModel.viewAction.collectAsState()
+
+    when (val action = viewAction.value) {
+        is CustomisationAction.NavigateToMain -> {
+            viewModel.clearAction()
+            navController.navigate("${Screen.MainView.route}/${userId}/${sessionId}/${characterId}")
+        }
+        else -> {}
+    }
+
+    when (val state = viewState.value) {
+        is CustomisationState.Initialization -> {
+            viewModel.obtainEvent(CustomisationEvent.LoadOptions)
+            LoadingScreen()
+        }
+        is CustomisationState.Loading -> LoadingScreen()
+        is CustomisationState.Main -> {
+            MainState(
+                state = state,
+                onOptionChosen = { category, num ->
+                    viewModel.obtainEvent(CustomisationEvent.OptionChosen(category, num))
+                },
+                onProceedClicked = { viewModel.obtainEvent(CustomisationEvent.ProceedClicked(characterId)) }
+            )
+        }
+    }
+
 }
 
 @Composable
-fun MainState() {
-    val faceImages = List(10) { R.drawable.character }
-    val chosenFace = remember { mutableStateOf(0) }
-    val hairImages = List(10) { R.drawable.character }
-    val chosenHair = remember { mutableStateOf(0) }
-    val browImages = List(10) { R.drawable.character }
-    val chosenBrow = remember { mutableStateOf(0) }
-    val eyesImages = List(10) { R.drawable.character }
-    val chosenEyes = remember { mutableStateOf(0) }
-    val mouthImages = List(10) { R.drawable.character }
-    val chosenMouth = remember { mutableStateOf(0) }
-
-    //Change to column
+fun MainState(
+    state: CustomisationState.Main,
+    onOptionChosen: (CustomisationCategory, Int) -> Unit,
+    onProceedClicked: () -> Unit
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -75,68 +100,42 @@ fun MainState() {
             )
         }
 
-        items(5) {
-            when (it) {
-                0 -> ItemChoice(
-                    "Форма лица",
-                    faceImages,
-                    chosenFace.value,
-                    onItemChosen = { chosenFace.value = it })
-
-                1 -> ItemChoice(
-                    "Прическа",
-                    hairImages,
-                    chosenHair.value,
-                    onItemChosen = { chosenHair.value = it })
-
-                2 -> ItemChoice(
-                    "Брови",
-                    browImages,
-                    chosenBrow.value,
-                    onItemChosen = { chosenBrow.value = it })
-
-                3 -> ItemChoice(
-                    "Глаза",
-                    eyesImages,
-                    chosenEyes.value,
-                    onItemChosen = { chosenEyes.value = it })
-
-                4 -> ItemChoice(
-                    "Рот",
-                    mouthImages,
-                    chosenMouth.value,
-                    onItemChosen = { chosenMouth.value = it })
-            }
+        items(state.options.size) { index ->
+            val category = state.options[index]
+            ItemChoice(
+                category = category,
+                chosenItem = state.chosenOptions[category] ?: 0,
+                onItemChosen = { chosenIndex -> onOptionChosen(category, chosenIndex) }
+            )
         }
+
         item {
-            MyButton(text = "Закончить", onClick = {})
+            MyButton(text = "Закончить", onClick = onProceedClicked)
         }
     }
 }
 
-
 @Composable
-fun ItemChoice(title: String, items: List<Int>, chosenItem: Int, onItemChosen: (Int) -> Unit) {
-    val chosenItem = remember { mutableStateOf(chosenItem) }
+fun ItemChoice(category: CustomisationCategory, chosenItem: Int, onItemChosen: (Int) -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = title,
+            text = category.name,
             modifier = Modifier.padding(16.dp),
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold
         )
         LazyRow {
-            items(items.size) { index ->
+            items(category.options.size) { index ->
                 Image(
-                    painter = painterResource(id = items[index]),
-                    contentDescription = "Character",
+                    painter = painterResource(R.drawable.character),
+                    //painter = rememberImagePainter(data = category.options[index].imageUrl),
+                    contentDescription = category.name,
                     modifier = Modifier
                         .padding(6.dp)
                         .size(88.dp)
                         .clickable {
-                            chosenItem.value = index
                             onItemChosen(index)
                         }
                 )
@@ -149,6 +148,10 @@ fun ItemChoice(title: String, items: List<Int>, chosenItem: Int, onItemChosen: (
 @Composable
 fun CustomisationPreview() {
     AppTheme {
-        MainState()
+        MainState(
+            state = CustomisationState.Main(),
+            onOptionChosen = { _, _ -> },
+            onProceedClicked = {}
+        )
     }
 }
