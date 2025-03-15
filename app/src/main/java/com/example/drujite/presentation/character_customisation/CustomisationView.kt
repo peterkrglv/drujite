@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -47,7 +48,7 @@ fun CustomisationView(
     when (val action = viewAction.value) {
         is CustomisationAction.NavigateToMain -> {
             viewModel.clearAction()
-            navController.navigate("${Screen.MainView.route}/${userId}/${sessionId}/${characterId}")
+            navController.navigate(Screen.Home.route)
         }
         else -> {}
     }
@@ -80,8 +81,8 @@ fun MainState(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(vertical = 48.dp, horizontal = 16.dp),
+            .background(MaterialTheme.colorScheme.surface),
+        contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {

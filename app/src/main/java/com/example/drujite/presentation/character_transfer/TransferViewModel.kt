@@ -82,8 +82,10 @@ class TransferViewModel(
         } else if (state.reason == "") {
             _viewState.value = state.copy(error = "Введите причину переноса")
         }
+        _viewState.value = TransferState.Loading
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                Thread.sleep(1000)
                 val result = addCharacterToSessionUseCase.execute(
                     sessionId = state.sessionId,
                     characterId = state.chosenCharacter.id

@@ -1,4 +1,4 @@
-package com.example.drujite.presentation.character
+package com.example.drujite.presentation.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,12 +41,11 @@ import com.example.domain.models.GoalModel
 import com.example.drujite.presentation.MyTitle
 import com.example.drujite.presentation.MyTitle2
 import com.example.drujite.presentation.ShortenedTextBig
-import io.github.composegears.valkyrie.Bell
-import io.github.composegears.valkyrie.Profile
-import io.github.composegears.valkyrie.ValkyrieIcons
+import io.github.composegears.valkyrie.BellIcon
+import io.github.composegears.valkyrie.SmallProfileIcon
 
 @Composable
-fun CharacterView() {
+fun HomeView() {
     MainState()
 }
 
@@ -82,11 +81,11 @@ fun MainState() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                imageVector = ValkyrieIcons.Profile,
+                imageVector = SmallProfileIcon,
                 contentDescription = "Profile",
             )
             Image(
-                imageVector = ValkyrieIcons.Bell,
+                imageVector = BellIcon,
                 contentDescription = "Settings",
             )
         }
@@ -192,7 +191,7 @@ fun MainState() {
 @Preview(showSystemUi = true)
 @Composable
 fun MainScreenPreview() {
-    AppTheme { CharacterView() }
+    AppTheme { MainState() }
 }
 
 @Composable

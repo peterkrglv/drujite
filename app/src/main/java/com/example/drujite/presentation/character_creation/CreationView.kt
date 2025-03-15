@@ -104,11 +104,10 @@ fun MainState(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 128.dp),
+                .padding(top = 160.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom,
         ) {
-            Spacer(modifier = Modifier.height(64.dp))
             MyTitle(text = "Создай персонажа")
             MyTitle2(text = "Lorem Ipsum - это текст-\"рыба\", часто используемый в печати и вэб-дизайне.")
             Spacer(modifier = Modifier.height(32.dp))

@@ -12,7 +12,8 @@ import kotlinx.coroutines.withContext
 class GreetingViewModel(
     private val prefsUseCase: AccessSharedPrefsUseCase
 ): ViewModel()  {
-    private val _viewState = MutableStateFlow<GreetingState>(GreetingState.Loading)
+    //private val _viewState = MutableStateFlow<GreetingState>(GreetingState.Loading)
+    private val _viewState = MutableStateFlow<GreetingState>(GreetingState.Main)
     val viewState: StateFlow<GreetingState>
         get() = _viewState
     private val _viewAction = MutableStateFlow<GreetingAction?>(null)

@@ -93,7 +93,7 @@ fun MainState(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 192.dp),
+                .padding(top = 160.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
         )

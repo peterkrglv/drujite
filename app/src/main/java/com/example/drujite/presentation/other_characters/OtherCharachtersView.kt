@@ -39,7 +39,7 @@ import com.example.compose.AppTheme
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.getCharactersTest
 import com.example.drujite.R
-import com.example.drujite.presentation.icons.ExpandArrow
+import com.example.drujite.presentation.icons.ExpandArrowIcon
 
 
 @Composable
@@ -132,7 +132,7 @@ fun CharacterChoiceMenu(
                     fontSize = 17.sp
                 )
                 Icon(
-                    imageVector = ExpandArrow,
+                    imageVector = ExpandArrowIcon,
                     contentDescription = "Expand arrow",
                     modifier = Modifier.size(24.dp)
                 )

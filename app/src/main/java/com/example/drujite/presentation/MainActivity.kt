@@ -11,8 +11,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AppTheme {
-                SetUpNavHost()
+            AppTheme() {
+                MainView()
             }
         }
     }
