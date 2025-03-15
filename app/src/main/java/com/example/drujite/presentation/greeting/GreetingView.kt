@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
@@ -40,8 +41,6 @@ fun GreetingView(
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
 
-    Log.d("current view", "GreetingView")
-
     when (val action = viewAction.value) {
         is GreetingAction.NavigateToLogin -> {
             viewModel.clearAction()
@@ -52,7 +51,7 @@ fun GreetingView(
 
         is GreetingAction.NavigateToMainView -> {
             viewModel.clearAction()
-            navController.navigate("${Screen.MainView.route}/${action.userId}/${action.sessionId}/${action.characterId}") {
+            navController.navigate(Screen.Home.route) {
                 popUpTo(Screen.Greeting.route) { inclusive = true }
             }
         }
@@ -87,7 +86,8 @@ fun MainState(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(MaterialTheme.colorScheme.surface)
+            .offset(y = -40.dp),
         horizontalAlignment = Alignment.Start,
 
         ) {
@@ -102,7 +102,7 @@ fun MainState(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp, 40.dp),
+            .padding(24.dp),
         verticalArrangement = Arrangement.Bottom
     )
     {
@@ -127,7 +127,8 @@ fun LoadingState() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface),
+                .background(MaterialTheme.colorScheme.surface)
+                .offset(y = -40.dp),
             horizontalAlignment = Alignment.Start,
         ) {
             Image(

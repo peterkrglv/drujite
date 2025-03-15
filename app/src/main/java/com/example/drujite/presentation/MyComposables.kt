@@ -244,7 +244,7 @@ fun MyExpandedTextField(
 
     OutlinedTextField(
         modifier = Modifier
-            .size(340.dp, 170.dp)
+            .size(340.dp, 220.dp)
             .padding(8.dp)
             .verticalScroll(scrollState),
         value = value,
@@ -252,7 +252,7 @@ fun MyExpandedTextField(
         isError = isError,
         shape = RoundedCornerShape(12.dp),
         onValueChange = onValueChange,
-        maxLines = 5
+        maxLines = 9
     )
 }
 
@@ -355,7 +355,7 @@ fun TextButtonNavigation(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 64.dp),
+            .padding(bottom = 16.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {

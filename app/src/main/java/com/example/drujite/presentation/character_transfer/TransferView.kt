@@ -44,12 +44,11 @@ fun TransferView(
     when (val action = viewAction.value) {
         is TransferAction.NavigateToMain -> {
             viewModel.clearAction()
-            navController.navigate("${Screen.MainView.route}/${action.userId}/${action.sessionId}/${action.characterId}") {
+            navController.navigate(Screen.Home.route) {
                 popUpTo("${Screen.CharacterCreation.route}/${sessionId}/${userId}") {
                     inclusive = true
                 }
             }
-
         }
         is TransferAction.NavigateToCreation -> {
             viewModel.clearAction()
@@ -99,10 +98,9 @@ fun MainState(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom,
         ) {
-            Spacer(modifier = Modifier.height(64.dp))
+            Spacer(modifier = Modifier.height(40.dp))
             MyTitle(text = "Перенос")
             MyTitle2(text = "Расскажи кураторам, почему ты считаешь, что участие этого персонажа в событиях смены оправданно")
-            Spacer(modifier = Modifier.height(32.dp))
             DropdownTextField(
                 label = "Выбери персонажа",
                 options = characters.map { it.name },

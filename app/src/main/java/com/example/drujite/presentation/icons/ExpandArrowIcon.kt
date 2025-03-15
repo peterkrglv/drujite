@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-val ExpandArrow: ImageVector
+val ExpandArrowIcon: ImageVector
     get() {
         if (_ExpandArrow != null) {
             return _ExpandArrow!!
