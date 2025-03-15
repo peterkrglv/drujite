@@ -1,6 +1,5 @@
 package com.example.drujite.presentation.greeting
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -87,7 +86,7 @@ fun MainState(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
-            .offset(y = -40.dp),
+            .offset(y = (-40).dp),
         horizontalAlignment = Alignment.Start,
 
         ) {
@@ -128,7 +127,7 @@ fun LoadingState() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
-                .offset(y = -40.dp),
+                .offset(y = (-40).dp),
             horizontalAlignment = Alignment.Start,
         ) {
             Image(

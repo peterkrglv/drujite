@@ -2,7 +2,6 @@ package com.example.drujite.presentation.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.use_cases.SignupResponse
 import com.example.domain.use_cases.SignupResult
 import com.example.domain.use_cases.SignupUseCase
 import kotlinx.coroutines.Dispatchers

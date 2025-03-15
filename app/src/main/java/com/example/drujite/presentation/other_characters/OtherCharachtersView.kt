@@ -56,10 +56,9 @@ fun MainState() {
     val showBottomSheet = remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
     val chosenCharacter = remember { mutableStateOf<CharacterModel?>(null) }
-    val selectedClan = remember { mutableStateOf<String>("Все кланы") }
-    val expanded = remember { mutableStateOf(false) }
+    val selectedClan = remember { mutableStateOf("Все кланы") }
 
-    Scaffold() { contentPadding ->
+    Scaffold { contentPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -69,7 +68,7 @@ fun MainState() {
         ) {
             CharacterChoiceMenu(
                 clans = clans,
-                selectedClan = selectedClan.value ?: "",
+                selectedClan = selectedClan.value,
                 onOptionSelected = { selectedClan.value = it }
             )
             LazyVerticalGrid(
@@ -109,7 +108,7 @@ fun CharacterChoiceMenu(
     onOptionSelected: (String) -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
-    val selectedClan = remember { mutableStateOf(selectedClan) }
+    val selected = remember { mutableStateOf(selectedClan) }
 
     ExposedDropdownMenuBox(
         expanded = expanded.value,
@@ -128,7 +127,7 @@ fun CharacterChoiceMenu(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 4.dp),
-                    text = selectedClan.value,
+                    text = selected.value,
                     fontSize = 17.sp
                 )
                 Icon(

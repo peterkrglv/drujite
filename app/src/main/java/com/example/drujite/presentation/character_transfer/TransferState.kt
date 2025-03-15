@@ -5,7 +5,7 @@ import com.example.domain.models.CharacterModel
 sealed class TransferState {
     data object Initialization : TransferState()
     data class Main(
-        val characters: List<CharacterModel> = emptyList<CharacterModel>(),
+        val characters: List<CharacterModel> = emptyList(),
         val chosenCharacter: CharacterModel? = null,
         val reason: String = "",
         val error: String = "",

@@ -1,6 +1,5 @@
 package com.example.domain.repos
 
-import com.example.domain.models.ClanModel
 import com.example.domain.models.SessionModel
 
 interface SessionRepository {

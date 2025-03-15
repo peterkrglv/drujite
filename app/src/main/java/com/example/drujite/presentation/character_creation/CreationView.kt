@@ -1,3 +1,5 @@
+package com.example.drujite.presentation.character_creation
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,10 +26,6 @@ import com.example.drujite.presentation.MyTitle
 import com.example.drujite.presentation.MyTitle2
 import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.TextButtonNavigation
-import com.example.drujite.presentation.character_creation.CreationAction
-import com.example.drujite.presentation.character_creation.CreationEvent
-import com.example.drujite.presentation.character_creation.CreationState
-import com.example.drujite.presentation.character_creation.CreationViewModel
 import com.example.drujite.presentation.timetable.MainView
 import org.koin.androidx.compose.koinViewModel
 

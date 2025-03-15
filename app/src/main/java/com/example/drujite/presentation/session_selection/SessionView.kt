@@ -113,7 +113,7 @@ fun MainState(
         )
     }
     val carouselState = rememberCarouselState { items.count() }
-    val currentItem = remember { mutableStateOf<Item>(items[0]) }
+    val currentItem = remember { mutableStateOf(items[0]) }
 
     Column(
         modifier = Modifier
@@ -143,8 +143,8 @@ fun MainState(
                 CarouselItem(
                     item = item,
                     currentItem = currentItem.value,
-                    onItemSelected = { item ->
-                        currentItem.value = item
+                    onItemSelected = {
+                        currentItem.value = it
                     },
                     qrError = state.qrError
                 )

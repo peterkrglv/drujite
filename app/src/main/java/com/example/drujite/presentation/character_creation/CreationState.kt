@@ -6,7 +6,7 @@ sealed class CreationState {
     data object Initialization : CreationState()
     data class Main(
         val name: String = "",
-        val clans: List<ClanModel> = emptyList<ClanModel>(),
+        val clans: List<ClanModel> = emptyList(),
         val chosenClan: ClanModel? = null,
         val error: String = ""
     ) : CreationState()

@@ -1,6 +1,5 @@
 package com.example.drujite.presentation.character_transfer
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,7 +27,6 @@ import com.example.drujite.presentation.MyTitle
 import com.example.drujite.presentation.MyTitle2
 import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.TextButtonNavigation
-import com.example.drujite.presentation.signup.SignupAction
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
