@@ -1,13 +1,10 @@
 package com.example.drujite.presentation
 
-import CreationView
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.drujite.presentation.about_session.AboutSessionView
 import com.example.drujite.presentation.character_customisation.CustomisationView
 import com.example.drujite.presentation.character_transfer.TransferView
@@ -16,6 +13,7 @@ import com.example.drujite.presentation.home.HomeView
 import com.example.drujite.presentation.login.LoginView
 import com.example.drujite.presentation.other_characters.OtherCharactersView
 import com.example.drujite.presentation.profile.ProfileView
+import com.example.drujite.presentation.character_creation.CreationView
 import com.example.drujite.presentation.session_selection.SessionView
 import com.example.drujite.presentation.signup.SignupView
 import com.example.drujite.presentation.timetable.TimeTableView

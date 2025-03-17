@@ -43,6 +43,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.compose.AppTheme
 import com.example.drujite.presentation.signup.Gender
 
 @Composable
@@ -244,7 +245,7 @@ fun MyExpandedTextField(
 
     OutlinedTextField(
         modifier = Modifier
-            .size(340.dp, 220.dp)
+            .width(340.dp)
             .padding(8.dp)
             .verticalScroll(scrollState),
         value = value,
@@ -252,7 +253,8 @@ fun MyExpandedTextField(
         isError = isError,
         shape = RoundedCornerShape(12.dp),
         onValueChange = onValueChange,
-        maxLines = 9
+        minLines = 7,
+        maxLines = 7
     )
 }
 
@@ -378,13 +380,13 @@ fun DropdownTextField(
     val isError = remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
-        modifier = Modifier.width(340.dp),
+        modifier = Modifier.width(324.dp),
         expanded = expanded.value,
         onExpandedChange = { expanded.value = !expanded.value }
     ) {
         OutlinedTextField(
             modifier = Modifier
-                .padding(8.dp)
+                .padding(vertical = 8.dp)
                 .fillMaxWidth()
                 .clickable {
                     Log.d("DropdownTextField", "Clicked")
@@ -405,16 +407,15 @@ fun DropdownTextField(
                 .border(
                     1.dp,
                     MaterialTheme.colorScheme.primary,
-                    RoundedCornerShape(12.dp)
+                    RoundedCornerShape(16.dp)
                 )
-                .padding(8.dp),
+                .padding(vertical = 8.dp),
             expanded = expanded.value,
             onDismissRequest = { expanded.value = false },
             containerColor = MaterialTheme.colorScheme.surface,
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(16.dp)
         ) {
             options.forEach { item ->
-
                 DropdownMenuItem(
                     text = { Text(item) },
                     onClick = {
@@ -444,7 +445,7 @@ fun LoadingScreen() {
 @Preview(showSystemUi = true)
 @Composable
 fun MyPreview() {
-    MaterialTheme {
+    AppTheme {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
