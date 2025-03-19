@@ -1,5 +1,6 @@
 package com.example.data
 
+import com.example.domain.models.UserModel
 import com.example.domain.use_cases.LoginResult
 import com.example.domain.use_cases.SignupResult
 import com.example.domain.repos.UserRepository
@@ -18,5 +19,13 @@ class UserResitoryTest : UserRepository {
         gender: String
     ): SignupResponse {
         return SignupResponse(result = SignupResult.SUCCESS, id = 1)
+    }
+
+    override suspend fun getUserById(userId: Int): UserModel {
+        return UserModel(
+            id = 1,
+            name = "Анастасия Чеботарь",
+            phone = "+1234567890"
+        )
     }
 }

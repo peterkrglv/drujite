@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.example.compose.AppTheme
 import com.example.domain.models.TimeTableItemModel
 import com.example.domain.models.getTimeTableItemsTest
-import com.example.drujite.presentation.MyTitle
+import com.example.drujite.presentation.my_composables.MyTitle
 
 @Composable
 fun TimeTableView() {

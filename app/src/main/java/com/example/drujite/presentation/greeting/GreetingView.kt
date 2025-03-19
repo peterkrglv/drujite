@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.greeting
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -32,10 +32,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.drujite.R
-import com.example.drujite.presentation.GreetingText1
-import com.example.drujite.presentation.GreetingText2
-import com.example.drujite.presentation.MyButtonSmall
+import com.example.drujite.presentation.my_composables.GreetingText1
+import com.example.drujite.presentation.my_composables.GreetingText2
 import com.example.drujite.presentation.Screen
+import com.example.drujite.presentation.my_composables.LoadingScreen
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -53,6 +53,7 @@ fun GreetingView(
             navController.navigate(Screen.Login.route) {
                 popUpTo(Screen.Greeting.route) { inclusive = true }
             }
+            Log.d("GreetingView", "NavigateToLogin")
         }
 
         is GreetingAction.NavigateToMainView -> {
@@ -60,6 +61,7 @@ fun GreetingView(
             navController.navigate(Screen.Home.route) {
                 popUpTo(Screen.Greeting.route) { inclusive = true }
             }
+            Log.d("GreetingView", "NavigateToMainView")
         }
 
         else -> {}
@@ -75,19 +77,16 @@ fun GreetingView(
         }
 
         is GreetingState.Loading -> {
-            viewModel.obtainEvent(GreetingEvent.CheckIfUserIsLoggedIn)
-            MainState(
-                loading = true,
-                onProceedButtonClicked = {}
-            )
+            LoadingScreen()
         }
+
+        GreetingState.Initialization -> viewModel.obtainEvent(GreetingEvent.CheckIfUserIsLoggedIn)
     }
 }
 
 
 @Composable
 fun MainState(
-    loading: Boolean = false,
     onProceedButtonClicked: () -> Unit,
 ) {
     Box(
@@ -126,9 +125,7 @@ fun MainState(
                 ElevatedButton(
                     modifier = Modifier
                         .padding(16.dp)
-                        .size(160.dp, 45.dp)
-                        .alpha(if (loading) 0f else 1f)
-                        .clickable(enabled = !loading) { },
+                        .size(160.dp, 45.dp),
                     onClick = onProceedButtonClicked,
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -142,7 +139,6 @@ fun MainState(
                 }
             }
         }
-        if (loading) CircularProgressIndicator()
     }
 }
 

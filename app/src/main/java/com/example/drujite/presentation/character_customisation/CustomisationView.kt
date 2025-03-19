@@ -27,8 +27,8 @@ import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.domain.use_cases.CustomisationCategory
 import com.example.drujite.R
-import com.example.drujite.presentation.LoadingScreen
-import com.example.drujite.presentation.MyButton
+import com.example.drujite.presentation.my_composables.LoadingScreen
+import com.example.drujite.presentation.my_composables.MyButton
 import com.example.drujite.presentation.Screen
 import org.koin.androidx.compose.koinViewModel
 

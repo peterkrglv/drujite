@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.AppTheme
 import com.example.domain.models.SessionModel
-import com.example.drujite.presentation.MyTitle
-import com.example.drujite.presentation.MyTitle2
+import com.example.drujite.presentation.my_composables.MyTitle
+import com.example.drujite.presentation.my_composables.MyTitle2
 
 @Composable
 fun AboutSessionView() {
