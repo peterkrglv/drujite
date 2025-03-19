@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.greeting
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
@@ -12,7 +13,7 @@ import kotlinx.coroutines.withContext
 class GreetingViewModel(
     private val prefsUseCase: AccessSharedPrefsUseCase
 ): ViewModel()  {
-    private val _viewState = MutableStateFlow<GreetingState>(GreetingState.Loading)
+    private val _viewState = MutableStateFlow<GreetingState>(GreetingState.Initialization)
     val viewState: StateFlow<GreetingState>
         get() = _viewState
     private val _viewAction = MutableStateFlow<GreetingAction?>(null)
@@ -27,12 +28,14 @@ class GreetingViewModel(
     }
 
     private fun checkIfUserIsLoggedIn() {
+        _viewState.value = GreetingState.Loading
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val userId = prefsUseCase.getUserId()
                 val sessionId = prefsUseCase.getSessionId()
                 val characterId = prefsUseCase.getCharacterId()
                 if (userId != -1 && sessionId != -1 && characterId != -1) {
+
                     _viewAction.value = GreetingAction.NavigateToMainView(userId, sessionId, characterId)
                 } else {
                     _viewState.value = GreetingState.Main

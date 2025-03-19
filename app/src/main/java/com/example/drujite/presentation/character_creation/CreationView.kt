@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.domain.models.ClanModel
-import com.example.drujite.presentation.DropdownTextField
-import com.example.drujite.presentation.LoadingScreen
-import com.example.drujite.presentation.MyButton
-import com.example.drujite.presentation.MyTextField
-import com.example.drujite.presentation.MyTitle
-import com.example.drujite.presentation.MyTitle2
+import com.example.drujite.presentation.my_composables.DropdownTextField
+import com.example.drujite.presentation.my_composables.LoadingScreen
+import com.example.drujite.presentation.my_composables.MyButton
+import com.example.drujite.presentation.my_composables.MyTextField
+import com.example.drujite.presentation.my_composables.MyTitle
+import com.example.drujite.presentation.my_composables.MyTitle2
 import com.example.drujite.presentation.Screen
-import com.example.drujite.presentation.TextButtonNavigation
+import com.example.drujite.presentation.my_composables.TextButtonNavigation
 import com.example.drujite.presentation.timetable.MainView
 import org.koin.androidx.compose.koinViewModel
 

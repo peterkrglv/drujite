@@ -1,4 +1,4 @@
-package com.example.drujite.presentation
+package com.example.drujite.presentation.my_composables
 
 import android.util.Log
 import androidx.compose.foundation.background
