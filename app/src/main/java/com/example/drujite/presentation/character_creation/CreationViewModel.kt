@@ -8,6 +8,7 @@ import com.example.domain.use_cases.CreateCharacterUseCase
 import com.example.domain.use_cases.GetClansBySessionIdUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -17,10 +18,10 @@ class CreationViewModel(
     private val createCharacterUseCase: CreateCharacterUseCase
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<CreationState>(CreationState.Initialization)
-    val viewState: MutableStateFlow<CreationState>
+    val viewState: StateFlow<CreationState>
         get() = _viewState
     private val _viewAction = MutableStateFlow<CreationAction?>(null)
-    val viewAction: MutableStateFlow<CreationAction?>
+    val viewAction: StateFlow<CreationAction?>
         get() = _viewAction
 
     fun obtainEvent(event: CreationEvent) {

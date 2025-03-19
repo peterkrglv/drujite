@@ -12,8 +12,7 @@ import kotlinx.coroutines.withContext
 class GreetingViewModel(
     private val prefsUseCase: AccessSharedPrefsUseCase
 ): ViewModel()  {
-    //private val _viewState = MutableStateFlow<GreetingState>(GreetingState.Loading)
-    private val _viewState = MutableStateFlow<GreetingState>(GreetingState.Main)
+    private val _viewState = MutableStateFlow<GreetingState>(GreetingState.Loading)
     val viewState: StateFlow<GreetingState>
         get() = _viewState
     private val _viewAction = MutableStateFlow<GreetingAction?>(null)
@@ -28,10 +27,8 @@ class GreetingViewModel(
     }
 
     private fun checkIfUserIsLoggedIn() {
-        _viewState.value = GreetingState.Idle
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Thread.sleep(1000)
                 val userId = prefsUseCase.getUserId()
                 val sessionId = prefsUseCase.getSessionId()
                 val characterId = prefsUseCase.getCharacterId()

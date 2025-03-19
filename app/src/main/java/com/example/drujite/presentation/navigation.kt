@@ -78,8 +78,8 @@ fun SetUpNavHost(
                 Log.e("navigation", "Error while navigating to Customisation view")
             }
         }
-        composable(route = Screen.Home.route) { HomeView()}
-        composable(route = Screen.Profile.route) { ProfileView() }
+        composable(route = Screen.Home.route) { HomeView(navController)}
+        composable(route = Screen.Profile.route) { ProfileView(navController) }
         composable(route = Screen.Timetable.route) { TimeTableView() }
         composable(route = Screen.AboutSession.route) { AboutSessionView() }
         composable(route = Screen.OtherCharacters.route) { OtherCharactersView() }

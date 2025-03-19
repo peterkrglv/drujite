@@ -118,8 +118,7 @@ fun ShortenedTextBig(text: String, maxLines: Int) {
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+            .fillMaxWidth(),
     ) {
         Text(
             modifier = Modifier,
@@ -145,7 +144,7 @@ fun ShortenedTextBig(text: String, maxLines: Int) {
                         lines.value = if (isTextShortened.value) maxLines else Int.MAX_VALUE
                     },
                 text = textButtonText.value,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )

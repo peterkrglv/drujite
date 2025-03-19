@@ -8,7 +8,7 @@ class CharacterReposirotyTest: CharacterRepository {
         return 1
     }
 
-    override suspend fun getCharacterByUserId(userId: Int): List<CharacterModel> {
+    override suspend fun getCharactersByUserId(userId: Int): List<CharacterModel> {
         return listOf(
             CharacterModel(
                 id = 1,
@@ -44,4 +44,17 @@ class CharacterReposirotyTest: CharacterRepository {
             )
         )
     }
+
+    override suspend fun getCharacterById(characterId: Int): CharacterModel {
+        return CharacterModel(
+            id = characterId,
+            name = "Мирон Арестов",
+            player = "Илья Коданёв",
+            story = "Мирон истинный уроженец Гранатовой ветви. Будучи выращенным вблизи вулканов, он с детства познавал дикую магию, подвергался изнуряющим тренировкам и был свидетелем...\n\n\n\n\n\n\n\nОчень длинное поле",
+            imageUrl = "",
+            clan = "Гранатовая Ветвь"
+        )
+    }
+
+
 }

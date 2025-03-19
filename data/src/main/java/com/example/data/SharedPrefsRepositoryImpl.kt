@@ -30,4 +30,8 @@ class SharedPrefsRepositoryImpl(context: Context) : SharedPrefsRepository {
     override suspend fun getCharacterId(): Int {
         return sharedPreferences.getInt("character_id", -1)
     }
+
+    override suspend fun clearAll(): Boolean {
+        return sharedPreferences.edit().clear().commit()
+    }
 }
