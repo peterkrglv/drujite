@@ -2,6 +2,7 @@ package com.example.drujite.presentation.greeting
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,16 +13,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.drujite.R
@@ -69,10 +76,10 @@ fun GreetingView(
 
         is GreetingState.Loading -> {
             viewModel.obtainEvent(GreetingEvent.CheckIfUserIsLoggedIn)
-        }
-
-        is GreetingState.Idle -> {
-            LoadingState()
+            MainState(
+                loading = true,
+                onProceedButtonClicked = {}
+            )
         }
     }
 }
@@ -80,56 +87,21 @@ fun GreetingView(
 
 @Composable
 fun MainState(
-    onProceedButtonClicked: () -> Unit
+    loading: Boolean = false,
+    onProceedButtonClicked: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .offset(y = (-40).dp),
-        horizontalAlignment = Alignment.Start,
-
-        ) {
-        Image(
-            painter = painterResource(id = R.drawable.greeting),
-            contentDescription = "GreetingImage",
-            modifier = Modifier
-                .fillMaxWidth(),
-            contentScale = ContentScale.FillWidth
-        )
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Bottom
-    )
-    {
-        GreetingText1(text = "Привет!")
-        GreetingText2(text = "Добро пожаловать в помощник игрока любой смены Дружите.ру!")
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            MyButtonSmall(
-                text = "Поехали ->",
-                onClick = onProceedButtonClicked
-            )
-        }
-    }
-}
-
-@Composable
-fun LoadingState() {
-    Box(modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
                 .offset(y = (-40).dp),
             horizontalAlignment = Alignment.Start,
-        ) {
+
+            ) {
             Image(
                 painter = painterResource(id = R.drawable.greeting),
                 contentDescription = "GreetingImage",
@@ -141,19 +113,36 @@ fun LoadingState() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp, 40.dp),
+                .padding(24.dp),
             verticalArrangement = Arrangement.Bottom
         )
         {
             GreetingText1(text = "Привет!")
             GreetingText2(text = "Добро пожаловать в помощник игрока любой смены Дружите.ру!")
-            Spacer(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(160.dp, 45.dp)
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                ElevatedButton(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .size(160.dp, 45.dp)
+                        .alpha(if (loading) 0f else 1f)
+                        .clickable(enabled = !loading) { },
+                    onClick = onProceedButtonClicked,
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = Color.Black
+                    )
+                ) {
+                    Text(
+                        fontSize = 18.sp,
+                        text = "Поехали ->"
+                    )
+                }
+            }
         }
-        CircularProgressIndicator()
+        if (loading) CircularProgressIndicator()
     }
 }
 
@@ -165,13 +154,5 @@ fun MainPreview() {
         MainState(
             onProceedButtonClicked = {}
         )
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun LoadingPreview() {
-    AppTheme {
-        LoadingState()
     }
 }

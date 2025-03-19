@@ -31,6 +31,7 @@ import com.example.compose.AppTheme
 import com.example.drujite.presentation.icons.AboutIcon
 import com.example.drujite.presentation.icons.HomeIcon
 import com.example.drujite.presentation.icons.OthersIcon
+import com.example.drujite.presentation.icons.ProfileIcon
 import com.example.drujite.presentation.icons.TimetableIcon
 
 @Composable
@@ -52,7 +53,7 @@ fun MainView(
 }
 
 sealed class NavigationItem(val screen: Screen, val icon: ImageVector) {
-    data object ProfileItem : NavigationItem(screen = Screen.Profile, icon = HomeIcon)
+    data object ProfileItem : NavigationItem(screen = Screen.Profile, icon = ProfileIcon)
     data object TimeTableItem : NavigationItem(screen = Screen.Timetable, icon = TimetableIcon)
     data object HomeItem : NavigationItem(screen = Screen.Home, icon = HomeIcon)
     data object AboutSessionItem : NavigationItem(screen = Screen.AboutSession, icon = AboutIcon)
@@ -76,11 +77,10 @@ fun BottomNavigationBar(navController: NavHostController) {
     if (navItems.any { it.screen.route == currentRoute }) {
 
         NavigationBar(
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor = MaterialTheme.colorScheme.surface,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(32.dp))
-                .border(BorderStroke(1.dp, Color.Black), RoundedCornerShape(32.dp))
+                .border(BorderStroke(1.dp, Color.Gray))
         ) {
             navItems.forEach { item ->
                 NavigationBarItem(
@@ -105,8 +105,8 @@ fun BottomNavigationBar(navController: NavHostController) {
                     },
                     colors = NavigationBarItemColors(
                         selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        selectedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        selectedTextColor = MaterialTheme.colorScheme.onBackground,
+                        selectedIndicatorColor = MaterialTheme.colorScheme.surface,
                         unselectedIconColor = MaterialTheme.colorScheme.onBackground,
                         unselectedTextColor = MaterialTheme.colorScheme.onBackground,
                         disabledIconColor = MaterialTheme.colorScheme.onBackground,
