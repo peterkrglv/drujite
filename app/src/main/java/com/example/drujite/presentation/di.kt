@@ -24,6 +24,7 @@ import com.example.domain.use_cases.GetCurrentUser
 import com.example.domain.use_cases.GetCustomisationOptions
 import com.example.domain.use_cases.GetGoalsByCharacterIdUseCase
 import com.example.domain.use_cases.GetSessionByCodeUseCase
+import com.example.domain.use_cases.GetSessionsNewsUseCase
 import com.example.domain.use_cases.GetSessionsOfUserUseCase
 import com.example.domain.use_cases.GetSessionsUseCase
 import com.example.domain.use_cases.LogOutUseCase
@@ -38,6 +39,7 @@ import com.example.drujite.presentation.greeting.GreetingViewModel
 import com.example.drujite.presentation.home.HomeViewModel
 import com.example.drujite.presentation.login.LoginViewModel
 import com.example.drujite.presentation.profile.ProfileViewModel
+import com.example.drujite.presentation.session_news.NewsViewModel
 import com.example.drujite.presentation.session_selection.SessionViewModel
 import com.example.drujite.presentation.signup.SignupViewModel
 import org.koin.core.module.dsl.viewModel
@@ -51,6 +53,7 @@ val dataModule = module {
     single<CharacterRepository> { CharacterReposirotyTest() }
     single<CustomisationRepository> { CustomisationRepositoryTest() }
     single<GoalRepository> { GoalRepositoryTest() }
+    single<SessionRepository> { SessionRepositoryTest() }
 }
 
 val domainModule = module {
@@ -71,6 +74,7 @@ val domainModule = module {
     factory<LogOutUseCase> { LogOutUseCase(get()) }
     factory<GetSessionsOfUserUseCase> { GetSessionsOfUserUseCase(get()) }
     factory<GetCurrentUser> { GetCurrentUser(get(), get()) }
+    factory<GetSessionsNewsUseCase> { GetSessionsNewsUseCase(get(), get()) }
 }
 
 val appModule = module {
@@ -83,4 +87,5 @@ val appModule = module {
     viewModel<CustomisationViewModel> { CustomisationViewModel(get(), get()) }
     viewModel<HomeViewModel> { HomeViewModel(get(), get(), get(), get()) }
     viewModel<ProfileViewModel> { ProfileViewModel(get(), get(), get(), get()) }
+    viewModel<NewsViewModel> { NewsViewModel(get()) }
 }
