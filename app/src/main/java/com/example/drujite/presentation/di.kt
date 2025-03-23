@@ -4,6 +4,7 @@ import com.example.data.CharacterReposirotyTest
 import com.example.data.ClanRepositoryTest
 import com.example.data.CustomisationRepositoryTest
 import com.example.data.GoalRepositoryTest
+import com.example.data.NewsRepositoryTest
 import com.example.data.SessionRepositoryTest
 import com.example.data.SharedPrefsRepositoryImpl
 import com.example.data.UserResitoryTest
@@ -11,6 +12,7 @@ import com.example.domain.repos.CharacterRepository
 import com.example.domain.repos.ClanRepository
 import com.example.domain.repos.CustomisationRepository
 import com.example.domain.repos.GoalRepository
+import com.example.domain.repos.NewsRepository
 import com.example.domain.repos.SessionRepository
 import com.example.domain.repos.SharedPrefsRepository
 import com.example.domain.repos.UserRepository
@@ -54,6 +56,7 @@ val dataModule = module {
     single<CustomisationRepository> { CustomisationRepositoryTest() }
     single<GoalRepository> { GoalRepositoryTest() }
     single<SessionRepository> { SessionRepositoryTest() }
+    single<NewsRepository> { NewsRepositoryTest() }
 }
 
 val domainModule = module {

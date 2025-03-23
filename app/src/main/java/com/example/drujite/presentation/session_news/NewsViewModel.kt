@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.session_news
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.use_cases.GetSessionsNewsUseCase
@@ -50,7 +51,8 @@ class NewsViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val news = getSessiosnNews.execute()
-                _viewState.value = NewsState.Main(news)
+                Log.d("News are", news.toString())
+                _viewState.value = NewsState.Main(news = news, displayedNews = news)
             }
         }
     }

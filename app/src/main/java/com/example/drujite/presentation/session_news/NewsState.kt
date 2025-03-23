@@ -1,7 +1,6 @@
 package com.example.drujite.presentation.session_news
 
 import com.example.domain.models.NewsModel
-import com.example.domain.models.SessionModel
 
 sealed class NewsState {
     data object Initialization: NewsState()
@@ -10,6 +9,7 @@ sealed class NewsState {
         val displayedNews: List<NewsModel> = emptyList(),
         val query: String = "",
     ): NewsState()
+    data object Loading: NewsState()
 }
 
 sealed class NewsEvent {
