@@ -8,16 +8,18 @@ sealed class HomeState {
         val character: CharacterModel,
         val goals: List<GoalModel>
     ) : HomeState()
+
     data object Initialization : HomeState()
     data object Loading : HomeState()
 }
 
 sealed class HomeEvent {
     data object LoadData : HomeEvent()
-    data class goalClicked(val goal: GoalModel) : HomeEvent()
+    data class GoalClicked(val goal: GoalModel) : HomeEvent()
     data object CustomisationClicked : HomeEvent()
 }
 
 sealed class HomeAction {
-    data object NavigateToCustomization : HomeAction()
+    data class NavigateToCustomization(val userId: Int, val sessionId: Int, val characterId: Int) :
+        HomeAction()
 }

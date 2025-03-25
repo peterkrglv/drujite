@@ -29,13 +29,22 @@ class HomeViewModel(
     fun obtainEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.LoadData -> loadData()
-            is HomeEvent.goalClicked -> goalClicked(event.goal)
+            is HomeEvent.GoalClicked -> goalClicked(event.goal)
             is HomeEvent.CustomisationClicked -> customisationClicked()
         }
     }
 
     private fun customisationClicked() {
-        _viewAction.value = HomeAction.NavigateToCustomization
+        val state = _viewState.value
+        if (state !is HomeState.Main) return
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val userId = sharedPrefs.getUserId()
+                val sessionId = sharedPrefs.getSessionId()
+                val characterId = state.character.id
+                _viewAction.value = HomeAction.NavigateToCustomization(userId, sessionId, characterId)
+            }
+        }
     }
 
     private fun goalClicked(goal: GoalModel) {

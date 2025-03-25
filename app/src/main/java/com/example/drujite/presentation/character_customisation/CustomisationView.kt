@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.character_customisation
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,6 +43,9 @@ fun CustomisationView(
 ) {
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
+
+    Log.d("CustomisationView", "viewState: $viewState")
+    Log.d("CustomisationView", "viewAction: $viewAction")
 
     when (val action = viewAction.value) {
         is CustomisationAction.NavigateToMain -> {

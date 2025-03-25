@@ -60,6 +60,8 @@ class CustomisationViewModel(
                 } else {
                     Log.e("network", "error saving image")
                 }
+                Thread.sleep(1000)
+                _viewState.value = state
             }
         }
     }

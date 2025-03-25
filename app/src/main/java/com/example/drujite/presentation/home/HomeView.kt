@@ -2,6 +2,7 @@ package com.example.drujite.presentation.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -51,10 +52,14 @@ fun HomeView(
 
     when (val action = viewAction.value) {
         is HomeAction.NavigateToCustomization -> {
-            navController.navigate(Screen.CharacterCustomisation.route)
+            navController.navigate("${Screen.CharacterCustomisation.route}/${action.userId}/${action.sessionId}/${action.characterId}") {
+//                popUpTo(Screen.Home.route) {
+//                    inclusive = true
+//                }
+                launchSingleTop = true
+            }
             viewModel.clearAction()
         }
-
         else -> {}
     }
 
@@ -63,7 +68,7 @@ fun HomeView(
             MainState(
                 state = state,
                 onGoalClick = { goal ->
-                    viewModel.obtainEvent(HomeEvent.goalClicked(goal))
+                    viewModel.obtainEvent(HomeEvent.GoalClicked(goal))
                 },
                 onCustomisationClick = {
                     viewModel.obtainEvent(HomeEvent.CustomisationClicked)
@@ -91,6 +96,7 @@ fun MainState(
     val clothingItems = List(3) { R.drawable.hair }
     val goals = state.goals
     val character = state.character
+    val characterImage = painterResource(id = R.drawable.character)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -126,11 +132,11 @@ fun MainState(
 
             }
             Image(
-                painter = painterResource(id = R.drawable.character),
+                painter = characterImage,
                 contentDescription = "Character",
                 modifier = Modifier
                     .size(180.dp, 256.dp)
-                //.clickable { onCustomisationClick() }
+                    .clickable { onCustomisationClick() }
             )
             Column(
                 modifier = Modifier
