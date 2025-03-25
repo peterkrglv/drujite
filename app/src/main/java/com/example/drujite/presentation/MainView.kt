@@ -56,7 +56,8 @@ sealed class NavigationItem(val screen: Screen, val icon: ImageVector) {
     data object ProfileItem : NavigationItem(screen = Screen.Profile, icon = ProfileIcon)
     data object TimeTableItem : NavigationItem(screen = Screen.Timetable, icon = TimetableIcon)
     data object HomeItem : NavigationItem(screen = Screen.Home, icon = HomeIcon)
-    data object AboutSessionItem : NavigationItem(screen = Screen.AboutSession, icon = AboutIcon)
+    //data object AboutSessionItem : NavigationItem(screen = Screen.AboutSession, icon = AboutIcon)\
+    data object NewsItem : NavigationItem(screen = Screen.News, icon = AboutIcon)
     data object OtherCharactersItem :
         NavigationItem(screen = Screen.OtherCharacters, icon = OthersIcon)
 }
@@ -70,7 +71,7 @@ fun BottomNavigationBar(navController: NavHostController) {
         NavigationItem.ProfileItem,
         NavigationItem.TimeTableItem,
         NavigationItem.HomeItem,
-        NavigationItem.AboutSessionItem,
+        NavigationItem.NewsItem,
         NavigationItem.OtherCharactersItem
     )
 

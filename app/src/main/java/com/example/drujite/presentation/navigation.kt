@@ -14,6 +14,7 @@ import com.example.drujite.presentation.login.LoginView
 import com.example.drujite.presentation.other_characters.OtherCharactersView
 import com.example.drujite.presentation.profile.ProfileView
 import com.example.drujite.presentation.character_creation.CreationView
+import com.example.drujite.presentation.session_news.NewsView
 import com.example.drujite.presentation.session_selection.SessionView
 import com.example.drujite.presentation.signup.SignupView
 import com.example.drujite.presentation.timetable.TimeTableView
@@ -32,6 +33,7 @@ sealed class Screen(val route: String) {
     data object Timetable : Screen("timetable")
     data object AboutSession : Screen("about_session")
     data object OtherCharacters : Screen("other_characters")
+    data object News : Screen("news")
 }
 
 @Composable
@@ -83,5 +85,6 @@ fun SetUpNavHost(
         composable(route = Screen.Timetable.route) { TimeTableView() }
         composable(route = Screen.AboutSession.route) { AboutSessionView() }
         composable(route = Screen.OtherCharacters.route) { OtherCharactersView() }
+        composable(route = Screen.News.route) { NewsView() }
     }
 }

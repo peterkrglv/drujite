@@ -4,6 +4,7 @@ import com.example.data.CharacterReposirotyTest
 import com.example.data.ClanRepositoryTest
 import com.example.data.CustomisationRepositoryTest
 import com.example.data.GoalRepositoryTest
+import com.example.data.NewsRepositoryTest
 import com.example.data.SessionRepositoryTest
 import com.example.data.SharedPrefsRepositoryImpl
 import com.example.data.UserResitoryTest
@@ -11,6 +12,7 @@ import com.example.domain.repos.CharacterRepository
 import com.example.domain.repos.ClanRepository
 import com.example.domain.repos.CustomisationRepository
 import com.example.domain.repos.GoalRepository
+import com.example.domain.repos.NewsRepository
 import com.example.domain.repos.SessionRepository
 import com.example.domain.repos.SharedPrefsRepository
 import com.example.domain.repos.UserRepository
@@ -24,6 +26,7 @@ import com.example.domain.use_cases.GetCurrentUser
 import com.example.domain.use_cases.GetCustomisationOptions
 import com.example.domain.use_cases.GetGoalsByCharacterIdUseCase
 import com.example.domain.use_cases.GetSessionByCodeUseCase
+import com.example.domain.use_cases.GetSessionsNewsUseCase
 import com.example.domain.use_cases.GetSessionsOfUserUseCase
 import com.example.domain.use_cases.GetSessionsUseCase
 import com.example.domain.use_cases.LogOutUseCase
@@ -38,6 +41,7 @@ import com.example.drujite.presentation.greeting.GreetingViewModel
 import com.example.drujite.presentation.home.HomeViewModel
 import com.example.drujite.presentation.login.LoginViewModel
 import com.example.drujite.presentation.profile.ProfileViewModel
+import com.example.drujite.presentation.session_news.NewsViewModel
 import com.example.drujite.presentation.session_selection.SessionViewModel
 import com.example.drujite.presentation.signup.SignupViewModel
 import org.koin.core.module.dsl.viewModel
@@ -51,6 +55,8 @@ val dataModule = module {
     single<CharacterRepository> { CharacterReposirotyTest() }
     single<CustomisationRepository> { CustomisationRepositoryTest() }
     single<GoalRepository> { GoalRepositoryTest() }
+    single<SessionRepository> { SessionRepositoryTest() }
+    single<NewsRepository> { NewsRepositoryTest() }
 }
 
 val domainModule = module {
@@ -71,6 +77,7 @@ val domainModule = module {
     factory<LogOutUseCase> { LogOutUseCase(get()) }
     factory<GetSessionsOfUserUseCase> { GetSessionsOfUserUseCase(get()) }
     factory<GetCurrentUser> { GetCurrentUser(get(), get()) }
+    factory<GetSessionsNewsUseCase> { GetSessionsNewsUseCase(get(), get()) }
 }
 
 val appModule = module {
@@ -83,4 +90,5 @@ val appModule = module {
     viewModel<CustomisationViewModel> { CustomisationViewModel(get(), get()) }
     viewModel<HomeViewModel> { HomeViewModel(get(), get(), get(), get()) }
     viewModel<ProfileViewModel> { ProfileViewModel(get(), get(), get(), get()) }
+    viewModel<NewsViewModel> { NewsViewModel(get()) }
 }

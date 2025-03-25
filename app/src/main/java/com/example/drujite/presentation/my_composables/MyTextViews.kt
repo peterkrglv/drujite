@@ -121,7 +121,49 @@ fun ShortenedTextBig(text: String, maxLines: Int) {
             )
         }
     }
+}
 
+@Composable
+fun ShortenedText(text: String, maxLines: Int) {
+    val isTextOverFlow = remember { mutableStateOf(false) }
+    val isTextShortened = remember { mutableStateOf(true) }
+    val lines = remember { mutableStateOf(maxLines) }
+    val textButtonText = remember { mutableStateOf("Подробнее") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        Text(
+            modifier = Modifier,
+            text = text,
+            fontSize = 13.sp,
+            maxLines = lines.value,
+            onTextLayout = { textLayoutResult ->
+                if (textLayoutResult.didOverflowHeight) {
+                    isTextOverFlow.value = true
+                }
+            },
+            style = TextStyle(
+                textAlign = TextAlign.Justify
+            )
+        )
+        if (isTextOverFlow.value) {
+            textButtonText.value = if (isTextShortened.value) "Раскрыть" else "Скрыть"
+            Text(
+                modifier = Modifier
+                    .padding(0.dp)
+                    .clickable {
+                        isTextShortened.value = !isTextShortened.value
+                        lines.value = if (isTextShortened.value) maxLines else Int.MAX_VALUE
+                    },
+                text = textButtonText.value,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                fontWeight = FontWeight.Bold,
+                fontSize = 11.sp
+            )
+        }
+    }
 }
 
 @Composable
