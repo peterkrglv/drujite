@@ -2,10 +2,10 @@ package com.example.drujite.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.use_cases.GetCharactersByUserIdUseCase
-import com.example.domain.use_cases.GetCurrentUser
-import com.example.domain.use_cases.GetSessionsOfUserUseCase
-import com.example.domain.use_cases.LogOutUseCase
+import com.example.domain.use_cases.character.GetCharactersByUserIdUseCase
+import com.example.domain.use_cases.user.GetCurrentUser
+import com.example.domain.use_cases.session.GetSessionsOfUserUseCase
+import com.example.domain.use_cases.user.LogOutUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,7 +42,6 @@ class ProfileViewModel (
                 _viewAction.value = ProfileAction.NavigateToGreeting
             }
         }
-
     }
 
     private fun loadData() {

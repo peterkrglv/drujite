@@ -17,33 +17,37 @@ import com.example.domain.repos.SessionRepository
 import com.example.domain.repos.SharedPrefsRepository
 import com.example.domain.repos.UserRepository
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
-import com.example.domain.use_cases.AddCharacterToSessionUseCase
-import com.example.domain.use_cases.CreateCharacterUseCase
-import com.example.domain.use_cases.GetCharacterByIdUseCase
-import com.example.domain.use_cases.GetCharactersByUserIdUseCase
-import com.example.domain.use_cases.GetClansBySessionIdUseCase
-import com.example.domain.use_cases.GetCurrentUser
-import com.example.domain.use_cases.GetCustomisationOptions
-import com.example.domain.use_cases.GetGoalsByCharacterIdUseCase
-import com.example.domain.use_cases.GetSessionByCodeUseCase
-import com.example.domain.use_cases.GetSessionsNewsUseCase
-import com.example.domain.use_cases.GetSessionsOfUserUseCase
-import com.example.domain.use_cases.GetSessionsUseCase
-import com.example.domain.use_cases.LogOutUseCase
-import com.example.domain.use_cases.LoginUseCase
-import com.example.domain.use_cases.SaveCharacterCustomImageUseCase
-import com.example.domain.use_cases.SignupUseCase
-import com.example.domain.use_cases.UpdateGoalStatusUseCase
+import com.example.domain.use_cases.character.AddCharacterToSessionUseCase
+import com.example.domain.use_cases.character.CreateCharacterUseCase
+import com.example.domain.use_cases.character.GetCharacterByIdUseCase
+import com.example.domain.use_cases.character.GetCharactersBySessionId
+import com.example.domain.use_cases.character.GetCharactersByUserIdUseCase
+import com.example.domain.use_cases.session.GetClansBySessionIdUseCase
+import com.example.domain.use_cases.user.GetCurrentUser
+import com.example.domain.use_cases.character.GetCustomisationOptions
+import com.example.domain.use_cases.goal.GetGoalsByCharacterIdUseCase
+import com.example.domain.use_cases.session.GetSessionByCodeUseCase
+import com.example.domain.use_cases.session.GetSessionsNewsUseCase
+import com.example.domain.use_cases.session.GetSessionsOfUserUseCase
+import com.example.domain.use_cases.session.GetUsersSessionsUseCase
+import com.example.domain.use_cases.user.LogOutUseCase
+import com.example.domain.use_cases.user.LoginUseCase
+import com.example.domain.use_cases.character.SaveCharacterCustomImageUseCase
+import com.example.domain.use_cases.user.SignupUseCase
+import com.example.domain.use_cases.goal.UpdateGoalStatusUseCase
+import com.example.domain.use_cases.session.GetTimeTableUseCase
 import com.example.drujite.presentation.character_creation.CreationViewModel
 import com.example.drujite.presentation.character_customisation.CustomisationViewModel
 import com.example.drujite.presentation.character_transfer.TransferViewModel
 import com.example.drujite.presentation.greeting.GreetingViewModel
 import com.example.drujite.presentation.home.HomeViewModel
 import com.example.drujite.presentation.login.LoginViewModel
+import com.example.drujite.presentation.other_characters.OtherCharactersViewModel
 import com.example.drujite.presentation.profile.ProfileViewModel
 import com.example.drujite.presentation.session_news.NewsViewModel
 import com.example.drujite.presentation.session_selection.SessionViewModel
 import com.example.drujite.presentation.signup.SignupViewModel
+import com.example.drujite.presentation.timetable.TimetableViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -62,7 +66,7 @@ val dataModule = module {
 val domainModule = module {
     factory<LoginUseCase> { LoginUseCase(get(), get()) }
     factory<SignupUseCase> { SignupUseCase(get(), get()) }
-    factory<GetSessionsUseCase> { GetSessionsUseCase(get()) }
+    factory<GetUsersSessionsUseCase> { GetUsersSessionsUseCase(get()) }
     factory<GetSessionByCodeUseCase> { GetSessionByCodeUseCase(get()) }
     factory<AccessSharedPrefsUseCase> { AccessSharedPrefsUseCase(get()) }
     factory<GetClansBySessionIdUseCase> { GetClansBySessionIdUseCase(get()) }
@@ -78,6 +82,8 @@ val domainModule = module {
     factory<GetSessionsOfUserUseCase> { GetSessionsOfUserUseCase(get()) }
     factory<GetCurrentUser> { GetCurrentUser(get(), get()) }
     factory<GetSessionsNewsUseCase> { GetSessionsNewsUseCase(get(), get()) }
+    factory<GetCharactersBySessionId> { GetCharactersBySessionId(get()) }
+    factory<GetTimeTableUseCase> { GetTimeTableUseCase(get(), get()) }
 }
 
 val appModule = module {
@@ -91,4 +97,6 @@ val appModule = module {
     viewModel<HomeViewModel> { HomeViewModel(get(), get(), get(), get()) }
     viewModel<ProfileViewModel> { ProfileViewModel(get(), get(), get(), get()) }
     viewModel<NewsViewModel> { NewsViewModel(get()) }
+    viewModel<OtherCharactersViewModel> { OtherCharactersViewModel(get(), get()) }
+    viewModel<TimetableViewModel> { TimetableViewModel(get()) }
 }

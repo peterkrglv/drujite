@@ -3,9 +3,9 @@ package com.example.drujite.presentation.character_customisation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.use_cases.CustomisationCategory
-import com.example.domain.use_cases.GetCustomisationOptions
-import com.example.domain.use_cases.SaveCharacterCustomImageUseCase
+import com.example.domain.use_cases.character.CustomisationCategory
+import com.example.domain.use_cases.character.GetCustomisationOptions
+import com.example.domain.use_cases.character.SaveCharacterCustomImageUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

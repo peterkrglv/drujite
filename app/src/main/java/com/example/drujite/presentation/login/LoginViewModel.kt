@@ -2,8 +2,8 @@ package com.example.drujite.presentation.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.use_cases.LoginResult
-import com.example.domain.use_cases.LoginUseCase
+import com.example.domain.use_cases.user.LoginResult
+import com.example.domain.use_cases.user.LoginUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

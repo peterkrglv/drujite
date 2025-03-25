@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
-import com.example.domain.use_cases.CustomisationCategory
+import com.example.domain.use_cases.character.CustomisationCategory
 import com.example.drujite.R
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyButton
@@ -47,7 +48,7 @@ fun CustomisationView(
     Log.d("CustomisationView", "viewState: $viewState")
     Log.d("CustomisationView", "viewAction: $viewAction")
 
-    when (val action = viewAction.value) {
+    when (viewAction.value) {
         is CustomisationAction.NavigateToMain -> {
             viewModel.clearAction()
             navController.navigate(Screen.Home.route)
@@ -90,7 +91,7 @@ fun MainState(
         item {
             Text(
                 textAlign = TextAlign.Center,
-                text = "Что на счет внешности?",
+                text = stringResource(R.string.customisation_title),
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp
             )
@@ -113,7 +114,7 @@ fun MainState(
         }
 
         item {
-            MyButton(text = "Закончить", onClick = onProceedClicked)
+            MyButton(text = stringResource(R.string.customisation_proceed), onClick = onProceedClicked)
         }
     }
 }

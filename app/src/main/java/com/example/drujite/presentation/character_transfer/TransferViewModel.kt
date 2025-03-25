@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.CharacterModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
-import com.example.domain.use_cases.AddCharacterToSessionUseCase
-import com.example.domain.use_cases.GetCharactersByUserIdUseCase
+import com.example.domain.use_cases.character.AddCharacterToSessionUseCase
+import com.example.domain.use_cases.character.GetCharactersByUserIdUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

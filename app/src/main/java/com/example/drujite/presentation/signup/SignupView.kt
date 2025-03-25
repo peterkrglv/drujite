@@ -13,11 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
-import com.example.domain.use_cases.SignupResult
+import com.example.domain.use_cases.user.SignupResult
+import com.example.drujite.R
 import com.example.drujite.presentation.my_composables.GenderChoice
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyButton
@@ -116,33 +118,33 @@ fun MainState(
             verticalArrangement = Arrangement.Bottom
         )
         {
-            MyTitle(text = "Создадим аккаунт?")
-            MyTitle2(text = "Lorem Ipsum - это текст-\"рыба\", часто используемый в печати и вэб-дизайне.")
+            MyTitle(text = stringResource(R.string.signup_title))
+            MyTitle2(text = stringResource(R.string.singup_subtitle))
             Spacer(modifier = Modifier.height(32.dp))
             MyTextField(
                 value = name,
-                label = "Имя и фамилия",
+                label = stringResource(R.string.signup_name),
                 errorText = null,
                 onValueChange = {
                     onNameChanged(it)
                 })
             MyTextField(
                 value = phone,
-                label = "Твой телефон",
+                label = stringResource(R.string.phone),
                 errorText = if (error == SignupResult.INVALID_PHONE || error == SignupResult.PHONE_ALREADY_REGISTERED) error.message else null,
                 onValueChange = {
                     onPhoneChanged(it)
                 })
             MyPasswordField(
                 value = password,
-                label = "Пароль",
+                label = stringResource(R.string.password),
                 errorText = if (error == SignupResult.INVALID_PASSWORD) error.message else null,
                 onValueChange = {
                     onPasswordChanged(it)
                 })
             MyPasswordField(
                 value = repeatedPassword,
-                label = "Подтвердите пароль",
+                label = stringResource(R.string.password_confirm),
                 errorText = if (error == SignupResult.PASSWORDS_DO_NOT_MATCH) error.message else null,
                 onValueChange = {
                     onRepeatedPasswordChanged(it)
@@ -151,11 +153,11 @@ fun MainState(
                 onGenderClick = onGenderChanged,
                 gender = gender
             )
-            MyButton(text = "Дальше", onClick = onProceedClicked)
+            MyButton(text = stringResource(R.string.proceed), onClick = onProceedClicked)
         }
         TextButtonNavigation(
-            text = "Уже есть аккаунт?",
-            buttonText = "Войти",
+            text = stringResource(R.string.signup_to_login),
+            buttonText = stringResource(R.string.signup_to_login_2),
             onClick = onLoginClicked
         )
     }

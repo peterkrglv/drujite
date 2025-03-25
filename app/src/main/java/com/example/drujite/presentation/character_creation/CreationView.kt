@@ -1,6 +1,5 @@
 package com.example.drujite.presentation.character_creation
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,15 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.domain.models.ClanModel
+import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.DropdownTextField
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyButton
 import com.example.drujite.presentation.my_composables.MyTextField
 import com.example.drujite.presentation.my_composables.MyTitle
 import com.example.drujite.presentation.my_composables.MyTitle2
-import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.TextButtonNavigation
-import com.example.drujite.presentation.timetable.MainView
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -137,6 +135,21 @@ fun MainState(
 @Composable
 fun CreationPreview() {
     AppTheme {
-        MainView()
+        MainState(
+            state = CreationState.Main(
+                name = "Имя",
+                chosenClan = null,
+                clans = listOf(
+                    ClanModel(1, "Клан 1", "url"),
+                    ClanModel(2, "Клан 2", "url"),
+                    ClanModel(3, "Клан 3", "url"),
+                ),
+                error = ""
+            ),
+            onProceedClicked = {},
+            onClanChosen = {},
+            onNameChanged = {},
+            onTransferClicked = {}
+        )
     }
 }

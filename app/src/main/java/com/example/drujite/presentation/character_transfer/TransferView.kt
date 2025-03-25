@@ -13,11 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.domain.models.CharacterModel
+import com.example.drujite.R
 import com.example.drujite.presentation.my_composables.DropdownTextField
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyButton
@@ -39,7 +41,7 @@ fun TransferView(
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
 
-    when (val action = viewAction.value) {
+    when (viewAction.value) {
         is TransferAction.NavigateToMain -> {
             viewModel.clearAction()
             navController.navigate(Screen.Home.route) {
@@ -97,10 +99,10 @@ fun MainState(
             verticalArrangement = Arrangement.Bottom,
         ) {
             Spacer(modifier = Modifier.height(40.dp))
-            MyTitle(text = "Перенос")
-            MyTitle2(text = "Расскажи кураторам, почему ты считаешь, что участие этого персонажа в событиях смены оправданно")
+            MyTitle(text = stringResource(R.string.transfer_title))
+            MyTitle2(text = stringResource(R.string.transfer_subtitle))
             DropdownTextField(
-                label = "Выбери персонажа",
+                label = stringResource(R.string.transfer_character_choice),
                 options = characters.map { it.name },
                 selected = chosenCharacter?.name ?: "",
                 onOptionSelected = { name ->
@@ -112,16 +114,16 @@ fun MainState(
             )
             MyExpandedTextField(
                 value = reason,
-                label = "Причина",
+                label = stringResource(R.string.transfer_chaarcter_reason),
                 isError = false,
                 onValueChange = { onReasonChanged(it) }
             )
-            MySmallText(text = "Важно: если временные промежутки этой смены и смены, с которой ты хочешь перенести персонажа, не совпадают или есть другие нюансы, куратор может отказать в переносе персонажа в целях сохранения логики игровых миров.")
-            MyButton(text = "Дальше", onClick = onProceedClicked)
+            MySmallText(text = stringResource(R.string.transfer_warning))
+            MyButton(text = stringResource(R.string.proceed), onClick = onProceedClicked)
         }
         TextButtonNavigation(
-            text = "Передумал?)",
-            buttonText = "Назад",
+            text = stringResource(R.string.transfer_back),
+            buttonText = stringResource(R.string.transfer_back2),
             onClick = onCharacterCreationClicked
         )
     }

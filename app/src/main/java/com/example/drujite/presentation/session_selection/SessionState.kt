@@ -13,8 +13,8 @@ sealed class SessionState {
 }
 
 sealed class SessionEvent {
-    data object LoadSessions: SessionEvent()
-    data class SessionpRroceed(val session: SessionModel): SessionEvent()
+    data class LoadSessions(val userId: Int): SessionEvent()
+    data class SessionProceed(val session: SessionModel): SessionEvent()
     data object QRScannerClicked: SessionEvent()
     data class OnQRScannerClosed(val result: QRScannerResult, val sessionNum: String?): SessionEvent()
 }

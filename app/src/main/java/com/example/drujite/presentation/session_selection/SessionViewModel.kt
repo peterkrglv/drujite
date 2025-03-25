@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.SessionModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
-import com.example.domain.use_cases.GetSessionByCodeUseCase
-import com.example.domain.use_cases.GetSessionsUseCase
+import com.example.domain.use_cases.session.GetSessionByCodeUseCase
+import com.example.domain.use_cases.session.GetUsersSessionsUseCase
 import com.example.drujite.presentation.QRScannerResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SessionViewModel(
-    private val getSessionsUseCase: GetSessionsUseCase,
+    private val getUsersSessionsUseCase: GetUsersSessionsUseCase,
     private val getSessionByCodeUseCase: GetSessionByCodeUseCase,
     private val accessSharedPrefsUseCase: AccessSharedPrefsUseCase
 ) : ViewModel() {
@@ -27,8 +27,8 @@ class SessionViewModel(
 
     fun obtainEvent(event: SessionEvent) {
         when (event) {
-            is SessionEvent.LoadSessions -> loadSessions()
-            is SessionEvent.SessionpRroceed -> sessionSelected(event.session)
+            is SessionEvent.LoadSessions -> loadSessions(event.userId)
+            is SessionEvent.SessionProceed -> sessionSelected(event.session)
             is SessionEvent.QRScannerClicked -> qrScannerClicked()
             is SessionEvent.OnQRScannerClosed -> handleQRScannerResult(
                 event.result,
@@ -76,11 +76,11 @@ class SessionViewModel(
         _viewAction.value = null
     }
 
-    private fun loadSessions() {
+    private fun loadSessions(userId: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 Thread.sleep(2000)
-                val sessions = getSessionsUseCase.execute()
+                val sessions = getUsersSessionsUseCase.execute(userId)
                 _viewState.value = SessionState.Main(sessions)
             }
         }

@@ -1,4 +1,4 @@
-package com.example.domain.use_cases
+package com.example.domain.use_cases.session
 
 import com.example.domain.models.NewsModel
 import com.example.domain.repos.NewsRepository

@@ -13,11 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
-import com.example.domain.use_cases.LoginResult
+import com.example.domain.use_cases.user.LoginResult
+import com.example.drujite.R
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyButton
 import com.example.drujite.presentation.my_composables.MyPasswordField
@@ -98,28 +100,28 @@ fun MainState(
             verticalArrangement = Arrangement.Bottom
         )
         {
-            MyTitle(text = "Вход")
-            MyTitle2(text = "Если ты уже не первый раз у нас, то у тебя наверняка есть аккаунт")
+            MyTitle(text = stringResource(R.string.login_title))
+            MyTitle2(text = stringResource(R.string.login_subtitile))
             Spacer(modifier = Modifier.height(32.dp))
             MyTextField(
                 value = phone,
-                label = "Телефон",
+                label = stringResource(R.string.phone),
                 errorText = if (error == LoginResult.WRONG_PHONE || error == LoginResult.INVALID_PHONE) error.message else null,
                 onValueChange = {
                     onPhoneChanged(it)
                 })
             MyPasswordField(
                 value = password,
-                label = "Пароль",
+                label = stringResource(R.string.password),
                 errorText = if (error == LoginResult.WRONG_PASSWORD) error.message else null,
                 onValueChange = {
                     onPasswordChanged(it)
                 })
-            MyButton(text = "Дальше", onClick = onProceedClicked)
+            MyButton(text = stringResource(R.string.next), onClick = onProceedClicked)
         }
         TextButtonNavigation(
-            text = "Нет аккаунта?",
-            buttonText = "Зарегистрироваться",
+            text = stringResource(R.string.login_to_signup),
+            buttonText = stringResource(R.string.signp),
             onClick = onSignUpClicked
         )
     }

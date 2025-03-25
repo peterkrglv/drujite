@@ -1,6 +1,6 @@
 package com.example.drujite.presentation.character_customisation
 
-import com.example.domain.use_cases.CustomisationCategory
+import com.example.domain.use_cases.character.CustomisationCategory
 
 sealed class CustomisationState {
     data object Initialization : CustomisationState()

@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.ClanModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
-import com.example.domain.use_cases.CreateCharacterUseCase
-import com.example.domain.use_cases.GetClansBySessionIdUseCase
+import com.example.domain.use_cases.character.CreateCharacterUseCase
+import com.example.domain.use_cases.session.GetClansBySessionIdUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,6 +1,5 @@
 package com.example.drujite.presentation.greeting
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.use_cases.AccessSharedPrefsUseCase

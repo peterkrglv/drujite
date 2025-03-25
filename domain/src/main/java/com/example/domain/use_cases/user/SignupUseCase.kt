@@ -1,4 +1,4 @@
-package com.example.domain.use_cases
+package com.example.domain.use_cases.user
 
 import com.example.domain.repos.SharedPrefsRepository
 import com.example.domain.repos.UserRepository

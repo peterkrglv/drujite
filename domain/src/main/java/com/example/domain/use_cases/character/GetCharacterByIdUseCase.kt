@@ -1,4 +1,4 @@
-package com.example.domain.use_cases
+package com.example.domain.use_cases.character
 
 import com.example.domain.repos.CharacterRepository
 

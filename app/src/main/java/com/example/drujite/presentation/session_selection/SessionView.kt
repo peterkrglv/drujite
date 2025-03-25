@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
@@ -82,12 +83,12 @@ fun SessionView(
             MainState(
                 state = state,
                 onQRCodeClicked = { viewModel.obtainEvent(SessionEvent.QRScannerClicked) },
-                onProceedClicked = { viewModel.obtainEvent(SessionEvent.SessionpRroceed(it)) }
+                onProceedClicked = { viewModel.obtainEvent(SessionEvent.SessionProceed(it)) }
             )
         }
 
         is SessionState.Loading -> {
-            viewModel.obtainEvent(SessionEvent.LoadSessions)
+            viewModel.obtainEvent(SessionEvent.LoadSessions(userId))
             LoadingScreen()
         }
     }
@@ -130,8 +131,8 @@ fun MainState(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            MyTitle("Выбери смену")
-            MyTitle2("Выбери одну из смен, на которых ты был, либо отсканируй QR-код новой смены.")
+            MyTitle(stringResource(R.string.session_selection_title))
+            MyTitle2(stringResource(R.string.session_selection_subtitle))
             Spacer(modifier = Modifier.height(8.dp))
             HorizontalMultiBrowseCarousel(
                 state = carouselState,
@@ -153,7 +154,7 @@ fun MainState(
         Box(
             modifier = Modifier
         ) {
-            MyButton("Выбрать") {
+            MyButton(stringResource(R.string.session_proceed)) {
                 if (currentItem.value.id == 0) {
                     onQRCodeClicked()
                 } else {

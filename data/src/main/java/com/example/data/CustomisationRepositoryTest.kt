@@ -1,8 +1,8 @@
 package com.example.data
 
 import com.example.domain.repos.CustomisationRepository
-import com.example.domain.use_cases.CustomisationCategory
-import com.example.domain.use_cases.CustomisationOption
+import com.example.domain.use_cases.character.CustomisationCategory
+import com.example.domain.use_cases.character.CustomisationOption
 
 
 class CustomisationRepositoryTest : CustomisationRepository {

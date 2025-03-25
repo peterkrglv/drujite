@@ -2,8 +2,8 @@ package com.example.drujite.presentation.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.use_cases.SignupResult
-import com.example.domain.use_cases.SignupUseCase
+import com.example.domain.use_cases.user.SignupResult
+import com.example.domain.use_cases.user.SignupUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,15 +50,15 @@ class SignupViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 Thread.sleep(2000)
-                val signupResponce = signupUseCase.execute(
+                val signupResponse = signupUseCase.execute(
                     state.name,
                     state.phone,
                     state.password,
                     state.passwordRepeated,
                     state.gender.value
                 )
-                val signupResult = signupResponce.result
-                val userId = signupResponce.id
+                val signupResult = signupResponse.result
+                val userId = signupResponse.id
                 if (signupResult == SignupResult.SUCCESS && userId != null) {
                     _viewAction.value = SignupAction.NavigateToSessionSelection(userId)
                 } else {

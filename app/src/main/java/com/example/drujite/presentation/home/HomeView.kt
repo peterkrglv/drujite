@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,9 +54,6 @@ fun HomeView(
     when (val action = viewAction.value) {
         is HomeAction.NavigateToCustomization -> {
             navController.navigate("${Screen.CharacterCustomisation.route}/${action.userId}/${action.sessionId}/${action.characterId}") {
-//                popUpTo(Screen.Home.route) {
-//                    inclusive = true
-//                }
                 launchSingleTop = true
             }
             viewModel.clearAction()
@@ -101,7 +99,7 @@ fun MainState(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 24.dp)
+            .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
 
     ) {
@@ -114,7 +112,7 @@ fun MainState(
             Text(
                 modifier = Modifier.padding(4.dp),
                 textAlign = TextAlign.Center,
-                text = "Персонаж",
+                text = stringResource(R.string.character),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp
             )
@@ -133,7 +131,7 @@ fun MainState(
             }
             Image(
                 painter = characterImage,
-                contentDescription = "Character",
+                contentDescription = stringResource(R.string.character),
                 modifier = Modifier
                     .size(180.dp, 256.dp)
                     .clickable { onCustomisationClick() }
@@ -160,7 +158,7 @@ fun MainState(
             }
             Text(
                 modifier = Modifier.padding(vertical = 4.dp),
-                text = "Квента",
+                text = stringResource(R.string.home_quent),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -176,7 +174,7 @@ fun MainState(
                 horizontalArrangement = Arrangement.Start
             ) {
                 Text(
-                    text = "Цели",
+                    text = stringResource(R.string.home_goals),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )

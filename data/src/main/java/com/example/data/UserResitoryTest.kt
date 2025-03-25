@@ -1,11 +1,11 @@
 package com.example.data
 
 import com.example.domain.models.UserModel
-import com.example.domain.use_cases.LoginResult
-import com.example.domain.use_cases.SignupResult
+import com.example.domain.use_cases.user.LoginResult
+import com.example.domain.use_cases.user.SignupResult
 import com.example.domain.repos.UserRepository
-import com.example.domain.use_cases.LoginResponse
-import com.example.domain.use_cases.SignupResponse
+import com.example.domain.use_cases.user.LoginResponse
+import com.example.domain.use_cases.user.SignupResponse
 
 class UserResitoryTest : UserRepository {
     override suspend fun login(phone: String, password: String): LoginResponse {

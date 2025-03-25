@@ -6,4 +6,5 @@ interface CharacterRepository {
     suspend fun addCharacter(userId: Int, name: String, clanId: Int): Int
     suspend fun getCharactersByUserId(userId: Int): List<CharacterModel>
     suspend fun getCharacterById(characterId: Int): CharacterModel
+    suspend fun getCharactersBySessionId(sessionId: Int): List<CharacterModel>
 }

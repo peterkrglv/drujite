@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.GoalModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
-import com.example.domain.use_cases.GetCharacterByIdUseCase
-import com.example.domain.use_cases.GetGoalsByCharacterIdUseCase
-import com.example.domain.use_cases.UpdateGoalStatusUseCase
+import com.example.domain.use_cases.character.GetCharacterByIdUseCase
+import com.example.domain.use_cases.goal.GetGoalsByCharacterIdUseCase
+import com.example.domain.use_cases.goal.UpdateGoalStatusUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.UserModel
+import com.example.drujite.R
 import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.LazyGridCharacters
 import com.example.drujite.presentation.my_composables.LoadingScreen
@@ -37,7 +39,7 @@ fun ProfileView(
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
 
-    when (val action = viewAction.value) {
+    when (viewAction.value) {
         is ProfileAction.NavigateToGreeting -> {
             navController.navigate(Screen.Greeting.route) {
                 popUpTo(Screen.Home.route) {
@@ -63,8 +65,6 @@ fun ProfileView(
             viewModel.obtainEvent(ProfileEvent.LoadData)
             LoadingScreen()
         }
-
-        else -> {}
     }
 }
 
@@ -90,7 +90,7 @@ fun MainState(
             horizontalArrangement = Arrangement.End,
         ) {
             MyTextButton(
-                text = "Выйти",
+                text = stringResource(R.string.logout),
                 onClick = onLogOut
             )
         }
@@ -117,12 +117,12 @@ fun MainState(
             MyNumCard(
                 modifier = Modifier.weight(1f),
                 num = sessions.size,
-                title = "Смен"
+                title = stringResource(R.string.profile_sessions)
             )
             MyNumCard(
                 modifier = Modifier.weight(1f),
                 num = characters.size,
-                title = "Персонажей"
+                title = stringResource(R.string.profile_characters)
             )
         }
         LazyGridCharacters(

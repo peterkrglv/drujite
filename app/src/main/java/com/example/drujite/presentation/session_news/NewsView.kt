@@ -2,8 +2,10 @@ package com.example.drujite.presentation.session_news
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -85,7 +87,7 @@ fun MainState(
             items(news) { newsItem ->
                 MyCard(
                     modifier = Modifier.padding(vertical = 4.dp),
-                    contentPadding = PaddingValues(16.dp)
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 4.dp)
                 ) {
                     NewsItem(item = newsItem)
                 }
@@ -131,11 +133,7 @@ fun MySearchBar(
 
 @Composable
 fun NewsItem(item: NewsModel) {
-    val imageUrl =
-        "https://fastly.picsum.photos/id/740/300/200.jpg?hmac=02VXkAz54aSHF2uKi1JSmOkJFO7u8_qyEL3KT0oAfQ4"
-    Column(
-
-    ) {
+    Column {
         Text(
             text = item.title,
             fontSize = 22.sp,
@@ -155,6 +153,20 @@ fun NewsItem(item: NewsModel) {
                 .padding(top = 4.dp),
             contentScale = ContentScale.Crop
         )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Text(
+                modifier = Modifier.padding(end = 8.dp),
+                text = item.date,
+                fontSize = 11.sp
+            )
+            Text(
+                text = item.time,
+                fontSize = 11.sp
+            )
+        }
     }
 }
 

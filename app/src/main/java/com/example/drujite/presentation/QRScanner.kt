@@ -12,7 +12,7 @@ fun startQRScanner(context: Context, onResult: (QRScannerResult, String?) -> Uni
         .addOnCanceledListener {
             onResult(QRScannerResult.Canceled, null)
         }
-        .addOnFailureListener { e ->
+        .addOnFailureListener { _ ->
             onResult(QRScannerResult.Failure, null)
         }
 }
