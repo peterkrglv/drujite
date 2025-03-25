@@ -2,9 +2,9 @@ package com.example.drujite.presentation.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,14 +16,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,10 +33,11 @@ import com.example.compose.AppTheme
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.GoalModel
 import com.example.drujite.R
+import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.LoadingScreen
+import com.example.drujite.presentation.my_composables.MyCard
 import com.example.drujite.presentation.my_composables.MyTitle
 import com.example.drujite.presentation.my_composables.MyTitle2
-import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.ShortenedTextBig
 import org.koin.androidx.compose.koinViewModel
 
@@ -165,7 +164,9 @@ fun MainState(
             )
 
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
                 Text(
@@ -185,26 +186,27 @@ fun MainState(
 
 @Composable
 fun ClothingItem(image: Int) {
-    Image(
-        painter = painterResource(id = image),
-        contentDescription = "Clothing",
-        modifier = Modifier
-            .padding(vertical = 12.dp)
-            .size(64.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .border(2.dp, Color.Black, RoundedCornerShape(12.dp))
-    )
+    MyCard(
+        modifier = Modifier.padding(4.dp),
+        contentPadding = PaddingValues(4.dp)
+    ) {
+        Image(
+            painter = painterResource(id = image),
+            contentDescription = "Clothing",
+            modifier = Modifier
+                .size(64.dp)
+                .clip(RoundedCornerShape(12.dp))
+        )
+    }
 }
 
 @Composable
 fun GoalItem(goal: GoalModel, onGoalClick: () -> Unit) {
-    OutlinedCard(
+    MyCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 4.dp)
-            .border(1.dp, MaterialTheme.colorScheme.onBackground, RoundedCornerShape(12.dp)),
-
-        ) {
+            .padding(vertical = 4.dp),
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -213,11 +215,14 @@ fun GoalItem(goal: GoalModel, onGoalClick: () -> Unit) {
                 onCheckedChange = { onGoalClick() },
                 colors = CheckboxDefaults.colors(
                     checkmarkColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    checkedColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    checkedColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    uncheckedColor = MaterialTheme.colorScheme.onSurface
                 )
             )
             Text(
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
                 text = goal.goal,
             )
         }

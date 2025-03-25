@@ -53,33 +53,30 @@ fun MainState() {
         selectedClan.value == "Все кланы" || character.clan == selectedClan.value
     }
 
-    Scaffold { contentPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
-                .padding(contentPadding),
-            horizontalAlignment = Alignment.End
-        ) {
-            CharacterChoiceMenu(
-                clans = clans,
-                selectedClan = selectedClan.value,
-                onOptionSelected = { selectedClan.value = it }
-            )
-            LazyGridCharacters(
-                characters = displayedCharacters,
-                onCharacterClick = { character ->
-                    chosenCharacter.value = character
-                    showBottomSheet.value = true
-                }
-            )
-            if (showBottomSheet.value) {
-                ModalBottomSheet(
-                    onDismissRequest = { showBottomSheet.value = false },
-                    sheetState = sheetState
-                ) {
-                    chosenCharacter.value?.let { BottomSheetCharacter(character = it) }
-                }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface),
+        horizontalAlignment = Alignment.End
+    ) {
+        CharacterChoiceMenu(
+            clans = clans,
+            selectedClan = selectedClan.value,
+            onOptionSelected = { selectedClan.value = it }
+        )
+        LazyGridCharacters(
+            characters = displayedCharacters,
+            onCharacterClick = { character ->
+                chosenCharacter.value = character
+                showBottomSheet.value = true
+            }
+        )
+        if (showBottomSheet.value) {
+            ModalBottomSheet(
+                onDismissRequest = { showBottomSheet.value = false },
+                sheetState = sheetState
+            ) {
+                chosenCharacter.value?.let { BottomSheetCharacter(character = it) }
             }
         }
     }

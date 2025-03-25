@@ -3,29 +3,35 @@ package com.example.drujite.presentation.session_news
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
 import com.example.compose.AppTheme
 import com.example.domain.models.NewsModel
+import com.example.drujite.R
+import com.example.drujite.presentation.icons.ArrowIcon
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyCard
 import com.example.drujite.presentation.my_composables.ShortenedText
-import io.github.composegears.valkyrie.BellIcon
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -76,7 +82,10 @@ fun MainState(
         )
         LazyColumn {
             items(news) { newsItem ->
-                MyCard(modifier = Modifier.padding(vertical = 4.dp)) {
+                MyCard(
+                    modifier = Modifier.padding(vertical = 4.dp),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
                     NewsItem(item = newsItem)
                 }
             }
@@ -91,18 +100,36 @@ fun MySearchBar(
     onSearchClicked: (String) -> Unit
 ) {
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
         value = query,
         onValueChange = onQueryChanged,
         shape = RoundedCornerShape(12.dp),
         trailingIcon = {
-            Icon(
-                imageVector = BellIcon,
-                contentDescription = "Search",
+            MyCard(
                 modifier = Modifier.clickable {
                     onSearchClicked(query)
                 },
-            )
+                containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                contentPadding = PaddingValues(8.dp)
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .aspectRatio(1f),
+                    imageVector = ArrowIcon,
+                    contentDescription = "Search",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+//            Icon(
+//                imageVector = BellIcon,
+//                contentDescription = "Search",
+//                modifier = Modifier.clickable {
+//                    onSearchClicked(query)
+//                },
+//            )
         }
     )
 }
@@ -118,17 +145,21 @@ fun NewsItem(item: NewsModel) {
         Text(
             text = item.title,
             fontSize = 22.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(bottom = 4.dp)
         )
         ShortenedText(
             text = item.content,
             maxLines = 3
         )
         Image(
-            painter = rememberAsyncImagePainter(imageUrl),
+            painter = painterResource(id = R.drawable.news_image),
+            //painter = rememberAsyncImagePainter(imageUrl),
             contentDescription = item.title,
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 4.dp),
+            contentScale = ContentScale.Crop
         )
     }
 }

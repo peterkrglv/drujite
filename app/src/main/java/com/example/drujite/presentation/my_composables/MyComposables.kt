@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -21,9 +22,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.AppTheme
+import com.example.drujite.presentation.icons.ArrowIcon
 import com.example.drujite.presentation.signup.Gender
 
 @Composable
@@ -71,7 +74,9 @@ fun LoadingScreen() {
 
 @Composable
 fun MyCard(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     content: @Composable () -> Unit
 ) {
     val shape = RoundedCornerShape(8.dp)
@@ -85,16 +90,16 @@ fun MyCard(
                 .matchParentSize()
                 .clip(shape)
                 .border(10.dp, MaterialTheme.colorScheme.onBackground, shape)
-                .padding(4.dp)
+                .padding(contentPadding)
         )
         Box(
             modifier = Modifier
                 .padding(bottom = outlinePadding)
                 .padding(end = outlinePadding)
                 .clip(shape)
-                .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                .background(containerColor)
                 .border(1.dp, MaterialTheme.colorScheme.onBackground, shape)
-                .padding(4.dp)
+                .padding(contentPadding)
         ) {
             content()
         }
@@ -117,6 +122,15 @@ fun MyPreview() {
                 Text(
                     modifier = Modifier.size(100.dp),
                     text = "Hello"
+                )
+            }
+            MyCard(
+                modifier = Modifier,
+                containerColor = Color.Gray
+            ) {
+                Icon(
+                    imageVector = ArrowIcon,
+                    contentDescription = "Arrow",
                 )
             }
 

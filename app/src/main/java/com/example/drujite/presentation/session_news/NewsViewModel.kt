@@ -30,7 +30,11 @@ class NewsViewModel(
         if (state !is NewsState.Main) {
             return
         }
-        _viewState.value = state.copy(query = query)
+        if (query == "") {
+            _viewState.value = state.copy(displayedNews = state.news, query = query)
+        } else {
+            _viewState.value = state.copy(query = query)
+        }
     }
 
     private fun search(query: String) {
