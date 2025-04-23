@@ -9,7 +9,7 @@ sealed class TransferState {
         val chosenCharacter: CharacterModel? = null,
         val reason: String = "",
         val error: String = "",
-        val userId: Int = 0,
+        val userToken: String = "",
         val sessionId: Int = 0
     ) : TransferState()
     data object Loading : TransferState()
@@ -20,10 +20,10 @@ sealed class TransferEvent {
     data class ReasonChanged(val reason: String) : TransferEvent()
     data object ProceedClicked: TransferEvent()
     data object CharacterCreationClicked: TransferEvent()
-    data class LoadCharacters(val userId: Int, val sessionId: Int): TransferEvent()
+    data class LoadCharacters(val userToken: String, val sessionId: Int): TransferEvent()
 }
 
 sealed class TransferAction {
     data object NavigateToCreation: TransferAction()
-    data class NavigateToMain(val userId: Int, val sessionId: Int, val characterId: Int): TransferAction()
+    data class NavigateToMain(val userToken: String, val sessionId: Int, val characterId: Int): TransferAction()
 }

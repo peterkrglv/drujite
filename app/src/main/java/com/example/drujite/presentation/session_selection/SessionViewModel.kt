@@ -27,7 +27,7 @@ class SessionViewModel(
 
     fun obtainEvent(event: SessionEvent) {
         when (event) {
-            is SessionEvent.LoadSessions -> loadSessions(event.userId)
+            is SessionEvent.LoadSessions -> loadSessions(event.userToken)
             is SessionEvent.SessionProceed -> sessionSelected(event.session)
             is SessionEvent.QRScannerClicked -> qrScannerClicked()
             is SessionEvent.OnQRScannerClosed -> handleQRScannerResult(
@@ -76,11 +76,10 @@ class SessionViewModel(
         _viewAction.value = null
     }
 
-    private fun loadSessions(userId: Int) {
+    private fun loadSessions(userToken: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Thread.sleep(2000)
-                val sessions = getUsersSessionsUseCase.execute(userId)
+                val sessions = getUsersSessionsUseCase.execute(userToken)
                 _viewState.value = SessionState.Main(sessions)
             }
         }

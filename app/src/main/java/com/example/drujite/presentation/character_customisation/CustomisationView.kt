@@ -37,7 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CustomisationView(
     navController: NavController,
-    userId: Int,
+    userId: String,
     sessionId: Int,
     characterId: Int,
     viewModel: CustomisationViewModel = koinViewModel()

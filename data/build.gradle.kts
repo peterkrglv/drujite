@@ -41,5 +41,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation(libs.okhttp)
+    implementation(libs.retrofit)
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation(libs.koin.android)
+
     implementation(project(":domain"))
+
 }

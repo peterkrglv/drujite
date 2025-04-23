@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.data.test
 
 import com.example.domain.models.ClanModel
 import com.example.domain.repos.ClanRepository

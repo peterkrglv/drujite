@@ -20,6 +20,6 @@ sealed class HomeEvent {
 }
 
 sealed class HomeAction {
-    data class NavigateToCustomization(val userId: Int, val sessionId: Int, val characterId: Int) :
+    data class NavigateToCustomization(val userToken: String, val sessionId: Int, val characterId: Int) :
         HomeAction()
 }

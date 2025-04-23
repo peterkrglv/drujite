@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.data.test
 
 import com.example.domain.models.GoalModel
 import com.example.domain.repos.GoalRepository

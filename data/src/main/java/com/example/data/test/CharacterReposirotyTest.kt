@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.data.test
 
 import com.example.domain.models.CharacterModel
 import com.example.domain.repos.CharacterRepository
@@ -8,7 +8,7 @@ class CharacterReposirotyTest : CharacterRepository {
         return 1
     }
 
-    override suspend fun getCharactersByUserId(userId: Int): List<CharacterModel> {
+    override suspend fun getUsersCharacters(userToken: String): List<CharacterModel> {
         return listOf(
             CharacterModel(
                 id = 1,

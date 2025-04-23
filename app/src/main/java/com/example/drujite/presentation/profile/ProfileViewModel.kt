@@ -2,9 +2,9 @@ package com.example.drujite.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.use_cases.character.GetCharactersByUserIdUseCase
+import com.example.domain.use_cases.character.GetUsersCharactersUseCase
+import com.example.domain.use_cases.session.GetUsersSessionsUseCase
 import com.example.domain.use_cases.user.GetCurrentUser
-import com.example.domain.use_cases.session.GetSessionsOfUserUseCase
 import com.example.domain.use_cases.user.LogOutUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ProfileViewModel (
+class ProfileViewModel(
     private val getCurrentUser: GetCurrentUser,
     private val logOutUseCase: LogOutUseCase,
-    private val getSessionsOfUserUseCase: GetSessionsOfUserUseCase,
-    private val getCharactersByUserIdUseCase: GetCharactersByUserIdUseCase
+    private val getUsersSessionsUseCase: GetUsersSessionsUseCase,
+    private val getUsersCharactersUseCase: GetUsersCharactersUseCase
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<ProfileState>(ProfileState.Initialization)
     val viewState: StateFlow<ProfileState>
@@ -31,6 +31,7 @@ class ProfileViewModel (
             is ProfileEvent.LogOut -> logOut()
         }
     }
+
     fun clearAction() {
         _viewAction.value = null
     }
@@ -48,9 +49,14 @@ class ProfileViewModel (
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val user = getCurrentUser.execute()
-                val sessions = getSessionsOfUserUseCase.execute(user.id)
-                val characters = getCharactersByUserIdUseCase.execute(user.id)
-                _viewState.value = ProfileState.Main(user, sessions, characters)
+                if (user != null) {
+                    val sessions = getUsersSessionsUseCase.execute(user.token)
+                    val characters = getUsersCharactersUseCase.execute(user.token)
+                    _viewState.value = ProfileState.Main(user, sessions, characters)
+                }
+                else {
+                    _viewAction.value = ProfileAction.NavigateToGreeting
+                }
             }
         }
     }

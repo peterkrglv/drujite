@@ -35,7 +35,7 @@ import org.koin.androidx.compose.koinViewModel
 fun TransferView(
     navController: NavController,
     sessionId: Int,
-    userId: Int,
+    userToken: String,
     viewModel: TransferViewModel = koinViewModel()
 ) {
     val viewState = viewModel.viewState.collectAsState()
@@ -45,7 +45,7 @@ fun TransferView(
         is TransferAction.NavigateToMain -> {
             viewModel.clearAction()
             navController.navigate(Screen.Home.route) {
-                popUpTo("${Screen.CharacterCreation.route}/${sessionId}/${userId}") {
+                popUpTo("${Screen.CharacterCreation.route}/${sessionId}/${userToken}") {
                     inclusive = true
                 }
             }
@@ -59,7 +59,7 @@ fun TransferView(
 
     when (val state = viewState.value) {
         is TransferState.Initialization -> {
-            viewModel.obtainEvent(TransferEvent.LoadCharacters(userId, sessionId))
+            viewModel.obtainEvent(TransferEvent.LoadCharacters(userToken, sessionId))
             LoadingScreen()
         }
         is TransferState.Loading -> LoadingScreen()

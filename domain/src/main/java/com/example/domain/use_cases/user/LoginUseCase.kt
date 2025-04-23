@@ -26,8 +26,8 @@ class LoginUseCase(
         }
         val response = repo.login(phone, password)
         val result = response.result
-        if (result == LoginResult.SUCCESS && response.id != null) {
-            sharedPrefs.saveUserId(response.id)
+        if (result == LoginResult.SUCCESS && response.token != null) {
+            sharedPrefs.saveUserToken(response.token)
         }
         return response
     }
@@ -43,5 +43,5 @@ enum class LoginResult(val message: String) {
 
 data class LoginResponse(
     val result: LoginResult,
-    val id: Int? = null
+    val token: String? = null
 )

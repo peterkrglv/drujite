@@ -170,7 +170,7 @@ fun ProfilePreview() {
         MainState(
             state = ProfileState.Main(
                 user = UserModel(
-                    id = 1,
+                    token = "1",
                     name = "Анастасия Чеботарь",
                     phone = "+7 999 999 99 99"
                 ),

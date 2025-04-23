@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.models.CharacterModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
 import com.example.domain.use_cases.character.AddCharacterToSessionUseCase
-import com.example.domain.use_cases.character.GetCharactersByUserIdUseCase
+import com.example.domain.use_cases.character.GetUsersCharactersUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 class TransferViewModel(
     private val sharedPrefsUseCase: AccessSharedPrefsUseCase,
-    private val getCharactersByUserIdUseCase: GetCharactersByUserIdUseCase,
+    private val getUsersCharactersUseCase: GetUsersCharactersUseCase,
     private val addCharacterToSessionUseCase: AddCharacterToSessionUseCase
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<TransferState>(TransferState.Initialization)
@@ -29,7 +29,7 @@ class TransferViewModel(
             is TransferEvent.ProceedClicked -> proceedClicked()
             is TransferEvent.CharacterChosen -> characterChosen(event.character)
             is TransferEvent.ReasonChanged -> reasonChanged(event.reason)
-            is TransferEvent.LoadCharacters -> loadCharacters(event.userId, event.sessionId)
+            is TransferEvent.LoadCharacters -> loadCharacters(event.userToken, event.sessionId)
             is TransferEvent.CharacterCreationClicked -> characterCreationClicked()
         }
     }
@@ -42,13 +42,13 @@ class TransferViewModel(
         _viewAction.value = TransferAction.NavigateToCreation
     }
 
-    private fun loadCharacters(userId: Int, sessionId: Int) {
+    private fun loadCharacters(userToken: String, sessionId: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val characters = getCharactersByUserIdUseCase.execute(userId)
+                val characters = getUsersCharactersUseCase.execute(userToken)
                 _viewState.value = TransferState.Main(
                     characters = characters,
-                    userId = userId,
+                    userToken = userToken,
                     sessionId = sessionId
                 )
             }
@@ -85,7 +85,6 @@ class TransferViewModel(
         _viewState.value = TransferState.Loading
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Thread.sleep(1000)
                 val result = addCharacterToSessionUseCase.execute(
                     sessionId = state.sessionId,
                     characterId = state.chosenCharacter.id
@@ -93,7 +92,7 @@ class TransferViewModel(
                 if (result) {
                     sharedPrefsUseCase.saveCharacterId(state.chosenCharacter.id)
                     _viewAction.value = TransferAction.NavigateToMain(
-                        state.userId,
+                        state.userToken,
                         state.sessionId,
                         state.chosenCharacter.id
                     )

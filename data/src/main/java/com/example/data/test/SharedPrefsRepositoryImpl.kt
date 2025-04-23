@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.data.test
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,12 +7,12 @@ import com.example.domain.repos.SharedPrefsRepository
 class SharedPrefsRepositoryImpl(context: Context) : SharedPrefsRepository {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
-    override suspend fun saveUserId(id: Int): Boolean {
-        return sharedPreferences.edit().putInt("user_id", id).commit()
+    override suspend fun saveUserToken(token: String): Boolean {
+        return sharedPreferences.edit().putString("user_token", token).commit()
     }
 
-    override suspend fun getUserId(): Int {
-        return sharedPreferences.getInt("user_id", -1)
+    override suspend fun getUserToken(): String? {
+        return sharedPreferences.getString("user_token", "")
     }
 
     override suspend fun saveSessionId(id: Int): Boolean {

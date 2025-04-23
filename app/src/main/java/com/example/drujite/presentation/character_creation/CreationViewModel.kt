@@ -57,7 +57,6 @@ class CreationViewModel(
     private fun loadClans(sessionId: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Thread.sleep(1000)
                 val clans = getClansBySessionIdUseCase.execute(sessionId)
                 _viewState.value = CreationState.Main(clans = clans)
             }

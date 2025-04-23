@@ -32,7 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 fun CreationView(
     navController: NavController,
     sessionId: Int,
-    userId: Int,
+    userToken: String,
     viewModel: CreationViewModel = koinViewModel()
 ) {
     val viewState = viewModel.viewState.collectAsState()
@@ -41,8 +41,8 @@ fun CreationView(
     when (val action = viewAction.value) {
         is CreationAction.NavigateToCustomisation -> {
             viewModel.clearAction()
-            navController.navigate("${Screen.CharacterCustomisation.route}/${userId}/${sessionId}/${action.characterId}") {
-                popUpTo("${Screen.CharacterCreation.route}/${sessionId}/${userId}") {
+            navController.navigate("${Screen.CharacterCustomisation.route}/${userToken}/${sessionId}/${action.characterId}") {
+                popUpTo("${Screen.CharacterCreation.route}/${sessionId}/${userToken}") {
                     inclusive = true
                 }
             }
@@ -50,7 +50,7 @@ fun CreationView(
 
         is CreationAction.NavigateToTransfer -> {
             viewModel.clearAction()
-            navController.navigate("${Screen.CharacterTransfer.route}/${userId}/${sessionId}")
+            navController.navigate("${Screen.CharacterTransfer.route}/${userToken}/${sessionId}")
         }
 
         else -> {}

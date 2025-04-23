@@ -53,7 +53,7 @@ fun HomeView(
 
     when (val action = viewAction.value) {
         is HomeAction.NavigateToCustomization -> {
-            navController.navigate("${Screen.CharacterCustomisation.route}/${action.userId}/${action.sessionId}/${action.characterId}") {
+            navController.navigate("${Screen.CharacterCustomisation.route}/${action.userToken}/${action.sessionId}/${action.characterId}") {
                 launchSingleTop = true
             }
             viewModel.clearAction()

@@ -20,8 +20,8 @@ class SignupUseCase(
         }
         val response = repo.signup(name, phone, password, gender)
         val result = response.result
-        if (result == SignupResult.SUCCESS && response.id != null) {
-            sharedPrefs.saveUserId(response.id)
+        if (result == SignupResult.SUCCESS && response.token != null) {
+            sharedPrefs.saveUserToken(response.token)
         }
         return response
     }
@@ -38,5 +38,5 @@ enum class SignupResult(val message: String) {
 
 data class SignupResponse(
     val result: SignupResult,
-    val id: Int? = null
+    val token: String? = null
 )

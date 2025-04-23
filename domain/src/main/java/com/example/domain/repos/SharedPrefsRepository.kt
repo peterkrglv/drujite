@@ -1,8 +1,8 @@
 package com.example.domain.repos
 
 interface SharedPrefsRepository {
-    suspend fun saveUserId(id: Int): Boolean
-    suspend fun getUserId(): Int
+    suspend fun saveUserToken(token: String): Boolean
+    suspend fun getUserToken(): String?
     suspend fun saveSessionId(id: Int): Boolean
     suspend fun getSessionId(): Int
     suspend fun saveCharacterId(id: Int): Boolean

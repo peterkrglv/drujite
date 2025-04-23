@@ -53,14 +53,12 @@ class CustomisationViewModel(
         _viewState.value = CustomisationState.Loading
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Thread.sleep(1000)
                 val result = saveCustomImage.execute(characterId, state.chosenOptions)
                 if (result) {
                     _viewAction.value = CustomisationAction.NavigateToMain
                 } else {
                     Log.e("network", "error saving image")
                 }
-                Thread.sleep(1000)
                 _viewState.value = state
             }
         }

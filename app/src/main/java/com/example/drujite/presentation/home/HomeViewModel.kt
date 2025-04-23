@@ -39,10 +39,10 @@ class HomeViewModel(
         if (state !is HomeState.Main) return
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val userId = sharedPrefs.getUserId()
+                val userToken = sharedPrefs.getUserToken()
                 val sessionId = sharedPrefs.getSessionId()
                 val characterId = state.character.id
-                _viewAction.value = HomeAction.NavigateToCustomization(userId, sessionId, characterId)
+                _viewAction.value = userToken?.let{  HomeAction.NavigateToCustomization(it, sessionId, characterId) }
             }
         }
     }

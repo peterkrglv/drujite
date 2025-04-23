@@ -53,7 +53,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SessionView(
     navController: NavController,
-    userId: Int,
+    userToken: String,
     viewModel: SessionViewModel = koinViewModel()
 ) {
     val viewState = viewModel.viewState.collectAsState()
@@ -63,8 +63,8 @@ fun SessionView(
     when (val action = viewAction.value) {
         is SessionAction.NavigateToCharacterCreation -> {
             viewModel.clearAction()
-            navController.navigate("${Screen.CharacterCreation.route}/${action.sessionId}/${userId}") {
-                popUpTo("${Screen.SessionSelection.route}/${userId}") { inclusive = true }
+            navController.navigate("${Screen.CharacterCreation.route}/${action.sessionId}/${userToken}") {
+                popUpTo("${Screen.SessionSelection.route}/${userToken}") { inclusive = true }
                 launchSingleTop = true
             }
         }
@@ -88,7 +88,7 @@ fun SessionView(
         }
 
         is SessionState.Loading -> {
-            viewModel.obtainEvent(SessionEvent.LoadSessions(userId))
+            viewModel.obtainEvent(SessionEvent.LoadSessions(userToken))
             LoadingScreen()
         }
     }
