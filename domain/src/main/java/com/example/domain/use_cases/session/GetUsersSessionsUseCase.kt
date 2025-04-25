@@ -5,5 +5,5 @@ import com.example.domain.repos.SessionRepository
 class GetUsersSessionsUseCase(
     private val repo: SessionRepository
 ) {
-    suspend fun execute(userToken: String) = repo.getUsersSessions(userToken)
+    suspend fun execute() = repo.getUsersSessions()
 }

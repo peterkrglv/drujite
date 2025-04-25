@@ -1,10 +1,10 @@
-package com.example.data.test
+package com.example.data.`test-repos`
 
 import com.example.domain.models.CharacterModel
 import com.example.domain.repos.CharacterRepository
 
 class CharacterReposirotyTest : CharacterRepository {
-    override suspend fun addCharacter(userId: Int, name: String, clanId: Int): Int {
+    override suspend fun addCharacter(userId: Int, name: String, clanId: Int): Int? {
         return 1
     }
 
@@ -45,7 +45,7 @@ class CharacterReposirotyTest : CharacterRepository {
         )
     }
 
-    override suspend fun getCharacterById(characterId: Int): CharacterModel {
+    override suspend fun getCharacterById(characterId: Int): CharacterModel? {
         return CharacterModel(
             id = characterId,
             name = "Мирон Арестов",

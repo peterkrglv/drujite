@@ -1,7 +1,6 @@
 package com.example.domain.models
 
 data class TimetableModel(
-    val id: Int,
     val sessionId: Int,
     val date: String,
     val events: List<TimeTableEventModel>

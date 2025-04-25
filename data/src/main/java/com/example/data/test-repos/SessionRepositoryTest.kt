@@ -1,4 +1,4 @@
-package com.example.data.test
+package com.example.data.`test-repos`
 
 import com.example.domain.models.SessionModel
 import com.example.domain.models.TimeTableEventModel
@@ -16,7 +16,7 @@ class SessionRepositoryTest : SessionRepository {
         )
     }
 
-    override suspend fun getUsersSessions(userToken: String): List<SessionModel> {
+    override suspend fun getUsersSessions(): List<SessionModel> {
         return listOf(
             SessionModel(
                 id = 1,
@@ -169,7 +169,6 @@ class SessionRepositoryTest : SessionRepository {
             )
         )
         val timeTable = TimetableModel(
-            id = 1,
             sessionId = 1,
             date = "25.03",
             events = timeTableEvents

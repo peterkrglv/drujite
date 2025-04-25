@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.data.repos
 
 import android.util.Log
 import com.example.data.api.UserApi

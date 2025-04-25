@@ -42,11 +42,11 @@ val domainModule = module {
     factory<GetSessionByCodeUseCase> { GetSessionByCodeUseCase(get()) }
     factory<AccessSharedPrefsUseCase> { AccessSharedPrefsUseCase(get()) }
     factory<GetClansBySessionIdUseCase> { GetClansBySessionIdUseCase(get()) }
-    factory<CreateCharacterUseCase> { CreateCharacterUseCase(get()) }
+    factory<CreateCharacterUseCase> { CreateCharacterUseCase(get(), get(), get()) }
     factory<GetUsersCharactersUseCase> { GetUsersCharactersUseCase(get()) }
     factory<AddCharacterToSessionUseCase> { AddCharacterToSessionUseCase(get()) }
     factory<GetCustomisationOptions> { GetCustomisationOptions(get()) }
-    factory<SaveCharacterCustomImageUseCase> { SaveCharacterCustomImageUseCase( get() ) }
+    factory<SaveCharacterCustomImageUseCase> { SaveCharacterCustomImageUseCase(get()) }
     factory<GetCharacterByIdUseCase> { GetCharacterByIdUseCase(get()) }
     factory<GetGoalsByCharacterIdUseCase> { GetGoalsByCharacterIdUseCase(get()) }
     factory<UpdateGoalStatusUseCase> { UpdateGoalStatusUseCase(get()) }
@@ -62,7 +62,7 @@ val appModule = module {
     viewModel<LoginViewModel> { LoginViewModel(get()) }
     viewModel<SignupViewModel> { SignupViewModel(get()) }
     viewModel<SessionViewModel> { SessionViewModel(get(), get(), get()) }
-    viewModel<CreationViewModel> { CreationViewModel(get(), get(), get()) }
+    viewModel<CreationViewModel> { CreationViewModel(get(), get()) }
     viewModel<TransferViewModel> { TransferViewModel(get(), get(), get()) }
     viewModel<CustomisationViewModel> { CustomisationViewModel(get(), get()) }
     viewModel<HomeViewModel> { HomeViewModel(get(), get(), get(), get()) }

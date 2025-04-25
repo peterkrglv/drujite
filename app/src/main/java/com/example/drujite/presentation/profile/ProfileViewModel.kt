@@ -50,7 +50,7 @@ class ProfileViewModel(
             withContext(Dispatchers.IO) {
                 val user = getCurrentUser.execute()
                 if (user != null) {
-                    val sessions = getUsersSessionsUseCase.execute(user.token)
+                    val sessions = getUsersSessionsUseCase.execute()
                     val characters = getUsersCharactersUseCase.execute(user.token)
                     _viewState.value = ProfileState.Main(user, sessions, characters)
                 }

@@ -8,7 +8,8 @@ sealed class CreationState {
         val name: String = "",
         val clans: List<ClanModel> = emptyList(),
         val chosenClan: ClanModel? = null,
-        val error: String = ""
+        val error: String = "",
+        val sessionId: Int
     ) : CreationState()
     data object Loading : CreationState()
 }

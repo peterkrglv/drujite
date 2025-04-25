@@ -1,13 +1,16 @@
 package com.example.data
 
+import com.example.data.api.SessionApi
 import com.example.data.api.UserApi
-import com.example.data.test.CharacterReposirotyTest
-import com.example.data.test.ClanRepositoryTest
-import com.example.data.test.CustomisationRepositoryTest
-import com.example.data.test.GoalRepositoryTest
-import com.example.data.test.NewsRepositoryTest
-import com.example.data.test.SessionRepositoryTest
-import com.example.data.test.SharedPrefsRepositoryImpl
+import com.example.data.repos.SessionRepositoryImpl
+import com.example.data.repos.UserRepositoryImpl
+import com.example.data.`test-repos`.CharacterReposirotyTest
+import com.example.data.`test-repos`.ClanRepositoryTest
+import com.example.data.`test-repos`.CustomisationRepositoryTest
+import com.example.data.`test-repos`.GoalRepositoryTest
+import com.example.data.`test-repos`.NewsRepositoryTest
+import com.example.data.`test-repos`.SessionRepositoryTest
+import com.example.data.`test-repos`.SharedPrefsRepositoryImpl
 import com.example.domain.repos.CharacterRepository
 import com.example.domain.repos.ClanRepository
 import com.example.domain.repos.CustomisationRepository
@@ -23,20 +26,24 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val dataModule = module {
     single<OkHttpClient> { OkHttpClient() }
-    single<Retrofit> { Retrofit.Builder()
-        .baseUrl("https://drujite-server.onrender.com/api/v1/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(get())
-        .build()
+    single<Retrofit> {
+        Retrofit.Builder()
+            .baseUrl("https://drujite-server.onrender.com/api/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(get())
+            .build()
     }
+
     single<UserApi> { get<Retrofit>().create(UserApi::class.java) }
+    single<SessionApi> { get<Retrofit>().create(SessionApi::class.java) }
+
     single<UserRepository> { UserRepositoryImpl(get(), get()) }
-    single<SessionRepository> { SessionRepositoryTest() }
+    single<SessionRepository> { SessionRepositoryImpl(get(), get()) }
+
     single<SharedPrefsRepository> { SharedPrefsRepositoryImpl(get()) }
     single<ClanRepository> { ClanRepositoryTest() }
     single<CharacterRepository> { CharacterReposirotyTest() }
     single<CustomisationRepository> { CustomisationRepositoryTest() }
     single<GoalRepository> { GoalRepositoryTest() }
-    single<SessionRepository> { SessionRepositoryTest() }
     single<NewsRepository> { NewsRepositoryTest() }
 }

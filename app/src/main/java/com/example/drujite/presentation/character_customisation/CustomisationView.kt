@@ -45,9 +45,6 @@ fun CustomisationView(
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
 
-    Log.d("CustomisationView", "viewState: $viewState")
-    Log.d("CustomisationView", "viewAction: $viewAction")
-
     when (viewAction.value) {
         is CustomisationAction.NavigateToMain -> {
             viewModel.clearAction()

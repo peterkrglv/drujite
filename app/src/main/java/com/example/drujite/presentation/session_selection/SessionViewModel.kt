@@ -1,5 +1,7 @@
 package com.example.drujite.presentation.session_selection
 
+import android.util.Log
+import android.util.Log.d
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.SessionModel
@@ -57,9 +59,11 @@ class SessionViewModel(
                         }
                     }
                 }
+
                 QRScannerResult.Canceled -> {
                     _viewState.value = state.copy(qrError = "")
                 }
+
                 QRScannerResult.Failure -> {
                     _viewState.value = state.copy(qrError = "Ошибка при сканировании QR-кода")
 
@@ -77,9 +81,10 @@ class SessionViewModel(
     }
 
     private fun loadSessions(userToken: String) {
+        d("server ui", "loading sessions")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val sessions = getUsersSessionsUseCase.execute(userToken)
+                val sessions = getUsersSessionsUseCase.execute()
                 _viewState.value = SessionState.Main(sessions)
             }
         }
@@ -90,6 +95,7 @@ class SessionViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 accessSharedPrefsUseCase.saveSessionId(id = session.id)
+                Log.d("server", "sessionSelected: ${session.id}")
             }
         }
     }

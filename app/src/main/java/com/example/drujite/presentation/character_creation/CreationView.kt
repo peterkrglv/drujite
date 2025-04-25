@@ -50,7 +50,7 @@ fun CreationView(
 
         is CreationAction.NavigateToTransfer -> {
             viewModel.clearAction()
-            navController.navigate("${Screen.CharacterTransfer.route}/${userToken}/${sessionId}")
+            navController.navigate("${Screen.CharacterTransfer.route}/${sessionId}/${userToken}")
         }
 
         else -> {}
@@ -144,7 +144,8 @@ fun CreationPreview() {
                     ClanModel(2, "Клан 2", "url"),
                     ClanModel(3, "Клан 3", "url"),
                 ),
-                error = ""
+                error = "",
+                sessionId = 0
             ),
             onProceedClicked = {},
             onClanChosen = {},

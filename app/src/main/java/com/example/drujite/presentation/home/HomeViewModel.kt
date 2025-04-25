@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.GoalModel
@@ -18,7 +19,7 @@ class HomeViewModel(
     private val getCharacterByIdUseCase: GetCharacterByIdUseCase,
     private val getGoalsByCharacterIdUseCase: GetGoalsByCharacterIdUseCase,
     private val updateGoalStatusUseCase: UpdateGoalStatusUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _viewState = MutableStateFlow<HomeState>(HomeState.Initialization)
     val viewState: StateFlow<HomeState>
         get() = _viewState
@@ -42,7 +43,13 @@ class HomeViewModel(
                 val userToken = sharedPrefs.getUserToken()
                 val sessionId = sharedPrefs.getSessionId()
                 val characterId = state.character.id
-                _viewAction.value = userToken?.let{  HomeAction.NavigateToCustomization(it, sessionId, characterId) }
+                _viewAction.value = userToken?.let {
+                    HomeAction.NavigateToCustomization(
+                        it,
+                        sessionId,
+                        characterId
+                    )
+                }
             }
         }
     }
@@ -72,8 +79,13 @@ class HomeViewModel(
             withContext(Dispatchers.IO) {
                 val characterId = sharedPrefs.getCharacterId()
                 val character = getCharacterByIdUseCase.execute(characterId)
-                val goals = getGoalsByCharacterIdUseCase.execute(characterId)
-                _viewState.value = HomeState.Main(character, goals)
+                if (character == null) {
+                    Log.d("HomeViewModel", "Character not found")
+                    _viewState.value = HomeState.Initialization
+                } else {
+                    val goals = getGoalsByCharacterIdUseCase.execute(characterId)
+                    _viewState.value = HomeState.Main(character, goals)
+                }
             }
         }
     }
