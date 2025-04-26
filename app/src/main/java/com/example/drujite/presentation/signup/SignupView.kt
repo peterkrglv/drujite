@@ -107,7 +107,7 @@ fun MainState(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(top = 64.dp),
+            .padding(top = 32.dp),
         verticalArrangement = Arrangement.SpaceBetween
 
     ) {

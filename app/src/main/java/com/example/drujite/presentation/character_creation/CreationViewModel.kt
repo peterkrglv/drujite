@@ -80,8 +80,8 @@ class CreationViewModel(
                     _viewState.value = state.copy(error = "Введите имя")
                 } else {
                     val characterId = createCharacterUseCase.execute(
-                        userId = 0,
                         name = state.name,
+                        story = "",
                         clanId = state.chosenClan.id,
                         sessionId = state.sessionId
                     )

@@ -10,6 +10,6 @@ data class TimeTableEventModel(
     val id: Int,
     val timetableId: Int,
     val header: String,
-    val time: String,
+    val time: String?,
     val isOutlined: Boolean,
 )

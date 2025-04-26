@@ -1,9 +1,10 @@
 package com.example.data.responces
 
-data class CharacterResponse (
+data class CharacterResponse(
     val id: Int,
     val name: String,
+    val player: String,
     val story: String,
-    val clanId: Int,
+    val clan: String,
     val imageUrl: String?
 )

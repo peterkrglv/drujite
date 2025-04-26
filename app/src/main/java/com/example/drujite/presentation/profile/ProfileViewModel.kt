@@ -2,6 +2,8 @@ package com.example.drujite.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.use_cases.AccessSharedPrefsUseCase
+import com.example.domain.use_cases.character.GetCharacterBySessionIdUseCase
 import com.example.domain.use_cases.character.GetUsersCharactersUseCase
 import com.example.domain.use_cases.session.GetUsersSessionsUseCase
 import com.example.domain.use_cases.user.GetCurrentUser
@@ -16,7 +18,9 @@ class ProfileViewModel(
     private val getCurrentUser: GetCurrentUser,
     private val logOutUseCase: LogOutUseCase,
     private val getUsersSessionsUseCase: GetUsersSessionsUseCase,
-    private val getUsersCharactersUseCase: GetUsersCharactersUseCase
+    private val getUsersCharactersUseCase: GetUsersCharactersUseCase,
+    private val getCharacterBySessionIdUseCase: GetCharacterBySessionIdUseCase,
+    private val sharedPrefs: AccessSharedPrefsUseCase
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<ProfileState>(ProfileState.Initialization)
     val viewState: StateFlow<ProfileState>
@@ -29,6 +33,43 @@ class ProfileViewModel(
         when (event) {
             is ProfileEvent.LoadData -> loadData()
             is ProfileEvent.LogOut -> logOut()
+            is ProfileEvent.ShowCharacters -> showCharacters()
+            is ProfileEvent.ShowSessions -> showSessions()
+            is ProfileEvent.ChangeSession -> changeSession(event.sessionId)
+        }
+    }
+
+    private fun changeSession(sessionId: Int) {
+        val state = _viewState.value
+        if (state !is ProfileState.Main) return
+        _viewState.value = ProfileState.Loading
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                sharedPrefs.saveSessionId(sessionId)
+                val character = getCharacterBySessionIdUseCase.execute(sessionId)
+                if (character != null) {
+                    sharedPrefs.saveCharacterId(character.id)
+                    _viewAction.value = ProfileAction.NavigateToMain
+                }
+                else {
+                    sharedPrefs.deleteCharacterId()
+                    _viewAction.value = ProfileAction.NavigateToCharacterCreation
+                }
+            }
+        }
+    }
+
+    private fun showSessions() {
+        val currentState = _viewState.value
+        if (currentState is ProfileState.Main) {
+            _viewState.value = currentState.copy(showingCharacters = false)
+        }
+    }
+
+    private fun showCharacters() {
+        val currentState = _viewState.value
+        if (currentState is ProfileState.Main) {
+            _viewState.value = currentState.copy(showingCharacters = true)
         }
     }
 

@@ -7,5 +7,6 @@ interface SharedPrefsRepository {
     suspend fun getSessionId(): Int
     suspend fun saveCharacterId(id: Int): Boolean
     suspend fun getCharacterId(): Int
+    suspend fun deleteCharacterId(): Boolean
     suspend fun clearAll(): Boolean
 }

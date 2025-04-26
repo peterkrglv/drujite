@@ -32,7 +32,5 @@ interface SessionApi {
     suspend fun getTimetable(
         @Body request: GetTimetableBySessionAndDate,
         @Header("Authorization") authorization: String,
-//        @retrofit2.http.Query("sessionId") sessionId: Int,
-//        @retrofit2.http.Query("date") date: String
     ): List<EventResponse>
 }

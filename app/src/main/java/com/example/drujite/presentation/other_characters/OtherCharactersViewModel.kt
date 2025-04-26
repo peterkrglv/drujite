@@ -3,7 +3,7 @@ package com.example.drujite.presentation.other_characters
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
-import com.example.domain.use_cases.character.GetCharactersBySessionId
+import com.example.domain.use_cases.character.GetCharactersBySessionIdUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 class OtherCharactersViewModel(
     private val sharedPrefs: AccessSharedPrefsUseCase,
-    private val getCharactersBySessionId: GetCharactersBySessionId
+    private val getCharactersBySessionIdUseCase: GetCharactersBySessionIdUseCase
 ) : ViewModel() {
     private val _viewState =
         MutableStateFlow<OtherCharactersState>(OtherCharactersState.Initialization)
@@ -45,7 +45,7 @@ class OtherCharactersViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val sessionId = sharedPrefs.getSessionId()
-                val characters = getCharactersBySessionId.execute(sessionId)
+                val characters = getCharactersBySessionIdUseCase.execute(sessionId)
                 _viewState.value = OtherCharactersState.Main(
                     characters = characters,
                     displayedCharacters = characters,

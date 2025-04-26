@@ -9,4 +9,5 @@ class AccessSharedPrefsUseCase(private val repo: SharedPrefsRepository) {
     suspend fun getSessionId() = repo.getSessionId()
     suspend fun saveCharacterId(id: Int) = repo.saveCharacterId(id)
     suspend fun getCharacterId() = repo.getCharacterId()
+    suspend fun deleteCharacterId() = repo.deleteCharacterId()
 }

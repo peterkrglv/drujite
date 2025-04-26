@@ -1,7 +1,8 @@
-package com.example.domain.models
+package com.example.data.responces
 
-data class NewsModel (
+data class NewsResponse (
     val id: Int,
+    val sessionId: Int,
     val title: String,
     val content: String,
     val dateTime: String,

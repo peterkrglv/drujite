@@ -6,6 +6,6 @@ data class EventResponse (
     val timetableId: Int,
     val num: Int,
     val name: String,
-    val time: String,
+    val time: String?,
     val isTitle: Boolean,
 )

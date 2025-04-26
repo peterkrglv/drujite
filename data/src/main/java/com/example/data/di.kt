@@ -1,16 +1,19 @@
 package com.example.data
 
+import com.example.data.api.CharacterApi
+import com.example.data.api.ClanApi
+import com.example.data.api.GoalApi
+import com.example.data.api.NewsApi
 import com.example.data.api.SessionApi
 import com.example.data.api.UserApi
+import com.example.data.repos.CharacterRepositoryImpl
+import com.example.data.repos.ClanRepositoryImpl
+import com.example.data.repos.GoalRepositoryImpl
+import com.example.data.repos.NewsRepositoryImpl
 import com.example.data.repos.SessionRepositoryImpl
+import com.example.data.repos.SharedPrefsRepositoryImpl
 import com.example.data.repos.UserRepositoryImpl
-import com.example.data.`test-repos`.CharacterReposirotyTest
-import com.example.data.`test-repos`.ClanRepositoryTest
 import com.example.data.`test-repos`.CustomisationRepositoryTest
-import com.example.data.`test-repos`.GoalRepositoryTest
-import com.example.data.`test-repos`.NewsRepositoryTest
-import com.example.data.`test-repos`.SessionRepositoryTest
-import com.example.data.`test-repos`.SharedPrefsRepositoryImpl
 import com.example.domain.repos.CharacterRepository
 import com.example.domain.repos.ClanRepository
 import com.example.domain.repos.CustomisationRepository
@@ -34,16 +37,19 @@ val dataModule = module {
             .build()
     }
 
-    single<UserApi> { get<Retrofit>().create(UserApi::class.java) }
+    single<CharacterApi> { get<Retrofit>().create(CharacterApi::class.java) }
+    single<ClanApi> { get<Retrofit>().create(ClanApi::class.java) }
+    single<GoalApi> { get<Retrofit>().create(GoalApi::class.java) }
+    single<NewsApi> { get<Retrofit>().create(NewsApi::class.java) }
     single<SessionApi> { get<Retrofit>().create(SessionApi::class.java) }
+    single<UserApi> { get<Retrofit>().create(UserApi::class.java) }
 
-    single<UserRepository> { UserRepositoryImpl(get(), get()) }
+    single<CharacterRepository> { CharacterRepositoryImpl(get(), get()) }
+    single<ClanRepository> { ClanRepositoryImpl(get(), get()) }
+    single<GoalRepository> { GoalRepositoryImpl(get(), get()) }
+    single<NewsRepository> { NewsRepositoryImpl(get(), get()) }
     single<SessionRepository> { SessionRepositoryImpl(get(), get()) }
-
+    single<UserRepository> { UserRepositoryImpl(get(), get()) }
     single<SharedPrefsRepository> { SharedPrefsRepositoryImpl(get()) }
-    single<ClanRepository> { ClanRepositoryTest() }
-    single<CharacterRepository> { CharacterReposirotyTest() }
     single<CustomisationRepository> { CustomisationRepositoryTest() }
-    single<GoalRepository> { GoalRepositoryTest() }
-    single<NewsRepository> { NewsRepositoryTest() }
 }

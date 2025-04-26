@@ -227,7 +227,7 @@ fun GoalItem(goal: GoalModel, onGoalClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                text = goal.goal,
+                text = goal.name,
             )
         }
     }
@@ -250,17 +250,17 @@ fun MainScreenPreview() {
                 goals = listOf(
                     GoalModel(
                         id = 1,
-                        goal = "Цель 1",
+                        name = "Цель 1",
                         isCompleted = false
                     ),
                     GoalModel(
                         id = 2,
-                        goal = "Цель 2",
+                        name = "Цель 2",
                         isCompleted = true
                     ),
                     GoalModel(
                         id = 3,
-                        goal = "Цель 3",
+                        name = "Цель 3",
                         isCompleted = false
                     )
                 )

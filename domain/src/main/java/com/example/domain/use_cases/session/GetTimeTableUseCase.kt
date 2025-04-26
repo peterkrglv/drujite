@@ -11,7 +11,7 @@ class GetTimeTableUseCase(
     private val sharedPrefs: SharedPrefsRepository,
     private val repo: SessionRepository
 ) {
-    suspend fun execute(): TimetableModel {
+    suspend fun execute(): TimetableModel? {
         val sessionId = sharedPrefs.getSessionId()
         val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val timeTable = repo.getTimetable(sessionId, date)

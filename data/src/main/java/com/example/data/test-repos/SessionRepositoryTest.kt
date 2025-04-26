@@ -43,7 +43,7 @@ class SessionRepositoryTest : SessionRepository {
         return true
     }
 
-    override suspend fun getTimetable(sessionId: Int, date: String): TimetableModel {
+    override suspend fun getTimetable(sessionId: Int, date: String): TimetableModel? {
         val timeTableEvents = listOf(
             TimeTableEventModel(
                 1,

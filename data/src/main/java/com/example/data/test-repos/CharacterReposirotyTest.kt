@@ -4,7 +4,7 @@ import com.example.domain.models.CharacterModel
 import com.example.domain.repos.CharacterRepository
 
 class CharacterReposirotyTest : CharacterRepository {
-    override suspend fun addCharacter(userId: Int, name: String, clanId: Int): Int? {
+    override suspend fun addCharacter(name: String, story: String, clanId: Int): Int? {
         return 1
     }
 
@@ -48,6 +48,17 @@ class CharacterReposirotyTest : CharacterRepository {
     override suspend fun getCharacterById(characterId: Int): CharacterModel? {
         return CharacterModel(
             id = characterId,
+            name = "Мирон Арестов",
+            player = "Илья Коданёв",
+            story = "Мирон истинный уроженец Гранатовой ветви. Будучи выращенным вблизи вулканов, он с детства познавал дикую магию, подвергался изнуряющим тренировкам и был свидетелем...\n\n\n\n\n\n\n\nОчень длинное поле",
+            imageUrl = "",
+            clan = "Гранатовая Ветвь"
+        )
+    }
+
+    override suspend fun getCharacterBySessionId(sessionId: Int): CharacterModel? {
+        return CharacterModel(
+            id = 0,
             name = "Мирон Арестов",
             player = "Илья Коданёв",
             story = "Мирон истинный уроженец Гранатовой ветви. Будучи выращенным вблизи вулканов, он с детства познавал дикую магию, подвергался изнуряющим тренировкам и был свидетелем...\n\n\n\n\n\n\n\nОчень длинное поле",

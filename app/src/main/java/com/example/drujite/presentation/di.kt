@@ -5,7 +5,8 @@ import com.example.domain.use_cases.AccessSharedPrefsUseCase
 import com.example.domain.use_cases.character.AddCharacterToSessionUseCase
 import com.example.domain.use_cases.character.CreateCharacterUseCase
 import com.example.domain.use_cases.character.GetCharacterByIdUseCase
-import com.example.domain.use_cases.character.GetCharactersBySessionId
+import com.example.domain.use_cases.character.GetCharacterBySessionIdUseCase
+import com.example.domain.use_cases.character.GetCharactersBySessionIdUseCase
 import com.example.domain.use_cases.character.GetCustomisationOptions
 import com.example.domain.use_cases.character.GetUsersCharactersUseCase
 import com.example.domain.use_cases.character.SaveCharacterCustomImageUseCase
@@ -53,20 +54,22 @@ val domainModule = module {
     factory<LogOutUseCase> { LogOutUseCase(get()) }
     factory<GetCurrentUser> { GetCurrentUser(get(), get()) }
     factory<GetSessionsNewsUseCase> { GetSessionsNewsUseCase(get(), get()) }
-    factory<GetCharactersBySessionId> { GetCharactersBySessionId(get()) }
+    factory<GetCharactersBySessionIdUseCase> { GetCharactersBySessionIdUseCase(get()) }
     factory<GetTimeTableUseCase> { GetTimeTableUseCase(get(), get()) }
+    factory<SaveCharacterCustomImageUseCase> { SaveCharacterCustomImageUseCase(get()) }
+    factory<GetCharacterBySessionIdUseCase> { GetCharacterBySessionIdUseCase(get()) }
 }
 
 val appModule = module {
     viewModel<GreetingViewModel> { GreetingViewModel(get()) }
     viewModel<LoginViewModel> { LoginViewModel(get()) }
     viewModel<SignupViewModel> { SignupViewModel(get()) }
-    viewModel<SessionViewModel> { SessionViewModel(get(), get(), get()) }
+    viewModel<SessionViewModel> { SessionViewModel(get(), get(), get(), get()) }
     viewModel<CreationViewModel> { CreationViewModel(get(), get()) }
     viewModel<TransferViewModel> { TransferViewModel(get(), get(), get()) }
     viewModel<CustomisationViewModel> { CustomisationViewModel(get(), get()) }
     viewModel<HomeViewModel> { HomeViewModel(get(), get(), get(), get()) }
-    viewModel<ProfileViewModel> { ProfileViewModel(get(), get(), get(), get()) }
+    viewModel<ProfileViewModel> { ProfileViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel<NewsViewModel> { NewsViewModel(get()) }
     viewModel<OtherCharactersViewModel> { OtherCharactersViewModel(get(), get()) }
     viewModel<TimetableViewModel> { TimetableViewModel(get()) }

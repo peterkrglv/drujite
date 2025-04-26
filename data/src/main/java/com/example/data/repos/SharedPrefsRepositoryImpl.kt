@@ -1,4 +1,4 @@
-package com.example.data.`test-repos`
+package com.example.data.repos
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -29,6 +29,10 @@ class SharedPrefsRepositoryImpl(context: Context) : SharedPrefsRepository {
 
     override suspend fun getCharacterId(): Int {
         return sharedPreferences.getInt("character_id", -1)
+    }
+
+    override suspend fun deleteCharacterId(): Boolean {
+        return sharedPreferences.edit().remove("character_id").commit()
     }
 
     override suspend fun clearAll(): Boolean {

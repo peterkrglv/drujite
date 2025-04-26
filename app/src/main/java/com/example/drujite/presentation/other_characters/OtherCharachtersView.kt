@@ -78,7 +78,8 @@ fun MainState(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.End
     ) {
         CharacterChoiceMenu(

@@ -42,11 +42,11 @@ import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.domain.models.SessionModel
 import com.example.drujite.R
+import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyButton
 import com.example.drujite.presentation.my_composables.MyTitle
 import com.example.drujite.presentation.my_composables.MyTitle2
-import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.startQRScanner
 import org.koin.androidx.compose.koinViewModel
 
@@ -69,13 +69,21 @@ fun SessionView(
             }
         }
 
+        is SessionAction.NavigateToMain -> {
+            viewModel.clearAction()
+            navController.navigate(Screen.Home.route) {
+                popUpTo(Screen.Home.route) { inclusive = true }
+                launchSingleTop = true
+            }
+        }
+
         is SessionAction.StartQRScanner -> {
             startQRScanner(context) { result, sessionNum ->
                 viewModel.obtainEvent(SessionEvent.OnQRScannerClosed(result, sessionNum))
             }
         }
 
-        else -> {}
+        null -> {}
     }
 
     when (val state = viewState.value) {

@@ -21,5 +21,6 @@ sealed class SessionEvent {
 
 sealed class SessionAction {
     data class NavigateToCharacterCreation(val sessionId: Int): SessionAction()
+    data object NavigateToMain: SessionAction()
     data object StartQRScanner: SessionAction()
 }

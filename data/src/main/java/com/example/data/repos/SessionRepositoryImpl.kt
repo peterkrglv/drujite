@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.data.requests.AddUsersCharacterToSession
 import com.example.data.requests.GetTimetableBySessionAndDate
 import com.example.data.requests.IdRequest
+import com.example.data.responces.EventResponse
+import com.example.data.responces.SessionResponse
 import com.example.domain.models.SessionModel
 import com.example.domain.models.TimeTableEventModel
 import com.example.domain.models.TimetableModel
@@ -40,13 +42,7 @@ class SessionRepositoryImpl(
             val response = sessionApi.getAllSessions("Bearer $token")
             Log.d("server", "getUsersSessions: $response")
             response.map {
-                SessionModel(
-                    id = it.id,
-                    name = it.name,
-                    description = it.description,
-                    dates = it.startDate + " – " + it.endDate,
-                    imageUrl = it.imageUrl
-                )
+                it.toModel()
             }
         } catch (e: Exception) {
             Log.e("server", "getUsersSessions: ${e.message}")
@@ -56,6 +52,7 @@ class SessionRepositoryImpl(
 
     override suspend fun addCharacterToSession(sessionId: Int, characterId: Int): Boolean {
         return try {
+            Log.d("server", "Try to add character: $sessionId $characterId")
             val token = sharedPrefs.getUserToken() ?: return false
             sessionApi.add(
                 request = AddUsersCharacterToSession(sessionId, characterId),
@@ -69,7 +66,7 @@ class SessionRepositoryImpl(
         }
     }
 
-    override suspend fun getTimetable(sessionId: Int, date: String): TimetableModel {
+    override suspend fun getTimetable(sessionId: Int, date: String): TimetableModel? {
         return try {
             val token = sharedPrefs.getUserToken() ?: throw Exception("Token not found")
             val request = GetTimetableBySessionAndDate(
@@ -81,28 +78,21 @@ class SessionRepositoryImpl(
                 request = GetTimetableBySessionAndDate(sessionId, date),
                 authorization = "Bearer $token"
             )
-//            val response = sessionApi.getTimetable(
-//                authorization = "Bearer $token",
-//                sessionId = sessionId,
-//                date = date
-//            )
             Log.d("server", "getTimetable: $response")
             TimetableModel(
                 sessionId = sessionId,
                 date = date,
                 events = response.map {
-                    TimeTableEventModel(
-                        id = it.id,
-                        timetableId = it.timetableId,
-                        header = it.name,
-                        time = it.time,
-                        isOutlined = it.isTitle
-                    )
+                    it.toModel()
                 }
             )
         } catch (e: Exception) {
             Log.e("server", "getTimetable: ${e.message}")
-            throw e
+            return TimetableModel(
+                sessionId = sessionId,
+                date = date,
+                events = emptyList()
+            )
         }
     }
 
@@ -110,4 +100,34 @@ class SessionRepositoryImpl(
         return null
     }
 
+}
+
+private fun SessionResponse.toModel() =
+    SessionModel(
+        id = id,
+        name = name,
+        description = description,
+        dates = "${convertDate(startDate)} – ${convertDate(endDate)}",
+        imageUrl = imageUrl
+    )
+
+private fun EventResponse.toModel() =
+    TimeTableEventModel(
+        id = id,
+        timetableId = timetableId,
+        header = name,
+        time = if (time == "" || time == "null") null else time,
+        isOutlined = isTitle
+    )
+
+
+fun convertDate(input: String): String {
+    val regex = Regex("""(\d{4})-(\d{2})-(\d{2})T""")
+    val matchResult = regex.find(input)
+    return if (matchResult != null) {
+        val (year, month, day) = matchResult.destructured
+        "$day.$month"
+    } else {
+        "Invalid date"
+    }
 }

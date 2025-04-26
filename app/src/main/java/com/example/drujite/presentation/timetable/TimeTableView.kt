@@ -74,7 +74,6 @@ fun MainState(
             TimeTableItem(it)
         }
     }
-
 }
 
 
@@ -93,7 +92,7 @@ fun TimeTableItem(item: TimeTableEventModel) {
             fontWeight = if (item.isOutlined) FontWeight.Bold else FontWeight.Normal
         )
         Text(
-            text = item.time,
+            text = item.time?: "",
             fontSize = 17.sp
         )
     }

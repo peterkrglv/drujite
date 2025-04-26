@@ -158,12 +158,7 @@ fun NewsItem(item: NewsModel) {
             horizontalArrangement = Arrangement.End
         ) {
             Text(
-                modifier = Modifier.padding(end = 8.dp),
-                text = item.date,
-                fontSize = 11.sp
-            )
-            Text(
-                text = item.time,
+                text = item.dateTime,
                 fontSize = 11.sp
             )
         }
@@ -182,8 +177,7 @@ fun NewsViewPreview() {
                         id = 1,
                         title = "Title",
                         content = "Content",
-                        date = "Date",
-                        time = "Time",
+                        dateTime = "Date",
                         imageUrl = "url"
                     )
                 ),

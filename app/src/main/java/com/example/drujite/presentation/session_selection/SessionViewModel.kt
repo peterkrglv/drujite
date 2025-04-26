@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.SessionModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
+import com.example.domain.use_cases.character.GetCharacterBySessionIdUseCase
 import com.example.domain.use_cases.session.GetSessionByCodeUseCase
 import com.example.domain.use_cases.session.GetUsersSessionsUseCase
 import com.example.drujite.presentation.QRScannerResult
@@ -18,7 +19,8 @@ import kotlinx.coroutines.withContext
 class SessionViewModel(
     private val getUsersSessionsUseCase: GetUsersSessionsUseCase,
     private val getSessionByCodeUseCase: GetSessionByCodeUseCase,
-    private val accessSharedPrefsUseCase: AccessSharedPrefsUseCase
+    private val accessSharedPrefsUseCase: AccessSharedPrefsUseCase,
+    private val getCharacterBySessionIdUseCase: GetCharacterBySessionIdUseCase
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<SessionState>(SessionState.Loading)
     val viewState: StateFlow<SessionState>
@@ -91,11 +93,17 @@ class SessionViewModel(
     }
 
     private fun sessionSelected(session: SessionModel) {
-        _viewAction.value = SessionAction.NavigateToCharacterCreation(session.id)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                accessSharedPrefsUseCase.saveSessionId(id = session.id)
                 Log.d("server", "sessionSelected: ${session.id}")
+                val character = getCharacterBySessionIdUseCase.execute(session.id)
+                Log.d("server", "character: ${character?.name}")
+                if (character != null) {
+                    accessSharedPrefsUseCase.saveCharacterId(character.id)
+                    _viewAction.value = SessionAction.NavigateToMain
+                } else {
+                    _viewAction.value = SessionAction.NavigateToCharacterCreation(session.id)
+                }
             }
         }
     }

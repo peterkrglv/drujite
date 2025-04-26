@@ -8,5 +8,5 @@ interface SessionRepository {
     suspend fun getUsersSessions(): List<SessionModel>
     suspend fun getSessionByCode(code: String): SessionModel?
     suspend fun addCharacterToSession(sessionId: Int, characterId: Int): Boolean
-    suspend fun getTimetable(sessionId: Int, date: String): TimetableModel
+    suspend fun getTimetable(sessionId: Int, date: String): TimetableModel?
 }
