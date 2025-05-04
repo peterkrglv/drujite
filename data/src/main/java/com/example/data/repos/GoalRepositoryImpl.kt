@@ -13,12 +13,13 @@ class GoalRepositoryImpl(
     private val sharedPrefs: SharedPrefsRepository,
 
     ) : GoalRepository {
-    override suspend fun getGoalsByCharacterId(characterId: Int): List<GoalModel> {
+    override suspend fun getCharacterGoals(): List<GoalModel> {
         val token = sharedPrefs.getUserToken()
+        val sessionId = sharedPrefs.getSessionId()
         try {
             val goals = goalApi.getGoals(
                 token = "Bearer $token",
-                characterId = characterId
+                sessionId = sessionId
             )
             Log.d("server", "Fetched goals: ${goals.size}")
             return goals.map {
@@ -34,7 +35,7 @@ class GoalRepositoryImpl(
         val token = sharedPrefs.getUserToken() ?: return false
         try {
             goalApi.completeGoal(
-                token = token,
+                token = "Bearer $token",
                 goal = IdRequest(goalId)
             )
             Log.d("server", "Goal status updated: $goalId to $isCompleted")

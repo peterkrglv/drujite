@@ -26,5 +26,5 @@ sealed class ProfileEvent {
 sealed class ProfileAction {
     data object NavigateToGreeting: ProfileAction()
     data object NavigateToMain: ProfileAction()
-    data object NavigateToCharacterCreation: ProfileAction()
+    data class NavigateToCharacterCreation(val userToken: String, val sessionId: Int): ProfileAction()
 }

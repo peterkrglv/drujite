@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.session_selection
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.compose.AppTheme
 import com.example.domain.models.SessionModel
 import com.example.drujite.R
@@ -111,13 +113,11 @@ fun MainState(
 ) {
     val items = listOf(
         Item(
-            id = 0,
-            imageResId = R.drawable.qr_code
+            id = 0
         )
     ) + state.sessions.mapIndexed { index, session ->
         Item(
             id = index + 1,
-            imageResId = R.drawable.greeting,
             session = session
         )
     }
@@ -184,6 +184,16 @@ fun CarouselItem(
         if (item.id == currentItem.id) MaterialTheme.colorScheme.primary else Color.Black
     val title = if (item.session == null) qrError else item.session.name
     val text = item.session?.description ?: ""
+    val painter = when {
+        item.session == null -> painterResource(id = R.drawable.qr_code)
+        item.session.imageUrl != null -> rememberAsyncImagePainter(model = item.session.imageUrl)
+        else -> painterResource(id = R.drawable.greeting)
+    }
+
+    if (item.session != null) {
+        Log.d("imageUrl", "${item.session.imageUrl}")
+    }
+
     Column {
         Image(
             modifier = Modifier
@@ -194,8 +204,8 @@ fun CarouselItem(
                 .clickable {
                     onItemSelected(item)
                 },
-            painter = painterResource(id = item.imageResId),
-            contentDescription = "GreetingImage",
+            painter = painter,
+            contentDescription = "Image",
             contentScale = ContentScale.Crop
         )
         Text(
@@ -221,7 +231,6 @@ fun CarouselItem(
 
 data class Item(
     val id: Int,
-    @DrawableRes val imageResId: Int,
     val session: SessionModel? = null
 )
 

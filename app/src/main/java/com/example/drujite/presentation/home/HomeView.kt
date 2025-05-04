@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.compose.AppTheme
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.GoalModel
@@ -94,7 +95,7 @@ fun MainState(
     val clothingItems = List(3) { R.drawable.hair }
     val goals = state.goals
     val character = state.character
-    val characterImage = painterResource(id = R.drawable.character)
+    val painter = if (character.imageUrl == null) painterResource(id = R.drawable.character) else rememberAsyncImagePainter(model = character.imageUrl)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -130,7 +131,7 @@ fun MainState(
 
             }
             Image(
-                painter = characterImage,
+                painter = painter,
                 contentDescription = stringResource(R.string.character),
                 modifier = Modifier
                     .size(180.dp, 256.dp)

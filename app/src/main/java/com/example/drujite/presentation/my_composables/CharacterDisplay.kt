@@ -3,7 +3,6 @@ package com.example.drujite.presentation.my_composables
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.SessionModel
 import com.example.drujite.R
@@ -33,8 +33,9 @@ fun CharacterCard(character: CharacterModel) {
         modifier = Modifier.fillMaxWidth().padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val painter = if (character.imageUrl == null) painterResource(id = R.drawable.character) else rememberAsyncImagePainter(model = character.imageUrl)
         Image(
-            painter = painterResource(id = R.drawable.character),
+            painter = painter,
             contentDescription = "Character image",
             modifier = Modifier
                 .size(140.dp, 200.dp)

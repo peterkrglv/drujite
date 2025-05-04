@@ -2,6 +2,7 @@ package com.example.data.repos
 
 import android.util.Log
 import com.example.data.api.CharacterApi
+import com.example.data.baseUrl
 import com.example.data.requests.AddCharacterRequest
 import com.example.data.responces.CharacterResponse
 import com.example.domain.models.CharacterModel
@@ -99,6 +100,6 @@ fun CharacterResponse.toModel(): CharacterModel {
         player = this.player,
         story = this.story,
         clan = this.clan,
-        imageUrl = this.imageUrl
+        imageUrl = if (this.imageUrl == "null" || this.imageUrl == null) null else baseUrl + this.imageUrl,
     )
 }

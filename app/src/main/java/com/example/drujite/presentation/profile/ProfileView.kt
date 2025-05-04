@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +37,7 @@ import com.example.drujite.presentation.my_composables.BottomSheetCharacter
 import com.example.drujite.presentation.my_composables.LazyGridCharacters
 import com.example.drujite.presentation.my_composables.LazyGridSessions
 import com.example.drujite.presentation.my_composables.LoadingScreen
+import com.example.drujite.presentation.my_composables.MyCard
 import com.example.drujite.presentation.my_composables.MyTextButton
 import org.koin.androidx.compose.koinViewModel
 
@@ -47,7 +49,7 @@ fun ProfileView(
     val viewState = viewModel.viewState.collectAsState()
     val viewAction = viewModel.viewAction.collectAsState()
 
-    when (viewAction.value) {
+    when (val action = viewAction.value) {
         is ProfileAction.NavigateToGreeting -> {
             navController.navigate(Screen.Greeting.route) {
                 popUpTo(Screen.Home.route) {
@@ -73,7 +75,7 @@ fun ProfileView(
 
         is ProfileAction.NavigateToCharacterCreation -> {
             val sessionId = (viewAction.value as ProfileAction.NavigateToCharacterCreation)
-            navController.navigate(Screen.CharacterCreation.route) {
+            navController.navigate("${Screen.CharacterCreation.route}/${action.sessionId}/${action.userToken}") {
                 popUpTo(Screen.Home.route) {
                     inclusive = true
                 }
@@ -212,15 +214,9 @@ fun Header(user: UserModel, onLogOut: () -> Unit) {
 
 @Composable
 fun MyNumCard(num: Int, title: String, modifier: Modifier, onClick: () -> Unit) {
-    ElevatedCard(
+    MyCard(
         modifier = modifier.padding(horizontal = 8.dp),
-        colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        ),
-        onClick = onClick,
+        containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
     ) {
         Column(
             modifier = Modifier
@@ -233,10 +229,12 @@ fun MyNumCard(num: Int, title: String, modifier: Modifier, onClick: () -> Unit) 
                 text = num.toString(),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
+                color = Color.White
             )
             Text(
                 text = title,
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                color = Color.White
             )
         }
     }

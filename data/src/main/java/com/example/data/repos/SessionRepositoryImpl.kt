@@ -1,6 +1,7 @@
 package com.example.data.repos
 
 import android.util.Log
+import com.example.data.baseUrl
 import com.example.data.requests.AddUsersCharacterToSession
 import com.example.data.requests.GetTimetableBySessionAndDate
 import com.example.data.requests.IdRequest
@@ -108,7 +109,7 @@ private fun SessionResponse.toModel() =
         name = name,
         description = description,
         dates = "${convertDate(startDate)} – ${convertDate(endDate)}",
-        imageUrl = imageUrl
+        imageUrl = if (imageUrl == "null" || imageUrl == null) null else baseUrl + imageUrl,
     )
 
 private fun EventResponse.toModel() =

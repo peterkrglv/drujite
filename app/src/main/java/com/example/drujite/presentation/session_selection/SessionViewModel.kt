@@ -98,6 +98,7 @@ class SessionViewModel(
                 Log.d("server", "sessionSelected: ${session.id}")
                 val character = getCharacterBySessionIdUseCase.execute(session.id)
                 Log.d("server", "character: ${character?.name}")
+                accessSharedPrefsUseCase.saveSessionId(session.id)
                 if (character != null) {
                     accessSharedPrefsUseCase.saveCharacterId(character.id)
                     _viewAction.value = SessionAction.NavigateToMain

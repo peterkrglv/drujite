@@ -12,7 +12,7 @@ interface GoalApi {
     @GET("goal/character-all")
     suspend fun getGoals(
         @Header("Authorization") token: String,
-        @Query("characterId") characterId: Int
+        @Query("sessionId") sessionId: Int
     ): List<GoalResponse>
     @PUT("goal/complete")
     suspend fun completeGoal(

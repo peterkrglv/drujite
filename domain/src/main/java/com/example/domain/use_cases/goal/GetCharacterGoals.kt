@@ -2,8 +2,8 @@ package com.example.domain.use_cases.goal
 
 import com.example.domain.repos.GoalRepository
 
-class GetGoalsByCharacterIdUseCase(
+class GetCharacterGoals(
     private val repo: GoalRepository
 ) {
-    suspend fun execute(characterId: Int) = repo.getGoalsByCharacterId(characterId)
+    suspend fun execute() = repo.getCharacterGoals()
 }

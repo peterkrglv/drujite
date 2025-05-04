@@ -10,7 +10,7 @@ import com.example.domain.use_cases.character.GetCharactersBySessionIdUseCase
 import com.example.domain.use_cases.character.GetCustomisationOptions
 import com.example.domain.use_cases.character.GetUsersCharactersUseCase
 import com.example.domain.use_cases.character.SaveCharacterCustomImageUseCase
-import com.example.domain.use_cases.goal.GetGoalsByCharacterIdUseCase
+import com.example.domain.use_cases.goal.GetCharacterGoals
 import com.example.domain.use_cases.goal.UpdateGoalStatusUseCase
 import com.example.domain.use_cases.session.GetClansBySessionIdUseCase
 import com.example.domain.use_cases.session.GetSessionByCodeUseCase
@@ -49,7 +49,7 @@ val domainModule = module {
     factory<GetCustomisationOptions> { GetCustomisationOptions(get()) }
     factory<SaveCharacterCustomImageUseCase> { SaveCharacterCustomImageUseCase(get()) }
     factory<GetCharacterByIdUseCase> { GetCharacterByIdUseCase(get()) }
-    factory<GetGoalsByCharacterIdUseCase> { GetGoalsByCharacterIdUseCase(get()) }
+    factory<GetCharacterGoals> { GetCharacterGoals(get()) }
     factory<UpdateGoalStatusUseCase> { UpdateGoalStatusUseCase(get()) }
     factory<LogOutUseCase> { LogOutUseCase(get()) }
     factory<GetCurrentUser> { GetCurrentUser(get(), get()) }

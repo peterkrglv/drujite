@@ -2,6 +2,7 @@ package com.example.data.repos
 
 import android.util.Log
 import com.example.data.api.NewsApi
+import com.example.data.baseUrl
 import com.example.data.responces.NewsResponse
 import com.example.domain.models.NewsModel
 import com.example.domain.repos.NewsRepository
@@ -36,7 +37,7 @@ private fun NewsResponse.toModel() =
         title = title,
         content = content,
         dateTime = convertTimestampToDateTime(dateTime),
-        imageUrl = imageUrl
+        imageUrl = if (imageUrl == "null" || imageUrl == null) null else baseUrl + imageUrl,
     )
 
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.models.GoalModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
 import com.example.domain.use_cases.character.GetCharacterByIdUseCase
-import com.example.domain.use_cases.goal.GetGoalsByCharacterIdUseCase
+import com.example.domain.use_cases.goal.GetCharacterGoals
 import com.example.domain.use_cases.goal.UpdateGoalStatusUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 class HomeViewModel(
     private val sharedPrefs: AccessSharedPrefsUseCase,
     private val getCharacterByIdUseCase: GetCharacterByIdUseCase,
-    private val getGoalsByCharacterIdUseCase: GetGoalsByCharacterIdUseCase,
+    private val getCharacterGoals: GetCharacterGoals,
     private val updateGoalStatusUseCase: UpdateGoalStatusUseCase
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<HomeState>(HomeState.Initialization)
@@ -79,11 +79,13 @@ class HomeViewModel(
             withContext(Dispatchers.IO) {
                 val characterId = sharedPrefs.getCharacterId()
                 val character = getCharacterByIdUseCase.execute(characterId)
+                val sessionId = sharedPrefs.getSessionId()
+                Log.d("server", "sharedPrefs: character - $characterId, session - $sessionId")
                 if (character == null) {
                     Log.d("HomeViewModel", "Character not found")
                     _viewState.value = HomeState.Initialization
                 } else {
-                    val goals = getGoalsByCharacterIdUseCase.execute(characterId)
+                    val goals = getCharacterGoals.execute()
                     _viewState.value = HomeState.Main(character, goals)
                 }
             }

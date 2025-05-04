@@ -4,7 +4,7 @@ import com.example.domain.models.GoalModel
 import com.example.domain.repos.GoalRepository
 
 class GoalRepositoryTest : GoalRepository {
-    override suspend fun getGoalsByCharacterId(characterId: Int): List<GoalModel> {
+    override suspend fun getCharacterGoals(): List<GoalModel> {
         return listOf(
             GoalModel(1, "Найти артефакт Слытко", true),
             GoalModel(

@@ -2,11 +2,13 @@ package com.example.drujite.presentation.home
 
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.GoalModel
+import com.example.domain.models.SessionModel
 
 sealed class HomeState {
     data class Main(
         val character: CharacterModel,
-        val goals: List<GoalModel>
+        val goals: List<GoalModel>,
+        //val session: SessionModel
     ) : HomeState()
 
     data object Initialization : HomeState()

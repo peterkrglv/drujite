@@ -53,7 +53,8 @@ class ProfileViewModel(
                 }
                 else {
                     sharedPrefs.deleteCharacterId()
-                    _viewAction.value = ProfileAction.NavigateToCharacterCreation
+                    val userToken = sharedPrefs.getUserToken()?:""
+                    _viewAction.value = ProfileAction.NavigateToCharacterCreation(userToken, sessionId)
                 }
             }
         }

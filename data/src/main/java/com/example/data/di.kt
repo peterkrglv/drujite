@@ -27,11 +27,13 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+const val baseUrl = "https://drujite-server.onrender.com/api/v1/"
+
 val dataModule = module {
     single<OkHttpClient> { OkHttpClient() }
     single<Retrofit> {
         Retrofit.Builder()
-            .baseUrl("https://drujite-server.onrender.com/api/v1/")
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(get())
             .build()
