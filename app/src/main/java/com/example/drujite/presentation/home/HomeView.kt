@@ -1,11 +1,12 @@
 package com.example.drujite.presentation.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.example.compose.AppTheme
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.GoalModel
@@ -55,10 +60,12 @@ fun HomeView(
     when (val action = viewAction.value) {
         is HomeAction.NavigateToCustomization -> {
             navController.navigate("${Screen.CharacterCustomisation.route}/${action.userToken}/${action.sessionId}/${action.characterId}") {
+                popUpTo(Screen.Home.route) { inclusive = true }
                 launchSingleTop = true
             }
             viewModel.clearAction()
         }
+
         else -> {}
     }
 
@@ -92,10 +99,14 @@ fun MainState(
     onGoalClick: (GoalModel) -> Unit,
     onCustomisationClick: () -> Unit
 ) {
-    val clothingItems = List(3) { R.drawable.hair }
+    val clothingItemsFirstThree = state.items.take(3)
+    val clothingItemsNextThree = state.items.drop(3)
     val goals = state.goals
     val character = state.character
-    val painter = if (character.imageUrl == null) painterResource(id = R.drawable.character) else rememberAsyncImagePainter(model = character.imageUrl)
+    val painter =
+        if (character.imageUrl == null) painterResource(id = R.drawable.character) else rememberAsyncImagePainter(
+            model = character.imageUrl
+        )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -125,23 +136,42 @@ fun MainState(
             Column(
                 modifier = Modifier
             ) {
-                clothingItems.forEach {
-                    ClothingItem(it)
+                clothingItemsFirstThree.forEach {
+                    it.iconUrl?.let {
+                        ClothingItem(it)
+                    }
                 }
 
             }
-            Image(
-                painter = painter,
-                contentDescription = stringResource(R.string.character),
+            Box(
                 modifier = Modifier
-                    .size(180.dp, 256.dp)
-                    .clickable { onCustomisationClick() }
-            )
-            Column(
-                modifier = Modifier
+                    .padding(16.dp)
+                    .size(180.dp, 255.dp)
             ) {
-                clothingItems.forEach {
-                    ClothingItem(it)
+                state.items.forEach { item ->
+                    val painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(item.imageUrl)
+                            .decoderFactory(SvgDecoder.Factory())
+                            .build()
+                    )
+                    Image(
+                        painter = painter,
+                        contentDescription = item.id.toString(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable { onCustomisationClick() },
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier,
+            ) {
+                clothingItemsNextThree.forEach {
+                    it.iconUrl?.let {
+                        ClothingItem(it)
+                    }
                 }
             }
         }
@@ -190,17 +220,24 @@ fun MainState(
 }
 
 @Composable
-fun ClothingItem(image: Int) {
-    MyCard(
-        modifier = Modifier.padding(4.dp),
-        contentPadding = PaddingValues(4.dp)
+fun ClothingItem(iconUrl: String) {
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(iconUrl)
+            .decoderFactory(SvgDecoder.Factory())
+            .build(),
+    )
+    Log.d("ClothingItem", "Icon URL: $iconUrl")
+    Box(
+        modifier = Modifier.padding(vertical = 4.dp)
     ) {
         Image(
-            painter = painterResource(id = image),
+            painter = painter,
             contentDescription = "Clothing",
             modifier = Modifier
-                .size(64.dp)
-                .clip(RoundedCornerShape(12.dp))
+                .size(80.dp)
+                .clip(RoundedCornerShape(12.dp)),
+            contentScale = ContentScale.Fit
         )
     }
 }
@@ -208,9 +245,7 @@ fun ClothingItem(image: Int) {
 @Composable
 fun GoalItem(goal: GoalModel, onGoalClick: () -> Unit) {
     MyCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
+        modifier = Modifier.padding(vertical = 4.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -264,7 +299,8 @@ fun MainScreenPreview() {
                         name = "Цель 3",
                         isCompleted = false
                     )
-                )
+                ),
+                items = emptyList()
             ),
             onGoalClick = {},
             onCustomisationClick = {}

@@ -2,18 +2,19 @@ package com.example.data
 
 import com.example.data.api.CharacterApi
 import com.example.data.api.ClanApi
+import com.example.data.api.CustomisationApi
 import com.example.data.api.GoalApi
 import com.example.data.api.NewsApi
 import com.example.data.api.SessionApi
 import com.example.data.api.UserApi
 import com.example.data.repos.CharacterRepositoryImpl
 import com.example.data.repos.ClanRepositoryImpl
+import com.example.data.repos.CustomisationrepositoryImpl
 import com.example.data.repos.GoalRepositoryImpl
 import com.example.data.repos.NewsRepositoryImpl
 import com.example.data.repos.SessionRepositoryImpl
 import com.example.data.repos.SharedPrefsRepositoryImpl
 import com.example.data.repos.UserRepositoryImpl
-import com.example.data.`test-repos`.CustomisationRepositoryTest
 import com.example.domain.repos.CharacterRepository
 import com.example.domain.repos.ClanRepository
 import com.example.domain.repos.CustomisationRepository
@@ -27,7 +28,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val baseUrl = "https://drujite-server.onrender.com/api/v1/"
+const val baseUrl = "http://89.208.87.216:8080/api/v1/"
 
 val dataModule = module {
     single<OkHttpClient> { OkHttpClient() }
@@ -45,6 +46,7 @@ val dataModule = module {
     single<NewsApi> { get<Retrofit>().create(NewsApi::class.java) }
     single<SessionApi> { get<Retrofit>().create(SessionApi::class.java) }
     single<UserApi> { get<Retrofit>().create(UserApi::class.java) }
+    single<CustomisationApi> { get<Retrofit>().create(CustomisationApi::class.java) }
 
     single<CharacterRepository> { CharacterRepositoryImpl(get(), get()) }
     single<ClanRepository> { ClanRepositoryImpl(get(), get()) }
@@ -53,5 +55,5 @@ val dataModule = module {
     single<SessionRepository> { SessionRepositoryImpl(get(), get()) }
     single<UserRepository> { UserRepositoryImpl(get(), get()) }
     single<SharedPrefsRepository> { SharedPrefsRepositoryImpl(get()) }
-    single<CustomisationRepository> { CustomisationRepositoryTest() }
+    single<CustomisationRepository> { CustomisationrepositoryImpl(get(), get()) }
 }

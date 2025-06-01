@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.models.SessionModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
 import com.example.domain.use_cases.character.GetCharacterBySessionIdUseCase
-import com.example.domain.use_cases.session.GetSessionByCodeUseCase
+import com.example.domain.use_cases.session.AddSessionByCodeUseCase
 import com.example.domain.use_cases.session.GetUsersSessionsUseCase
 import com.example.drujite.presentation.QRScannerResult
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 
 class SessionViewModel(
     private val getUsersSessionsUseCase: GetUsersSessionsUseCase,
-    private val getSessionByCodeUseCase: GetSessionByCodeUseCase,
+    private val addSessionByCodeUseCase: AddSessionByCodeUseCase,
     private val accessSharedPrefsUseCase: AccessSharedPrefsUseCase,
     private val getCharacterBySessionIdUseCase: GetCharacterBySessionIdUseCase
 ) : ViewModel() {
@@ -48,11 +48,12 @@ class SessionViewModel(
             if (state !is SessionState.Main) {
                 return
             }
+            Log.d("server", "handleQRScannerResult: $sessionNum")
             when (result) {
                 QRScannerResult.Success -> {
                     viewModelScope.launch {
                         withContext(Dispatchers.IO) {
-                            val session = getSessionByCodeUseCase.execute(sessionNum)
+                            val session = addSessionByCodeUseCase.execute(sessionNum)
                             if (session != null) {
                                 sessionSelected(session = session)
                             } else {

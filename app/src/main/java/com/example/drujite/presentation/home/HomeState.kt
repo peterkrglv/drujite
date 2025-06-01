@@ -3,12 +3,13 @@ package com.example.drujite.presentation.home
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.GoalModel
 import com.example.domain.models.SessionModel
+import com.example.domain.use_cases.customisation.CustomisationOption
 
 sealed class HomeState {
     data class Main(
         val character: CharacterModel,
         val goals: List<GoalModel>,
-        //val session: SessionModel
+        val items: List<CustomisationOption>
     ) : HomeState()
 
     data object Initialization : HomeState()

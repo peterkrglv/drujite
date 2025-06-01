@@ -7,3 +7,4 @@ data class SessionModel(
     val dates: String,
     val imageUrl: String?
 )
+

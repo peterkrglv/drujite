@@ -8,13 +8,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 
-val HomeIcon: ImageVector
+val NewsIcon: ImageVector
     get() {
-        if (_HomeIcon != null) {
-            return _HomeIcon!!
+        if (_NewsIcon != null) {
+            return _NewsIcon!!
         }
-        _HomeIcon = ImageVector.Builder(
-            name = "HomeIcon",
+        _NewsIcon = ImageVector.Builder(
+            name = "NewsIcon",
             defaultWidth = 30.dp,
             defaultHeight = 30.dp,
             viewportWidth = 30f,
@@ -24,11 +24,14 @@ val HomeIcon: ImageVector
                 fill = SolidColor(Color(0xFF000000)),
                 fillAlpha = 0.15f
             ) {
-                moveTo(15f, 3.75f)
-                curveTo(15f, 9.963f, 20.037f, 15f, 26.25f, 15f)
-                curveTo(20.037f, 15f, 15f, 20.037f, 15f, 26.25f)
-                curveTo(15f, 20.037f, 9.963f, 15f, 3.75f, 15f)
-                curveTo(9.963f, 15f, 15f, 9.963f, 15f, 3.75f)
+                moveTo(8.75f, 26.25f)
+                verticalLineTo(20f)
+                horizontalLineTo(5f)
+                verticalLineTo(5f)
+                horizontalLineTo(25f)
+                verticalLineTo(20f)
+                horizontalLineTo(15f)
+                lineTo(8.75f, 26.25f)
                 close()
             }
             path(
@@ -37,17 +40,20 @@ val HomeIcon: ImageVector
                 strokeLineCap = StrokeCap.Round,
                 strokeLineJoin = StrokeJoin.Round
             ) {
-                moveTo(15f, 3.75f)
-                curveTo(15f, 9.963f, 20.037f, 15f, 26.25f, 15f)
-                curveTo(20.037f, 15f, 15f, 20.037f, 15f, 26.25f)
-                curveTo(15f, 20.037f, 9.963f, 15f, 3.75f, 15f)
-                curveTo(9.963f, 15f, 15f, 9.963f, 15f, 3.75f)
+                moveTo(8.75f, 26.25f)
+                verticalLineTo(20f)
+                horizontalLineTo(5f)
+                verticalLineTo(5f)
+                horizontalLineTo(25f)
+                verticalLineTo(20f)
+                horizontalLineTo(15f)
+                lineTo(8.75f, 26.25f)
                 close()
             }
         }.build()
 
-        return _HomeIcon!!
+        return _NewsIcon!!
     }
 
 @Suppress("ObjectPropertyName")
-private var _HomeIcon: ImageVector? = null
+private var _NewsIcon: ImageVector? = null

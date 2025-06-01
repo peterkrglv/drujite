@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.profile
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -135,7 +134,7 @@ fun MainState(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 8.dp)
     ) {
         Header(user = user, onLogOut = onLogOut)
         Row(
@@ -215,13 +214,14 @@ fun Header(user: UserModel, onLogOut: () -> Unit) {
 @Composable
 fun MyNumCard(num: Int, title: String, modifier: Modifier, onClick: () -> Unit) {
     MyCard(
-        modifier = modifier.padding(horizontal = 8.dp),
+        modifier = modifier.padding(horizontal = 4.dp),
         containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .padding(vertical = 16.dp)
+                .clickable { onClick() },
             horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {

@@ -1,8 +1,8 @@
-package com.example.domain.use_cases.character
+package com.example.domain.use_cases.customisation
 
 import com.example.domain.repos.CustomisationRepository
 
-class GetCustomisationOptions(
+class GetCustomisationOptionsUseCase(
     private val repo: CustomisationRepository
 ) {
     suspend fun execute() = repo.getCustomisationOptions()
@@ -10,14 +10,13 @@ class GetCustomisationOptions(
 
 data class CustomisationOption(
     val id: Int,
-    val imageUrl: String
+    val typeId: Int,
+    val imageUrl: String?,
+    val iconUrl: String?
 )
 
 data class CustomisationCategory(
     val id: Int,
     val name: String,
-    val priority: Int,
-    val x: Int,
-    val y: Int,
-    val options: List<CustomisationOption>
+    val items: List<CustomisationOption>
 )

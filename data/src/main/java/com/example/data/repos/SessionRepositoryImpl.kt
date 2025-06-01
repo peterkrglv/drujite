@@ -2,6 +2,7 @@ package com.example.data.repos
 
 import android.util.Log
 import com.example.data.baseUrl
+import com.example.data.requests.AddSessionByQRRequest
 import com.example.data.requests.AddUsersCharacterToSession
 import com.example.data.requests.GetTimetableBySessionAndDate
 import com.example.data.requests.IdRequest
@@ -98,7 +99,22 @@ class SessionRepositoryImpl(
     }
 
     override suspend fun getSessionByCode(code: String): SessionModel? {
-        return null
+        return try {
+            val token = sharedPrefs.getUserToken() ?: return null
+            sessionApi.addSessionByQr(
+                request = com.example.data.requests.AddSessionByQRRequest(code),
+                token = "Bearer $token"
+            )
+            Log.d("server", "getSessionByCode: $code")
+            val session = sessionApi.addSessionByQr(
+                request = AddSessionByQRRequest(code),
+                token = "Bearer $token"
+            )
+            return session.toModel()
+        } catch (e: Exception) {
+            Log.e("server", "getSessionByCode: ${e.message}")
+            null
+        }
     }
 
 }

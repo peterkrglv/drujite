@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.models.GoalModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
 import com.example.domain.use_cases.character.GetCharacterByIdUseCase
+import com.example.domain.use_cases.customisation.GetCharacterItemsUseCase
 import com.example.domain.use_cases.goal.GetCharacterGoals
 import com.example.domain.use_cases.goal.UpdateGoalStatusUseCase
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +18,9 @@ import kotlinx.coroutines.withContext
 class HomeViewModel(
     private val sharedPrefs: AccessSharedPrefsUseCase,
     private val getCharacterByIdUseCase: GetCharacterByIdUseCase,
+    private val getCharacterItemsUseCase: GetCharacterItemsUseCase,
     private val getCharacterGoals: GetCharacterGoals,
-    private val updateGoalStatusUseCase: UpdateGoalStatusUseCase
+    private val updateGoalStatusUseCase: UpdateGoalStatusUseCase,
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<HomeState>(HomeState.Initialization)
     val viewState: StateFlow<HomeState>
@@ -86,7 +88,8 @@ class HomeViewModel(
                     _viewState.value = HomeState.Initialization
                 } else {
                     val goals = getCharacterGoals.execute()
-                    _viewState.value = HomeState.Main(character, goals)
+                    val items = getCharacterItemsUseCase.execute(characterId)
+                    _viewState.value = HomeState.Main(character, goals, items)
                 }
             }
         }
@@ -95,6 +98,4 @@ class HomeViewModel(
     fun clearAction() {
         _viewAction.value = null
     }
-
-
 }

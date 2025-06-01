@@ -1,4 +1,4 @@
-package com.example.data.`test-repos`
+package com.example.data.test_repos
 
 import com.example.domain.models.GoalModel
 import com.example.domain.repos.GoalRepository

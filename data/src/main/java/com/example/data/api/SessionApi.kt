@@ -1,5 +1,6 @@
 package com.example.data.api
 
+import com.example.data.requests.AddSessionByQRRequest
 import com.example.data.requests.AddUsersCharacterToSession
 import com.example.data.requests.GetTimetableBySessionAndDate
 import com.example.data.requests.IdRequest
@@ -33,4 +34,10 @@ interface SessionApi {
         @Body request: GetTimetableBySessionAndDate,
         @Header("Authorization") authorization: String,
     ): List<EventResponse>
+
+    @POST("users-sessions/qr")
+    suspend fun addSessionByQr(
+        @Body request: AddSessionByQRRequest,
+        @Header("Authorization") token: String
+    ): SessionResponse
 }

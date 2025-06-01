@@ -1,4 +1,4 @@
-package com.example.data.`test-repos`
+package com.example.data.test_repos
 
 import com.example.domain.models.ClanModel
 import com.example.domain.repos.ClanRepository

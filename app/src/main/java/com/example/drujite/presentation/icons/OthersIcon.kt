@@ -2,6 +2,8 @@ package com.example.drujite.presentation.icons
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
@@ -13,86 +15,61 @@ val OthersIcon: ImageVector
         }
         _OthersIcon = ImageVector.Builder(
             name = "OthersIcon",
-            defaultWidth = 24.dp,
-            defaultHeight = 24.dp,
-            viewportWidth = 960f,
-            viewportHeight = 960f
+            defaultWidth = 28.dp,
+            defaultHeight = 28.dp,
+            viewportWidth = 28f,
+            viewportHeight = 28f
         ).apply {
-            path(fill = SolidColor(Color(0xFFE3E3E3))) {
-                moveTo(40f, 800f)
-                verticalLineToRelative(-112f)
-                quadToRelative(0f, -34f, 17.5f, -62.5f)
-                reflectiveQuadTo(104f, 582f)
-                quadToRelative(62f, -31f, 126f, -46.5f)
-                reflectiveQuadTo(360f, 520f)
-                quadToRelative(66f, 0f, 130f, 15.5f)
-                reflectiveQuadTo(616f, 582f)
-                quadToRelative(29f, 15f, 46.5f, 43.5f)
-                reflectiveQuadTo(680f, 688f)
-                verticalLineToRelative(112f)
-                lineTo(40f, 800f)
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                fillAlpha = 0.15f
+            ) {
+                moveTo(15.167f, 17.5f)
+                horizontalLineTo(5.833f)
+                curveTo(3.256f, 17.5f, 1.166f, 19.589f, 1.166f, 22.167f)
+                verticalLineTo(24.5f)
+                horizontalLineTo(19.833f)
+                verticalLineTo(22.167f)
+                curveTo(19.833f, 19.589f, 17.744f, 17.5f, 15.167f, 17.5f)
                 close()
-                moveTo(760f, 800f)
-                verticalLineToRelative(-120f)
-                quadToRelative(0f, -44f, -24.5f, -84.5f)
-                reflectiveQuadTo(666f, 526f)
-                quadToRelative(51f, 6f, 96f, 20.5f)
-                reflectiveQuadToRelative(84f, 35.5f)
-                quadToRelative(36f, 20f, 55f, 44.5f)
-                reflectiveQuadToRelative(19f, 53.5f)
-                verticalLineToRelative(120f)
-                lineTo(760f, 800f)
+            }
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                fillAlpha = 0.15f
+            ) {
+                moveTo(10.5f, 12.833f)
+                curveTo(13.077f, 12.833f, 15.167f, 10.744f, 15.167f, 8.167f)
+                curveTo(15.167f, 5.589f, 13.077f, 3.5f, 10.5f, 3.5f)
+                curveTo(7.923f, 3.5f, 5.833f, 5.589f, 5.833f, 8.167f)
+                curveTo(5.833f, 10.744f, 7.923f, 12.833f, 10.5f, 12.833f)
                 close()
-                moveTo(360f, 480f)
-                quadToRelative(-66f, 0f, -113f, -47f)
-                reflectiveQuadToRelative(-47f, -113f)
-                quadToRelative(0f, -66f, 47f, -113f)
-                reflectiveQuadToRelative(113f, -47f)
-                quadToRelative(66f, 0f, 113f, 47f)
-                reflectiveQuadToRelative(47f, 113f)
-                quadToRelative(0f, 66f, -47f, 113f)
-                reflectiveQuadToRelative(-113f, 47f)
+            }
+            path(
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(22.167f, 17.5f)
+                curveTo(24.744f, 17.5f, 26.833f, 19.589f, 26.833f, 22.167f)
+                verticalLineTo(24.5f)
+                horizontalLineTo(24.5f)
+                moveTo(18.667f, 12.686f)
+                curveTo(20.679f, 12.168f, 22.167f, 10.341f, 22.167f, 8.167f)
+                curveTo(22.167f, 5.992f, 20.679f, 4.165f, 18.667f, 3.647f)
+                moveTo(15.167f, 8.167f)
+                curveTo(15.167f, 10.744f, 13.077f, 12.833f, 10.5f, 12.833f)
+                curveTo(7.923f, 12.833f, 5.833f, 10.744f, 5.833f, 8.167f)
+                curveTo(5.833f, 5.589f, 7.923f, 3.5f, 10.5f, 3.5f)
+                curveTo(13.077f, 3.5f, 15.167f, 5.589f, 15.167f, 8.167f)
                 close()
-                moveTo(760f, 320f)
-                quadToRelative(0f, 66f, -47f, 113f)
-                reflectiveQuadToRelative(-113f, 47f)
-                quadToRelative(-11f, 0f, -28f, -2.5f)
-                reflectiveQuadToRelative(-28f, -5.5f)
-                quadToRelative(27f, -32f, 41.5f, -71f)
-                reflectiveQuadToRelative(14.5f, -81f)
-                quadToRelative(0f, -42f, -14.5f, -81f)
-                reflectiveQuadTo(544f, 168f)
-                quadToRelative(14f, -5f, 28f, -6.5f)
-                reflectiveQuadToRelative(28f, -1.5f)
-                quadToRelative(66f, 0f, 113f, 47f)
-                reflectiveQuadToRelative(47f, 113f)
-                close()
-                moveTo(120f, 720f)
-                horizontalLineToRelative(480f)
-                verticalLineToRelative(-32f)
-                quadToRelative(0f, -11f, -5.5f, -20f)
-                reflectiveQuadTo(580f, 654f)
-                quadToRelative(-54f, -27f, -109f, -40.5f)
-                reflectiveQuadTo(360f, 600f)
-                quadToRelative(-56f, 0f, -111f, 13.5f)
-                reflectiveQuadTo(140f, 654f)
-                quadToRelative(-9f, 5f, -14.5f, 14f)
-                reflectiveQuadToRelative(-5.5f, 20f)
-                verticalLineToRelative(32f)
-                close()
-                moveTo(360f, 400f)
-                quadToRelative(33f, 0f, 56.5f, -23.5f)
-                reflectiveQuadTo(440f, 320f)
-                quadToRelative(0f, -33f, -23.5f, -56.5f)
-                reflectiveQuadTo(360f, 240f)
-                quadToRelative(-33f, 0f, -56.5f, 23.5f)
-                reflectiveQuadTo(280f, 320f)
-                quadToRelative(0f, 33f, 23.5f, 56.5f)
-                reflectiveQuadTo(360f, 400f)
-                close()
-                moveTo(360f, 720f)
-                close()
-                moveTo(360f, 320f)
+                moveTo(5.833f, 17.5f)
+                horizontalLineTo(15.167f)
+                curveTo(17.744f, 17.5f, 19.833f, 19.589f, 19.833f, 22.167f)
+                verticalLineTo(24.5f)
+                horizontalLineTo(1.166f)
+                verticalLineTo(22.167f)
+                curveTo(1.166f, 19.589f, 3.256f, 17.5f, 5.833f, 17.5f)
                 close()
             }
         }.build()
