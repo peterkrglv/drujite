@@ -1,7 +1,6 @@
 package com.example.drujite.presentation.session_selection
 
 import android.util.Log
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,12 +8,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -38,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
@@ -51,6 +55,7 @@ import com.example.drujite.presentation.my_composables.MyTitle
 import com.example.drujite.presentation.my_composables.MyTitle2
 import com.example.drujite.presentation.startQRScanner
 import org.koin.androidx.compose.koinViewModel
+import kotlin.math.absoluteValue
 
 @Composable
 fun SessionView(
@@ -142,22 +147,21 @@ fun MainState(
             MyTitle(stringResource(R.string.session_selection_title))
             MyTitle2(stringResource(R.string.session_selection_subtitle))
             Spacer(modifier = Modifier.height(8.dp))
-            HorizontalMultiBrowseCarousel(
-                state = carouselState,
-                modifier = Modifier.padding(40.dp, 20.dp),
-                preferredItemWidth = 260.dp,
-                itemSpacing = 16.dp,
-            ) { i ->
-                val item = items[i]
-                CarouselItem(
-                    item = item,
-                    currentItem = currentItem.value,
-                    onItemSelected = {
-                        currentItem.value = it
-                    },
-                    qrError = state.qrError
-                )
-            }
+            SessionsCarousel(
+                items = items.map { item ->
+                    {
+                        CarouselItem(
+                            item = item,
+                            currentItem = currentItem.value,
+                            onItemSelected = {
+                                currentItem.value = it
+                            },
+                            qrError = state.qrError
+                        )
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
         }
         Box(
             modifier = Modifier
@@ -215,8 +219,8 @@ fun CarouselItem(
             modifier = Modifier.padding(4.dp),
             maxLines = 1,
             minLines = 1,
-            overflow = TextOverflow.Ellipsis
-
+            overflow = TextOverflow.Ellipsis,
+            fontFamily = MaterialTheme.typography.titleLarge.fontFamily
         )
         Text(
             text = text,
@@ -224,8 +228,54 @@ fun CarouselItem(
             modifier = Modifier.padding(4.dp),
             maxLines = 5,
             minLines = 5,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            lineHeight = 18.sp,
+            fontFamily = MaterialTheme.typography.titleSmall.fontFamily
         )
+    }
+}
+
+@Composable
+fun SessionsCarousel(
+    items: List<@Composable () -> Unit>,
+    modifier: Modifier = Modifier,
+) {
+    val pagerState = rememberPagerState { items.size }
+
+    HorizontalPager(
+        state = pagerState,
+        modifier = Modifier.fillMaxWidth(),
+        pageSpacing = 24.dp,
+        contentPadding = PaddingValues(horizontal = 64.dp)
+    ) { page ->
+        val imageModifier = Modifier
+            .fillMaxWidth()
+            .graphicsLayer {
+                val pageOffset =
+                    (pagerState.currentPage - page + pagerState.currentPageOffsetFraction).absoluteValue
+                lerp(
+                    start = 75.dp,
+                    stop = 100.dp,
+                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                ).also { scale ->
+                    scaleY = scale / 100.dp
+                    scaleX = scale / 100.dp
+                }
+            }
+
+        val item = items[page]
+        Column(
+            modifier = imageModifier,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                item()
+            }
+        }
     }
 }
 

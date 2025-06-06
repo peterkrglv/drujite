@@ -1,14 +1,11 @@
 package com.example.drujite.presentation.character_transfer
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -20,6 +17,7 @@ import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.domain.models.CharacterModel
 import com.example.drujite.R
+import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.DropdownTextField
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyButton
@@ -27,7 +25,6 @@ import com.example.drujite.presentation.my_composables.MyExpandedTextField
 import com.example.drujite.presentation.my_composables.MySmallText
 import com.example.drujite.presentation.my_composables.MyTitle
 import com.example.drujite.presentation.my_composables.MyTitle2
-import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.TextButtonNavigation
 import org.koin.androidx.compose.koinViewModel
 
@@ -50,10 +47,12 @@ fun TransferView(
                 }
             }
         }
+
         is TransferAction.NavigateToCreation -> {
             viewModel.clearAction()
             navController.popBackStack()
         }
+
         else -> {}
     }
 
@@ -62,6 +61,7 @@ fun TransferView(
             viewModel.obtainEvent(TransferEvent.LoadCharacters(userToken, sessionId))
             LoadingScreen()
         }
+
         is TransferState.Loading -> LoadingScreen()
         is TransferState.Main -> MainState(
             state = state,
@@ -85,20 +85,17 @@ fun MainState(
     val chosenCharacter = state.chosenCharacter
     val reason = state.reason
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
-        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
+                .padding(top = 80.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom,
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
             MyTitle(text = stringResource(R.string.transfer_title))
             MyTitle2(text = stringResource(R.string.transfer_subtitle))
             DropdownTextField(
@@ -121,11 +118,16 @@ fun MainState(
             MySmallText(text = stringResource(R.string.transfer_warning))
             MyButton(text = stringResource(R.string.proceed), onClick = onProceedClicked)
         }
-        TextButtonNavigation(
-            text = stringResource(R.string.transfer_back),
-            buttonText = stringResource(R.string.transfer_back2),
-            onClick = onCharacterCreationClicked
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            TextButtonNavigation(
+                text = stringResource(R.string.transfer_back),
+                buttonText = stringResource(R.string.transfer_back2),
+                onClick = onCharacterCreationClicked
+            )
+        }
     }
 }
 

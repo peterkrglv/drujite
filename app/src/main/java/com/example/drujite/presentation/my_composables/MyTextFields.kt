@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.ui.theme.AppTypography
 
 
 @Composable
@@ -36,14 +37,15 @@ fun MyTextField(
     OutlinedTextField(
         modifier = Modifier
             .width(340.dp)
-            .padding(8.dp),
+            .padding(0.dp),
         value = value,
-        label = { Text(text = label) },
+        label = { Text(text = label, fontFamily = MaterialTheme.typography.titleSmall.fontFamily) },
         isError = errorText != null,
         shape = RoundedCornerShape(12.dp),
         onValueChange = onValueChange,
         singleLine = true,
-        supportingText = { if (errorText != null) Text(errorText) }
+        supportingText = { if (errorText != null) Text(errorText, fontFamily = MaterialTheme.typography.titleSmall.fontFamily) },
+        textStyle = MaterialTheme.typography.bodyMedium
     )
 }
 
@@ -57,15 +59,16 @@ fun MyPasswordField(
     OutlinedTextField(
         modifier = Modifier
             .width(340.dp)
-            .padding(8.dp),
+            .padding(0.dp),
         value = value,
-        label = { Text(text = label) },
+        label = { Text(text = label, fontFamily = MaterialTheme.typography.titleSmall.fontFamily) },
         isError = errorText != null,
         shape = RoundedCornerShape(12.dp),
         onValueChange = onValueChange,
         singleLine = true,
-        supportingText = { if (errorText != null) Text(errorText) },
-        visualTransformation = PasswordVisualTransformation()
+        supportingText = { if (errorText != null) Text(errorText, fontFamily = MaterialTheme.typography.titleSmall.fontFamily) },
+        visualTransformation = PasswordVisualTransformation(),
+        textStyle = MaterialTheme.typography.bodyMedium
     )
 }
 
@@ -79,9 +82,9 @@ fun MyTextFieldWhite(
     OutlinedTextField(
         modifier = Modifier
             .width(340.dp)
-            .padding(8.dp),
+            .padding(0.dp),
         value = value,
-        label = { Text(text = label) },
+        label = { Text(text = label, fontFamily = MaterialTheme.typography.titleSmall.fontFamily) },
         isError = isError,
         shape = RoundedCornerShape(12.dp),
         onValueChange = onValueChange,
@@ -90,7 +93,8 @@ fun MyTextFieldWhite(
             disabledContainerColor = Color.White,
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
-        )
+        ),
+        textStyle = MaterialTheme.typography.bodyMedium
     )
 }
 
@@ -106,15 +110,16 @@ fun MyExpandedTextField(
     OutlinedTextField(
         modifier = Modifier
             .width(340.dp)
-            .padding(8.dp)
+            .padding(0.dp)
             .verticalScroll(scrollState),
         value = value,
-        label = { Text(text = label) },
+        label = { Text(text = label, fontFamily = MaterialTheme.typography.titleSmall.fontFamily) },
         isError = isError,
         shape = RoundedCornerShape(12.dp),
         onValueChange = onValueChange,
         minLines = 7,
-        maxLines = 7
+        maxLines = 7,
+        textStyle = MaterialTheme.typography.bodyMedium
     )
 }
 
@@ -131,13 +136,13 @@ fun DropdownTextField(
     val isError = remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
-        modifier = Modifier.width(324.dp),
+        modifier = Modifier.width(340.dp),
         expanded = expanded.value,
         onExpandedChange = { expanded.value = !expanded.value }
     ) {
         OutlinedTextField(
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(vertical = 0.dp)
                 .fillMaxWidth()
                 .clickable {
                     Log.d("DropdownTextField", "Clicked")
@@ -145,13 +150,14 @@ fun DropdownTextField(
                 }
                 .menuAnchor(),
             value = selectedState.value,
-            label = { Text(text = label) },
-            placeholder = { Text(modifier = Modifier.fillMaxWidth(), text = label) },
+            label = { Text(text = label, fontFamily = MaterialTheme.typography.titleSmall.fontFamily) },
+            placeholder = { Text(modifier = Modifier.fillMaxWidth(), text = label, fontFamily = MaterialTheme.typography.titleSmall.fontFamily) },
             isError = isError.value,
             shape = RoundedCornerShape(12.dp),
             onValueChange = { },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value) },
             readOnly = true,
+            textStyle = MaterialTheme.typography.bodyMedium
         )
         ExposedDropdownMenu(
             modifier = Modifier
@@ -168,7 +174,7 @@ fun DropdownTextField(
         ) {
             options.forEach { item ->
                 DropdownMenuItem(
-                    text = { Text(item) },
+                    text = { Text(item, fontFamily = MaterialTheme.typography.titleSmall.fontFamily) },
                     onClick = {
                         onOptionSelected(item)
                         selectedState.value = item

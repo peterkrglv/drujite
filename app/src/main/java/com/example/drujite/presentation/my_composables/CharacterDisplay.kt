@@ -1,11 +1,14 @@
 package com.example.drujite.presentation.my_composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -16,6 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,10 +35,15 @@ import com.example.drujite.R
 @Composable
 fun CharacterCard(character: CharacterModel) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val painter = if (character.imageUrl == null) painterResource(id = R.drawable.character) else rememberAsyncImagePainter(model = character.imageUrl)
+        val painter =
+            if (character.imageUrl == null) painterResource(id = R.drawable.character) else rememberAsyncImagePainter(
+                model = character.imageUrl
+            )
         Image(
             painter = painter,
             contentDescription = "Character image",
@@ -106,10 +116,13 @@ fun LazyGridCharacters(
         columns = GridCells.Fixed(2)
     ) {
         items(characters) { character ->
-            MyCard (
-                modifier = Modifier.fillMaxWidth().padding(4.dp).clickable {
-                    onCharacterClick(character)
-                },
+            MyCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+                    .clickable {
+                        onCharacterClick(character)
+                    },
                 containerColor = MaterialTheme.colorScheme.surface,
             ) {
                 CharacterCard(character = character)
@@ -129,13 +142,18 @@ fun LazyGridSessions(
     ) {
         items(sessions) { session ->
             MyCard(
-                modifier = Modifier.fillMaxWidth().padding(4.dp).clickable {
-                    onSessionClick(session)
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+                    .clickable {
+                        onSessionClick(session)
+                    },
                 containerColor = MaterialTheme.colorScheme.surface,
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(4.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
@@ -152,6 +170,26 @@ fun LazyGridSessions(
             }
         }
     }
+}
+
+@Composable
+fun MyGradient(
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .height(16.dp),
+    colorTop: Color = MaterialTheme.colorScheme.surface,
+    colorBottom: Color = Color.Transparent
+) {
+    Box(
+        modifier = modifier.background(
+            Brush.verticalGradient(
+                colors = listOf(
+                    colorTop,
+                    colorBottom
+                )
+            )
+        ),
+    )
 }
 
 

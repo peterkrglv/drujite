@@ -54,7 +54,6 @@ sealed class NavigationItem(val screen: Screen, val icon: ImageVector) {
     data object ProfileItem : NavigationItem(screen = Screen.Profile, icon = ProfileIcon)
     data object TimeTableItem : NavigationItem(screen = Screen.Timetable, icon = TimeTableIcon)
     data object HomeItem : NavigationItem(screen = Screen.Home, icon = HomeIcon)
-    //data object AboutSessionItem : NavigationItem(screen = Screen.AboutSession, icon = AboutIcon)\
     data object NewsItem : NavigationItem(screen = Screen.News, icon = NewsIcon)
     data object OtherCharactersItem :
         NavigationItem(screen = Screen.OtherCharacters, icon = OthersIcon)

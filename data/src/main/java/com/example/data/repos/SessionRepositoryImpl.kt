@@ -17,24 +17,19 @@ class SessionRepositoryImpl(
     private val sessionApi: com.example.data.api.SessionApi,
     private val sharedPrefs: com.example.domain.repos.SharedPrefsRepository
 ) : SessionRepository {
-    override suspend fun getSessionById(id: Int): SessionModel? {
-        return try {
-            val userToken = sharedPrefs.getUserToken() ?: return null
-            val response = sessionApi.getSession(
-                request = IdRequest(id),
-                token = "Bearer $userToken"
+    override suspend fun getCurrentSession(): SessionModel? {
+        try {
+            val token = sharedPrefs.getUserToken() ?: return null
+            val sessionId = sharedPrefs.getSessionId() ?: return null
+            val sessionResponse = sessionApi.getSession(
+                id = sessionId,
+                token = "Bearer $token"
             )
-            Log.d("server", "getSessionById: $response")
-            SessionModel(
-                id = response.id,
-                name = response.name,
-                description = response.description,
-                dates = response.startDate + " – " + response.endDate,
-                imageUrl = response.imageUrl
-            )
+            Log.d("server", "getCurrentSession: $sessionResponse")
+            return sessionResponse.toModel()
         } catch (e: Exception) {
-            Log.e("server", "getSessionById: ${e.message}")
-            null
+            Log.e("server", "getCurrentSession: ${e.message}")
+            return null
         }
     }
 

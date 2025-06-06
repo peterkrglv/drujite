@@ -9,7 +9,8 @@ sealed class HomeState {
     data class Main(
         val character: CharacterModel,
         val goals: List<GoalModel>,
-        val items: List<CustomisationOption>
+        val items: List<CustomisationOption>,
+        val session: SessionModel
     ) : HomeState()
 
     data object Initialization : HomeState()
@@ -23,6 +24,10 @@ sealed class HomeEvent {
 }
 
 sealed class HomeAction {
-    data class NavigateToCustomization(val userToken: String, val sessionId: Int, val characterId: Int) :
+    data class NavigateToCustomization(
+        val userToken: String,
+        val sessionId: Int,
+        val characterId: Int
+    ) :
         HomeAction()
 }

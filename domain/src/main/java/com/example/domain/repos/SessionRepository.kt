@@ -4,7 +4,7 @@ import com.example.domain.models.SessionModel
 import com.example.domain.models.TimetableModel
 
 interface SessionRepository {
-    suspend fun getSessionById(id: Int): SessionModel?
+    suspend fun getCurrentSession(): SessionModel?
     suspend fun getUsersSessions(): List<SessionModel>
     suspend fun getSessionByCode(code: String): SessionModel?
     suspend fun addCharacterToSession(sessionId: Int, characterId: Int): Boolean

@@ -12,10 +12,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ui.theme.AppTypography
+import com.example.ui.theme.Monsterrat
+import com.example.ui.theme.Raleway
 
 @Composable
 fun MyTitle(
@@ -26,7 +30,8 @@ fun MyTitle(
         textAlign = TextAlign.Center,
         text = text,
         fontWeight = FontWeight.Bold,
-        fontSize = 28.sp
+        fontSize = 28.sp,
+        fontFamily = AppTypography.titleLarge.fontFamily
     )
 }
 
@@ -38,7 +43,8 @@ fun MyTitle2(
         modifier = Modifier.padding(60.dp, 4.dp),
         textAlign = TextAlign.Center,
         text = text,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        fontFamily = AppTypography.titleSmall.fontFamily
     )
 }
 
@@ -48,10 +54,11 @@ fun GreetingText1(
 ) {
     Text(
         modifier = Modifier.padding(vertical = 4.dp),
-        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+        textAlign = TextAlign.Center,
         text = text,
         fontWeight = FontWeight.Bold,
-        fontSize = 28.sp
+        fontSize = 28.sp,
+        fontFamily = Raleway
     )
 }
 
@@ -64,7 +71,8 @@ fun GreetingText2(
             .width(300.dp)
             .padding(vertical = 4.dp),
         text = text,
-        fontSize = 17.sp
+        fontSize = 17.sp,
+        fontFamily = AppTypography.titleSmall.fontFamily,
     )
 }
 
@@ -81,7 +89,7 @@ fun MyText(
 }
 
 @Composable
-fun ShortenedTextBig(text: String, maxLines: Int) {
+fun ShortenedTextBig(text: String, maxLines: Int, fontFamily: FontFamily = Monsterrat) {
     val isTextOverFlow = remember { mutableStateOf(false) }
     val isTextShortened = remember { mutableStateOf(true) }
     val lines = remember { mutableStateOf(maxLines) }
@@ -103,7 +111,8 @@ fun ShortenedTextBig(text: String, maxLines: Int) {
             },
             style = TextStyle(
                 textAlign = TextAlign.Justify
-            )
+            ),
+            fontFamily = fontFamily
         )
         if (isTextOverFlow.value) {
             textButtonText.value = if (isTextShortened.value) "Раскрыть" else "Скрыть"
@@ -117,14 +126,15 @@ fun ShortenedTextBig(text: String, maxLines: Int) {
                 text = textButtonText.value,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                fontFamily = fontFamily
             )
         }
     }
 }
 
 @Composable
-fun ShortenedText(text: String, maxLines: Int) {
+fun ShortenedText(text: String, maxLines: Int, fontFamily: FontFamily = Monsterrat) {
     val isTextOverFlow = remember { mutableStateOf(false) }
     val isTextShortened = remember { mutableStateOf(true) }
     val lines = remember { mutableStateOf(maxLines) }
@@ -146,7 +156,8 @@ fun ShortenedText(text: String, maxLines: Int) {
             },
             style = TextStyle(
                 textAlign = TextAlign.Justify
-            )
+            ),
+            fontFamily = fontFamily
         )
         if (isTextOverFlow.value) {
             textButtonText.value = if (isTextShortened.value) "Раскрыть" else "Скрыть"
@@ -160,7 +171,8 @@ fun ShortenedText(text: String, maxLines: Int) {
                 text = textButtonText.value,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontWeight = FontWeight.Bold,
-                fontSize = 11.sp
+                fontSize = 11.sp,
+                fontFamily = fontFamily
             )
         }
     }

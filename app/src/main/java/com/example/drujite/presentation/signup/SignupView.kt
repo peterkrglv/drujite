@@ -1,14 +1,13 @@
 package com.example.drujite.presentation.signup
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -20,6 +19,7 @@ import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.domain.use_cases.user.SignupResult
 import com.example.drujite.R
+import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.GenderChoice
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyButton
@@ -27,7 +27,6 @@ import com.example.drujite.presentation.my_composables.MyPasswordField
 import com.example.drujite.presentation.my_composables.MyTextField
 import com.example.drujite.presentation.my_composables.MyTitle
 import com.example.drujite.presentation.my_composables.MyTitle2
-import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.TextButtonNavigation
 import org.koin.androidx.compose.koinViewModel
 
@@ -103,19 +102,14 @@ fun MainState(
     val gender = state.gender
     val error = state.error
 
-    Column(
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(top = 32.dp),
-        verticalArrangement = Arrangement.SpaceBetween
-
+            .fillMaxSize(),
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
+                .fillMaxWidth().padding(top = 64.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         )
         {
             MyTitle(text = stringResource(R.string.signup_title))
@@ -155,11 +149,16 @@ fun MainState(
             )
             MyButton(text = stringResource(R.string.proceed), onClick = onProceedClicked)
         }
-        TextButtonNavigation(
-            text = stringResource(R.string.signup_to_login),
-            buttonText = stringResource(R.string.signup_to_login_2),
-            onClick = onLoginClicked
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            TextButtonNavigation(
+                text = stringResource(R.string.signup_to_login),
+                buttonText = stringResource(R.string.signup_to_login_2),
+                onClick = onLoginClicked
+            )
+        }
     }
 }
 

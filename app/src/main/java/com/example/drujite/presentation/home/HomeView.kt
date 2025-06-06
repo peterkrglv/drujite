@@ -29,7 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,6 +39,7 @@ import coil.request.ImageRequest
 import com.example.compose.AppTheme
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.GoalModel
+import com.example.domain.models.SessionModel
 import com.example.drujite.R
 import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.LoadingScreen
@@ -121,13 +121,7 @@ fun MainState(
                 .padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.Center,
         ) {
-            Text(
-                modifier = Modifier.padding(4.dp),
-                textAlign = TextAlign.Center,
-                text = stringResource(R.string.character),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp
-            )
+            MyTitle(state.session.name)
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -191,7 +185,8 @@ fun MainState(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = stringResource(R.string.home_quent),
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontFamily = MaterialTheme.typography.titleLarge.fontFamily
             )
             ShortenedTextBig(
                 text = character.story,
@@ -207,7 +202,8 @@ fun MainState(
                 Text(
                     text = stringResource(R.string.home_goals),
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = MaterialTheme.typography.titleLarge.fontFamily
                 )
             }
             goals.forEach {
@@ -264,6 +260,7 @@ fun GoalItem(goal: GoalModel, onGoalClick: () -> Unit) {
                     .fillMaxWidth()
                     .padding(8.dp),
                 text = goal.name,
+                fontFamily = MaterialTheme.typography.titleSmall.fontFamily
             )
         }
     }
@@ -300,7 +297,14 @@ fun MainScreenPreview() {
                         isCompleted = false
                     )
                 ),
-                items = emptyList()
+                items = emptyList(),
+                session = SessionModel(
+                    id = 1,
+                    name = "Смена",
+                    description = "Описание смены",
+                    dates = "01.01.2025 - 07.01.2025",
+                    imageUrl = null
+                )
             ),
             onGoalClick = {},
             onCustomisationClick = {}

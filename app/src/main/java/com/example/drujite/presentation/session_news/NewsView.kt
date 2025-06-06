@@ -79,7 +79,7 @@ fun MainState(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp)
     ) {
         MySearchBar(
             query = query,
@@ -149,7 +149,8 @@ fun NewsItem(item: NewsModel) {
             text = item.title,
             fontSize = 22.sp,
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
+            fontFamily = MaterialTheme.typography.titleLarge.fontFamily
         )
         ShortenedText(
             text = item.content,
@@ -171,7 +172,8 @@ fun NewsItem(item: NewsModel) {
         ) {
             Text(
                 text = item.dateTime,
-                fontSize = 11.sp
+                fontSize = 11.sp,
+                modifier = Modifier.padding(4.dp)
             )
         }
     }

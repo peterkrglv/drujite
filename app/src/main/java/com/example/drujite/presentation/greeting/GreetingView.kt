@@ -34,6 +34,7 @@ import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.GreetingText1
 import com.example.drujite.presentation.my_composables.GreetingText2
 import com.example.drujite.presentation.my_composables.LoadingScreen
+import com.example.ui.theme.Raleway
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -132,7 +133,8 @@ fun MainState(
                 ) {
                     Text(
                         fontSize = 18.sp,
-                        text = "Поехали ->"
+                        text = "Поехали ->",
+                        fontFamily = Raleway
                     )
                 }
             }

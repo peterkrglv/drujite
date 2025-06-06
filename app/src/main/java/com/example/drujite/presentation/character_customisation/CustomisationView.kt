@@ -1,26 +1,25 @@
 package com.example.drujite.presentation.character_customisation
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +37,7 @@ import com.example.drujite.R
 import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyButton
+import com.example.drujite.presentation.my_composables.MyGradient
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -94,7 +94,6 @@ fun MainState(
     onOptionChosen: (CustomisationCategory, Int) -> Unit,
     onProceedClicked: () -> Unit
 ) {
-    Log.d("CustomisationView", "Options: ${state.options}")
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -130,24 +129,30 @@ fun MainState(
             }
         }
 
-        LazyColumn(
-            contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
         ) {
-            items(state.options.size) { index ->
-                val category = state.options[index]
-                ItemChoice(
-                    category = category,
-                    chosenItem = state.chosenOptions[category] ?: 0,
-                    onItemChosen = { chosenIndex -> onOptionChosen(category, chosenIndex) }
-                )
+            LazyColumn(
+                contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(state.options.size) { index ->
+                    val category = state.options[index]
+                    ItemChoice(
+                        category = category,
+                        chosenItem = state.chosenOptions[category] ?: 0,
+                        onItemChosen = { chosenIndex -> onOptionChosen(category, chosenIndex) }
+                    )
+                }
+                item {
+                    MyButton(
+                        text = stringResource(R.string.customisation_proceed),
+                        onClick = onProceedClicked
+                    )
+                }
             }
-            item {
-                MyButton(
-                    text = stringResource(R.string.customisation_proceed),
-                    onClick = onProceedClicked
-                )
-            }
+            MyGradient()
         }
     }
 }

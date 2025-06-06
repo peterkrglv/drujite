@@ -9,6 +9,7 @@ import com.example.domain.use_cases.character.GetCharacterByIdUseCase
 import com.example.domain.use_cases.customisation.GetCharacterItemsUseCase
 import com.example.domain.use_cases.goal.GetCharacterGoals
 import com.example.domain.use_cases.goal.UpdateGoalStatusUseCase
+import com.example.domain.use_cases.session.GetCurrentSessionUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.withContext
 class HomeViewModel(
     private val sharedPrefs: AccessSharedPrefsUseCase,
     private val getCharacterByIdUseCase: GetCharacterByIdUseCase,
+    private val getCurrentSessionUseCase: GetCurrentSessionUseCase,
     private val getCharacterItemsUseCase: GetCharacterItemsUseCase,
     private val getCharacterGoals: GetCharacterGoals,
     private val updateGoalStatusUseCase: UpdateGoalStatusUseCase,
@@ -81,15 +83,24 @@ class HomeViewModel(
             withContext(Dispatchers.IO) {
                 val characterId = sharedPrefs.getCharacterId()
                 val character = getCharacterByIdUseCase.execute(characterId)
-                val sessionId = sharedPrefs.getSessionId()
-                Log.d("server", "sharedPrefs: character - $characterId, session - $sessionId")
                 if (character == null) {
                     Log.d("HomeViewModel", "Character not found")
                     _viewState.value = HomeState.Initialization
                 } else {
+                    val session = getCurrentSessionUseCase.execute()
+                    if (session == null) {
+                        Log.d("HomeViewModel", "Session not found")
+                        _viewState.value = HomeState.Initialization
+                        return@withContext
+                    }
                     val goals = getCharacterGoals.execute()
                     val items = getCharacterItemsUseCase.execute(characterId)
-                    _viewState.value = HomeState.Main(character, goals, items)
+                    _viewState.value = HomeState.Main(
+                        character = character,
+                        goals = goals,
+                        items = items,
+                        session = session
+                    )
                 }
             }
         }
