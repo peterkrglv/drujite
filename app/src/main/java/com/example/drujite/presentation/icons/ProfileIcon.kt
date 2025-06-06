@@ -2,6 +2,8 @@ package com.example.drujite.presentation.icons
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
@@ -13,61 +15,61 @@ val ProfileIcon: ImageVector
         }
         _ProfileIcon = ImageVector.Builder(
             name = "ProfileIcon",
-            defaultWidth = 24.dp,
-            defaultHeight = 24.dp,
-            viewportWidth = 960f,
-            viewportHeight = 960f
+            defaultWidth = 34.dp,
+            defaultHeight = 34.dp,
+            viewportWidth = 34f,
+            viewportHeight = 34f
         ).apply {
-            path(fill = SolidColor(Color(0xFFE3E3E3))) {
-                moveTo(480f, 480f)
-                quadToRelative(-66f, 0f, -113f, -47f)
-                reflectiveQuadToRelative(-47f, -113f)
-                quadToRelative(0f, -66f, 47f, -113f)
-                reflectiveQuadToRelative(113f, -47f)
-                quadToRelative(66f, 0f, 113f, 47f)
-                reflectiveQuadToRelative(47f, 113f)
-                quadToRelative(0f, 66f, -47f, 113f)
-                reflectiveQuadToRelative(-113f, 47f)
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                fillAlpha = 0.15f
+            ) {
+                moveTo(22.667f, 21.25f)
+                horizontalLineTo(11.333f)
+                curveTo(8.204f, 21.25f, 5.667f, 23.787f, 5.667f, 26.917f)
+                verticalLineTo(29.75f)
+                horizontalLineTo(28.333f)
+                verticalLineTo(26.917f)
+                curveTo(28.333f, 23.787f, 25.796f, 21.25f, 22.667f, 21.25f)
                 close()
-                moveTo(160f, 800f)
-                verticalLineToRelative(-112f)
-                quadToRelative(0f, -34f, 17.5f, -62.5f)
-                reflectiveQuadTo(224f, 582f)
-                quadToRelative(62f, -31f, 126f, -46.5f)
-                reflectiveQuadTo(480f, 520f)
-                quadToRelative(66f, 0f, 130f, 15.5f)
-                reflectiveQuadTo(736f, 582f)
-                quadToRelative(29f, 15f, 46.5f, 43.5f)
-                reflectiveQuadTo(800f, 688f)
-                verticalLineToRelative(112f)
-                lineTo(160f, 800f)
+            }
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                fillAlpha = 0.15f
+            ) {
+                moveTo(17f, 15.583f)
+                curveTo(20.129f, 15.583f, 22.667f, 13.046f, 22.667f, 9.917f)
+                curveTo(22.667f, 6.787f, 20.129f, 4.25f, 17f, 4.25f)
+                curveTo(13.87f, 4.25f, 11.333f, 6.787f, 11.333f, 9.917f)
+                curveTo(11.333f, 13.046f, 13.87f, 15.583f, 17f, 15.583f)
                 close()
-                moveTo(240f, 720f)
-                horizontalLineToRelative(480f)
-                verticalLineToRelative(-32f)
-                quadToRelative(0f, -11f, -5.5f, -20f)
-                reflectiveQuadTo(700f, 654f)
-                quadToRelative(-54f, -27f, -109f, -40.5f)
-                reflectiveQuadTo(480f, 600f)
-                quadToRelative(-56f, 0f, -111f, 13.5f)
-                reflectiveQuadTo(260f, 654f)
-                quadToRelative(-9f, 5f, -14.5f, 14f)
-                reflectiveQuadToRelative(-5.5f, 20f)
-                verticalLineToRelative(32f)
+            }
+            path(
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(22.667f, 21.25f)
+                horizontalLineTo(11.333f)
+                curveTo(8.204f, 21.25f, 5.667f, 23.787f, 5.667f, 26.917f)
+                verticalLineTo(29.75f)
+                horizontalLineTo(28.333f)
+                verticalLineTo(26.917f)
+                curveTo(28.333f, 23.787f, 25.796f, 21.25f, 22.667f, 21.25f)
                 close()
-                moveTo(480f, 400f)
-                quadToRelative(33f, 0f, 56.5f, -23.5f)
-                reflectiveQuadTo(560f, 320f)
-                quadToRelative(0f, -33f, -23.5f, -56.5f)
-                reflectiveQuadTo(480f, 240f)
-                quadToRelative(-33f, 0f, -56.5f, 23.5f)
-                reflectiveQuadTo(400f, 320f)
-                quadToRelative(0f, 33f, 23.5f, 56.5f)
-                reflectiveQuadTo(480f, 400f)
-                close()
-                moveTo(480f, 320f)
-                close()
-                moveTo(480f, 720f)
+            }
+            path(
+                stroke = SolidColor(Color(0xFF000000)),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                moveTo(17f, 15.583f)
+                curveTo(20.129f, 15.583f, 22.667f, 13.046f, 22.667f, 9.917f)
+                curveTo(22.667f, 6.787f, 20.129f, 4.25f, 17f, 4.25f)
+                curveTo(13.87f, 4.25f, 11.333f, 6.787f, 11.333f, 9.917f)
+                curveTo(11.333f, 13.046f, 13.87f, 15.583f, 17f, 15.583f)
                 close()
             }
         }.build()

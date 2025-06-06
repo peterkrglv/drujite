@@ -1,23 +1,24 @@
 package com.example.drujite.presentation.character_creation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.AppTheme
 import com.example.domain.models.ClanModel
+import com.example.drujite.R
 import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.DropdownTextField
 import com.example.drujite.presentation.my_composables.LoadingScreen
@@ -32,7 +33,7 @@ import org.koin.androidx.compose.koinViewModel
 fun CreationView(
     navController: NavController,
     sessionId: Int,
-    userId: Int,
+    userToken: String,
     viewModel: CreationViewModel = koinViewModel()
 ) {
     val viewState = viewModel.viewState.collectAsState()
@@ -41,8 +42,8 @@ fun CreationView(
     when (val action = viewAction.value) {
         is CreationAction.NavigateToCustomisation -> {
             viewModel.clearAction()
-            navController.navigate("${Screen.CharacterCustomisation.route}/${userId}/${sessionId}/${action.characterId}") {
-                popUpTo("${Screen.CharacterCreation.route}/${sessionId}/${userId}") {
+            navController.navigate("${Screen.CharacterCustomisation.route}/${userToken}/${sessionId}/${action.characterId}") {
+                popUpTo("${Screen.CharacterCreation.route}/${sessionId}/${userToken}") {
                     inclusive = true
                 }
             }
@@ -50,7 +51,7 @@ fun CreationView(
 
         is CreationAction.NavigateToTransfer -> {
             viewModel.clearAction()
-            navController.navigate("${Screen.CharacterTransfer.route}/${userId}/${sessionId}")
+            navController.navigate("${Screen.CharacterTransfer.route}/${sessionId}/${userToken}")
         }
 
         else -> {}
@@ -90,11 +91,9 @@ fun MainState(
     val chosenClan = state.chosenClan
     val clans = state.clans
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
-        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
             modifier = Modifier
@@ -103,30 +102,35 @@ fun MainState(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom,
         ) {
-            MyTitle(text = "Создай персонажа")
-            MyTitle2(text = "Lorem Ipsum - это текст-\"рыба\", часто используемый в печати и вэб-дизайне.")
+            MyTitle(text = stringResource(R.string.character_creation_title))
+            MyTitle2(text = stringResource(R.string.character_creation_subtitle))
             Spacer(modifier = Modifier.height(32.dp))
             MyTextField(
                 value = name,
-                label = "Имя и фамилия персонажа",
+                label = stringResource(R.string.character_name_and_surname),
                 errorText = null,
                 onValueChange = { onNameChanged(it) }
             )
             DropdownTextField(
-                label = "Выбери клан",
+                label = stringResource(R.string.choose_clan),
                 options = clans.map { it.name },
                 selected = chosenClan?.name ?: ""
             ) { selectedName ->
                 val selectedClan = clans.find { it.name == selectedName }
                 onClanChosen(selectedClan!!)
             }
-            MyButton(text = "Дальше", onClick = onProceedClicked)
+            MyButton(text = stringResource(R.string.next), onClick = onProceedClicked)
         }
-        TextButtonNavigation(
-            text = "Хочешь перенести персонажа?",
-            buttonText = "Перенос",
-            onClick = onTransferClicked
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            TextButtonNavigation(
+                text = "Хочешь перенести персонажа?",
+                buttonText = "Перенос",
+                onClick = onTransferClicked
+            )
+        }
     }
 }
 
@@ -144,7 +148,8 @@ fun CreationPreview() {
                     ClanModel(2, "Клан 2", "url"),
                     ClanModel(3, "Клан 3", "url"),
                 ),
-                error = ""
+                error = "",
+                sessionId = 0
             ),
             onProceedClicked = {},
             onClanChosen = {},

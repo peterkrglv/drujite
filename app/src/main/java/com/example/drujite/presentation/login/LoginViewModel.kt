@@ -45,23 +45,17 @@ class LoginViewModel(
         _viewState.value = LoginState.Loading
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Thread.sleep(2000)
                 val loginReponse = loginUseCase.execute(state.phone, state.password)
-                val userId = loginReponse.id
-                if (loginReponse.result == LoginResult.SUCCESS && userId != null) {
-                    _viewAction.value = LoginAction.NavigateToSessionSelection(userId)
+                val userToken = loginReponse.token
+                if (loginReponse.result == LoginResult.SUCCESS && userToken != null) {
+                    _viewAction.value = LoginAction.NavigateToSessionSelection(userToken)
                 } else {
                     _viewState.value = state.copy(error = loginReponse.result)
                 }
-//                val loginResult = loginUseCase.execute(state.phone, state.password)
-//                if (loginResult == LoginResult.SUCCESS) {
-//                    _viewAction.value = LoginAction.NavigateToSessionSelection
-//                } else {
-//                    _viewState.value = state.copy(error = loginResult)
-//                }
             }
         }
     }
+
 
     private fun passwordChanged(password: String) {
         val state = _viewState.value

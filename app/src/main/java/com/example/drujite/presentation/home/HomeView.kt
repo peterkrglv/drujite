@@ -1,11 +1,12 @@
 package com.example.drujite.presentation.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,17 +24,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.example.compose.AppTheme
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.GoalModel
+import com.example.domain.models.SessionModel
 import com.example.drujite.R
 import com.example.drujite.presentation.Screen
 import com.example.drujite.presentation.my_composables.LoadingScreen
@@ -53,11 +59,13 @@ fun HomeView(
 
     when (val action = viewAction.value) {
         is HomeAction.NavigateToCustomization -> {
-            navController.navigate("${Screen.CharacterCustomisation.route}/${action.userId}/${action.sessionId}/${action.characterId}") {
+            navController.navigate("${Screen.CharacterCustomisation.route}/${action.userToken}/${action.sessionId}/${action.characterId}") {
+                popUpTo(Screen.Home.route) { inclusive = true }
                 launchSingleTop = true
             }
             viewModel.clearAction()
         }
+
         else -> {}
     }
 
@@ -91,10 +99,14 @@ fun MainState(
     onGoalClick: (GoalModel) -> Unit,
     onCustomisationClick: () -> Unit
 ) {
-    val clothingItems = List(3) { R.drawable.hair }
+    val clothingItemsFirstThree = state.items.take(3)
+    val clothingItemsNextThree = state.items.drop(3)
     val goals = state.goals
     val character = state.character
-    val characterImage = painterResource(id = R.drawable.character)
+    val painter =
+        if (character.imageUrl == null) painterResource(id = R.drawable.character) else rememberAsyncImagePainter(
+            model = character.imageUrl
+        )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -109,13 +121,7 @@ fun MainState(
                 .padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.Center,
         ) {
-            Text(
-                modifier = Modifier.padding(4.dp),
-                textAlign = TextAlign.Center,
-                text = stringResource(R.string.character),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp
-            )
+            MyTitle(state.session.name)
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -124,23 +130,42 @@ fun MainState(
             Column(
                 modifier = Modifier
             ) {
-                clothingItems.forEach {
-                    ClothingItem(it)
+                clothingItemsFirstThree.forEach {
+                    it.iconUrl?.let {
+                        ClothingItem(it)
+                    }
                 }
 
             }
-            Image(
-                painter = characterImage,
-                contentDescription = stringResource(R.string.character),
+            Box(
                 modifier = Modifier
-                    .size(180.dp, 256.dp)
-                    .clickable { onCustomisationClick() }
-            )
-            Column(
-                modifier = Modifier
+                    .padding(16.dp)
+                    .size(180.dp, 255.dp)
             ) {
-                clothingItems.forEach {
-                    ClothingItem(it)
+                state.items.forEach { item ->
+                    val painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(item.imageUrl)
+                            .decoderFactory(SvgDecoder.Factory())
+                            .build()
+                    )
+                    Image(
+                        painter = painter,
+                        contentDescription = item.id.toString(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable { onCustomisationClick() },
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier,
+            ) {
+                clothingItemsNextThree.forEach {
+                    it.iconUrl?.let {
+                        ClothingItem(it)
+                    }
                 }
             }
         }
@@ -160,7 +185,8 @@ fun MainState(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = stringResource(R.string.home_quent),
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontFamily = MaterialTheme.typography.titleLarge.fontFamily
             )
             ShortenedTextBig(
                 text = character.story,
@@ -176,7 +202,8 @@ fun MainState(
                 Text(
                     text = stringResource(R.string.home_goals),
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = MaterialTheme.typography.titleLarge.fontFamily
                 )
             }
             goals.forEach {
@@ -189,17 +216,24 @@ fun MainState(
 }
 
 @Composable
-fun ClothingItem(image: Int) {
-    MyCard(
-        modifier = Modifier.padding(4.dp),
-        contentPadding = PaddingValues(4.dp)
+fun ClothingItem(iconUrl: String) {
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(iconUrl)
+            .decoderFactory(SvgDecoder.Factory())
+            .build(),
+    )
+    Log.d("ClothingItem", "Icon URL: $iconUrl")
+    Box(
+        modifier = Modifier.padding(vertical = 4.dp)
     ) {
         Image(
-            painter = painterResource(id = image),
+            painter = painter,
             contentDescription = "Clothing",
             modifier = Modifier
-                .size(64.dp)
-                .clip(RoundedCornerShape(12.dp))
+                .size(80.dp)
+                .clip(RoundedCornerShape(12.dp)),
+            contentScale = ContentScale.Fit
         )
     }
 }
@@ -207,9 +241,7 @@ fun ClothingItem(image: Int) {
 @Composable
 fun GoalItem(goal: GoalModel, onGoalClick: () -> Unit) {
     MyCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
+        modifier = Modifier.padding(vertical = 4.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -227,7 +259,8 @@ fun GoalItem(goal: GoalModel, onGoalClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                text = goal.goal,
+                text = goal.name,
+                fontFamily = MaterialTheme.typography.titleSmall.fontFamily
             )
         }
     }
@@ -250,19 +283,27 @@ fun MainScreenPreview() {
                 goals = listOf(
                     GoalModel(
                         id = 1,
-                        goal = "Цель 1",
+                        name = "Цель 1",
                         isCompleted = false
                     ),
                     GoalModel(
                         id = 2,
-                        goal = "Цель 2",
+                        name = "Цель 2",
                         isCompleted = true
                     ),
                     GoalModel(
                         id = 3,
-                        goal = "Цель 3",
+                        name = "Цель 3",
                         isCompleted = false
                     )
+                ),
+                items = emptyList(),
+                session = SessionModel(
+                    id = 1,
+                    name = "Смена",
+                    description = "Описание смены",
+                    dates = "01.01.2025 - 07.01.2025",
+                    imageUrl = null
                 )
             ),
             onGoalClick = {},

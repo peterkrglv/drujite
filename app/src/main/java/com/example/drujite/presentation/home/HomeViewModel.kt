@@ -1,12 +1,15 @@
 package com.example.drujite.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.GoalModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
 import com.example.domain.use_cases.character.GetCharacterByIdUseCase
-import com.example.domain.use_cases.goal.GetGoalsByCharacterIdUseCase
+import com.example.domain.use_cases.customisation.GetCharacterItemsUseCase
+import com.example.domain.use_cases.goal.GetCharacterGoals
 import com.example.domain.use_cases.goal.UpdateGoalStatusUseCase
+import com.example.domain.use_cases.session.GetCurrentSessionUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,9 +19,11 @@ import kotlinx.coroutines.withContext
 class HomeViewModel(
     private val sharedPrefs: AccessSharedPrefsUseCase,
     private val getCharacterByIdUseCase: GetCharacterByIdUseCase,
-    private val getGoalsByCharacterIdUseCase: GetGoalsByCharacterIdUseCase,
-    private val updateGoalStatusUseCase: UpdateGoalStatusUseCase
-): ViewModel() {
+    private val getCurrentSessionUseCase: GetCurrentSessionUseCase,
+    private val getCharacterItemsUseCase: GetCharacterItemsUseCase,
+    private val getCharacterGoals: GetCharacterGoals,
+    private val updateGoalStatusUseCase: UpdateGoalStatusUseCase,
+) : ViewModel() {
     private val _viewState = MutableStateFlow<HomeState>(HomeState.Initialization)
     val viewState: StateFlow<HomeState>
         get() = _viewState
@@ -39,10 +44,16 @@ class HomeViewModel(
         if (state !is HomeState.Main) return
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val userId = sharedPrefs.getUserId()
+                val userToken = sharedPrefs.getUserToken()
                 val sessionId = sharedPrefs.getSessionId()
                 val characterId = state.character.id
-                _viewAction.value = HomeAction.NavigateToCustomization(userId, sessionId, characterId)
+                _viewAction.value = userToken?.let {
+                    HomeAction.NavigateToCustomization(
+                        it,
+                        sessionId,
+                        characterId
+                    )
+                }
             }
         }
     }
@@ -72,8 +83,25 @@ class HomeViewModel(
             withContext(Dispatchers.IO) {
                 val characterId = sharedPrefs.getCharacterId()
                 val character = getCharacterByIdUseCase.execute(characterId)
-                val goals = getGoalsByCharacterIdUseCase.execute(characterId)
-                _viewState.value = HomeState.Main(character, goals)
+                if (character == null) {
+                    Log.d("HomeViewModel", "Character not found")
+                    _viewState.value = HomeState.Initialization
+                } else {
+                    val session = getCurrentSessionUseCase.execute()
+                    if (session == null) {
+                        Log.d("HomeViewModel", "Session not found")
+                        _viewState.value = HomeState.Initialization
+                        return@withContext
+                    }
+                    val goals = getCharacterGoals.execute()
+                    val items = getCharacterItemsUseCase.execute(characterId)
+                    _viewState.value = HomeState.Main(
+                        character = character,
+                        goals = goals,
+                        items = items,
+                        session = session
+                    )
+                }
             }
         }
     }
@@ -81,6 +109,4 @@ class HomeViewModel(
     fun clearAction() {
         _viewAction.value = null
     }
-
-
 }

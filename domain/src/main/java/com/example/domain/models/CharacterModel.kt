@@ -5,7 +5,7 @@ data class CharacterModel(
     val name: String,
     val player: String,
     val story: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val clan: String
 )
 

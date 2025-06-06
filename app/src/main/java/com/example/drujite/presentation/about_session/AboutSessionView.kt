@@ -37,7 +37,6 @@ fun MainState() {
                 "\n" +
                 "Ученики славянской школы будут обучаться магии древних шаманов, прибывших из болот. Древние ритуалы и обряды ждут своего часа, а особо сильные зелья уже готовы к использованию.",
         dates = "01.06  - 12.06",
-        nOfPlayers = 31,
         imageUrl = null
     )
     Column(
@@ -69,16 +68,16 @@ fun MainState() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(
-                modifier = Modifier.padding(vertical = 8.dp),
-                text = "Количество игроков:",
-                fontSize = 17.sp
-            )
-            Text(
-                modifier = Modifier.padding(vertical = 8.dp),
-                text = session.nOfPlayers.toString(),
-                fontSize = 17.sp
-            )
+//            Text(
+//                modifier = Modifier.padding(vertical = 8.dp),
+//                text = "Количество игроков:",
+//                fontSize = 17.sp
+//            )
+//            Text(
+//                modifier = Modifier.padding(vertical = 8.dp),
+//                text = session.nOfPlayers.toString(),
+//                fontSize = 17.sp
+//            )
         }
     }
 

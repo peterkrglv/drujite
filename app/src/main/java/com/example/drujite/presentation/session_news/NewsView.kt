@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.session_news
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,15 +23,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.compose.AppTheme
 import com.example.domain.models.NewsModel
-import com.example.drujite.R
 import com.example.drujite.presentation.icons.ArrowIcon
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyCard
@@ -73,10 +75,11 @@ fun MainState(
     val news = state.displayedNews
     val query = state.query
 
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp)
     ) {
         MySearchBar(
             query = query,
@@ -85,9 +88,15 @@ fun MainState(
         )
         LazyColumn {
             items(news) { newsItem ->
+
                 MyCard(
                     modifier = Modifier.padding(vertical = 4.dp),
-                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 4.dp)
+                    contentPadding = PaddingValues(
+                        start = 16.dp,
+                        end = 16.dp,
+                        top = 16.dp,
+                        bottom = 4.dp
+                    )
                 ) {
                     NewsItem(item = newsItem)
                 }
@@ -133,38 +142,38 @@ fun MySearchBar(
 
 @Composable
 fun NewsItem(item: NewsModel) {
+    Log.d("images:", "imageUrl:${item.imageUrl}")
+
     Column {
         Text(
             text = item.title,
             fontSize = 22.sp,
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
+            fontFamily = MaterialTheme.typography.titleLarge.fontFamily
         )
         ShortenedText(
             text = item.content,
             maxLines = 3
         )
-        Image(
-            painter = painterResource(id = R.drawable.news_image),
-            //painter = rememberAsyncImagePainter(imageUrl),
-            contentDescription = item.title,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp),
-            contentScale = ContentScale.Crop
-        )
+        if (item.imageUrl != null) {
+            AsyncImage(
+                model = item.imageUrl,
+                contentDescription = item.title,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+                contentScale = ContentScale.Crop
+            )
+        }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             Text(
-                modifier = Modifier.padding(end = 8.dp),
-                text = item.date,
-                fontSize = 11.sp
-            )
-            Text(
-                text = item.time,
-                fontSize = 11.sp
+                text = item.dateTime,
+                fontSize = 11.sp,
+                modifier = Modifier.padding(4.dp)
             )
         }
     }
@@ -181,9 +190,8 @@ fun NewsViewPreview() {
                     NewsModel(
                         id = 1,
                         title = "Title",
-                        content = "Content",
-                        date = "Date",
-                        time = "Time",
+                        content = "Content\nMore\nAndMore\nAndMore\nelrgerg\n\n\n\n",
+                        dateTime = "Date",
                         imageUrl = "url"
                     )
                 ),

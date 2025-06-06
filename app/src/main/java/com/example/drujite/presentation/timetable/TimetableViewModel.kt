@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 
 class TimetableViewModel(
     private val getTimeTableUseCase: GetTimeTableUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _viewState = MutableStateFlow<TimetableState>(TimetableState.Initialization)
     val viewState: StateFlow<TimetableState>
         get() = _viewState
@@ -26,7 +26,11 @@ class TimetableViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val timetable = getTimeTableUseCase.execute()
-                _viewState.value = TimetableState.Main(timetable)
+                if (timetable == null) {
+                    _viewState.value = TimetableState.Initialization
+                } else {
+                    _viewState.value = TimetableState.Main(timetable)
+                }
             }
         }
     }

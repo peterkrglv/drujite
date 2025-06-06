@@ -2,11 +2,15 @@ package com.example.drujite.presentation.home
 
 import com.example.domain.models.CharacterModel
 import com.example.domain.models.GoalModel
+import com.example.domain.models.SessionModel
+import com.example.domain.use_cases.customisation.CustomisationOption
 
 sealed class HomeState {
     data class Main(
         val character: CharacterModel,
-        val goals: List<GoalModel>
+        val goals: List<GoalModel>,
+        val items: List<CustomisationOption>,
+        val session: SessionModel
     ) : HomeState()
 
     data object Initialization : HomeState()
@@ -20,6 +24,10 @@ sealed class HomeEvent {
 }
 
 sealed class HomeAction {
-    data class NavigateToCustomization(val userId: Int, val sessionId: Int, val characterId: Int) :
+    data class NavigateToCustomization(
+        val userToken: String,
+        val sessionId: Int,
+        val characterId: Int
+    ) :
         HomeAction()
 }

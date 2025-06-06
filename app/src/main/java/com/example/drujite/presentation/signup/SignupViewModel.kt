@@ -49,7 +49,6 @@ class SignupViewModel(
         _viewState.value = SignupState.Loading
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Thread.sleep(2000)
                 val signupResponse = signupUseCase.execute(
                     state.name,
                     state.phone,
@@ -58,9 +57,9 @@ class SignupViewModel(
                     state.gender.value
                 )
                 val signupResult = signupResponse.result
-                val userId = signupResponse.id
-                if (signupResult == SignupResult.SUCCESS && userId != null) {
-                    _viewAction.value = SignupAction.NavigateToSessionSelection(userId)
+                val userToken = signupResponse.token
+                if (signupResult == SignupResult.SUCCESS && userToken != null) {
+                    _viewAction.value = SignupAction.NavigateToSessionSelection(userToken)
                 } else {
                     _viewState.value = state.copy(error = signupResult)
                 }

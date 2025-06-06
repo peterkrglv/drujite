@@ -26,11 +26,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.AppTheme
-import com.example.drujite.presentation.icons.AboutIcon
+import com.example.drujite.presentation.icons.NewsIcon
 import com.example.drujite.presentation.icons.HomeIcon
 import com.example.drujite.presentation.icons.OthersIcon
 import com.example.drujite.presentation.icons.ProfileIcon
-import com.example.drujite.presentation.icons.TimetableIcon
+import com.example.drujite.presentation.icons.TimeTableIcon
 
 @Composable
 fun MainView(
@@ -52,10 +52,9 @@ fun MainView(
 
 sealed class NavigationItem(val screen: Screen, val icon: ImageVector) {
     data object ProfileItem : NavigationItem(screen = Screen.Profile, icon = ProfileIcon)
-    data object TimeTableItem : NavigationItem(screen = Screen.Timetable, icon = TimetableIcon)
+    data object TimeTableItem : NavigationItem(screen = Screen.Timetable, icon = TimeTableIcon)
     data object HomeItem : NavigationItem(screen = Screen.Home, icon = HomeIcon)
-    //data object AboutSessionItem : NavigationItem(screen = Screen.AboutSession, icon = AboutIcon)\
-    data object NewsItem : NavigationItem(screen = Screen.News, icon = AboutIcon)
+    data object NewsItem : NavigationItem(screen = Screen.News, icon = NewsIcon)
     data object OtherCharactersItem :
         NavigationItem(screen = Screen.OtherCharacters, icon = OthersIcon)
 }
@@ -95,7 +94,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                         if (currentRoute != item.screen.route) {
                             navController.navigate(item.screen.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                                    inclusive = true
                                 }
                                 launchSingleTop = true
                                 restoreState = true

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.ClanModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
+import com.example.domain.use_cases.character.AddCharacterToSessionUseCase
 import com.example.domain.use_cases.character.CreateCharacterUseCase
 import com.example.domain.use_cases.session.GetClansBySessionIdUseCase
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CreationViewModel(
-    private val sharedPrefsUseCase: AccessSharedPrefsUseCase,
     private val getClansBySessionIdUseCase: GetClansBySessionIdUseCase,
     private val createCharacterUseCase: CreateCharacterUseCase
 ) : ViewModel() {
@@ -57,9 +57,8 @@ class CreationViewModel(
     private fun loadClans(sessionId: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Thread.sleep(1000)
                 val clans = getClansBySessionIdUseCase.execute(sessionId)
-                _viewState.value = CreationState.Main(clans = clans)
+                _viewState.value = CreationState.Main(clans = clans, sessionId = sessionId)
             }
         }
     }
@@ -77,18 +76,16 @@ class CreationViewModel(
                 //really need to fix this....
                 if (state.chosenClan == null) {
                     _viewState.value = state.copy(error = "Выберите клан")
-                }
-                else if (state.name == "") {
+                } else if (state.name == "") {
                     _viewState.value = state.copy(error = "Введите имя")
-                }
-                else {
+                } else {
                     val characterId = createCharacterUseCase.execute(
-                        userId = 0,
                         name = state.name,
-                        clanId = state.chosenClan.id
+                        story = "",
+                        clanId = state.chosenClan.id,
+                        sessionId = state.sessionId
                     )
-                    if (characterId != -1) {
-                        sharedPrefsUseCase.saveCharacterId(characterId)
+                    if (characterId != null) {
                         _viewAction.value = CreationAction.NavigateToCustomisation(characterId)
                     } else {
                         _viewState.value = state.copy(error = "Ошибка сети, попробуйте еще раз")

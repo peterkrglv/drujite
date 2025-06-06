@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">drujite</string>
+    <string name="app_name">Дружите</string>
     <string name="customisation_title">Что на счет внешности?</string>
     <string name="customisation_proceed">Закончить</string>
     <string name="transfer_title">Перенос</string>
@@ -37,4 +37,8 @@
     <string name="signup_to_login">Уже есть аккаунт?</string>
     <string name="signup_to_login_2">Войти</string>
     <string name="timetable_title">Расписание дня</string>
+    <string name="character_creation_subtitle">Пришло время создать персонажа, за которого ты будешь играть на смене.</string>
+    <string name="character_creation_title">Создай персонажа</string>
+    <string name="character_name_and_surname">Имя и фамилия персонажа</string>
+    <string name="choose_clan">Выбери клан</string>
 </resources>

@@ -4,7 +4,6 @@ data class NewsModel (
     val id: Int,
     val title: String,
     val content: String,
-    val date: String,
-    val time: String,
-    val imageUrl: String,
+    val dateTime: String,
+    val imageUrl: String?,
 )

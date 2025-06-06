@@ -1,10 +1,13 @@
 package com.example.drujite.presentation.session_selection
 
+import android.util.Log
+import android.util.Log.d
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.SessionModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
-import com.example.domain.use_cases.session.GetSessionByCodeUseCase
+import com.example.domain.use_cases.character.GetCharacterBySessionIdUseCase
+import com.example.domain.use_cases.session.AddSessionByCodeUseCase
 import com.example.domain.use_cases.session.GetUsersSessionsUseCase
 import com.example.drujite.presentation.QRScannerResult
 import kotlinx.coroutines.Dispatchers
@@ -15,8 +18,9 @@ import kotlinx.coroutines.withContext
 
 class SessionViewModel(
     private val getUsersSessionsUseCase: GetUsersSessionsUseCase,
-    private val getSessionByCodeUseCase: GetSessionByCodeUseCase,
-    private val accessSharedPrefsUseCase: AccessSharedPrefsUseCase
+    private val addSessionByCodeUseCase: AddSessionByCodeUseCase,
+    private val accessSharedPrefsUseCase: AccessSharedPrefsUseCase,
+    private val getCharacterBySessionIdUseCase: GetCharacterBySessionIdUseCase
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<SessionState>(SessionState.Loading)
     val viewState: StateFlow<SessionState>
@@ -27,7 +31,7 @@ class SessionViewModel(
 
     fun obtainEvent(event: SessionEvent) {
         when (event) {
-            is SessionEvent.LoadSessions -> loadSessions(event.userId)
+            is SessionEvent.LoadSessions -> loadSessions(event.userToken)
             is SessionEvent.SessionProceed -> sessionSelected(event.session)
             is SessionEvent.QRScannerClicked -> qrScannerClicked()
             is SessionEvent.OnQRScannerClosed -> handleQRScannerResult(
@@ -44,11 +48,12 @@ class SessionViewModel(
             if (state !is SessionState.Main) {
                 return
             }
+            Log.d("server", "handleQRScannerResult: $sessionNum")
             when (result) {
                 QRScannerResult.Success -> {
                     viewModelScope.launch {
                         withContext(Dispatchers.IO) {
-                            val session = getSessionByCodeUseCase.execute(sessionNum)
+                            val session = addSessionByCodeUseCase.execute(sessionNum)
                             if (session != null) {
                                 sessionSelected(session = session)
                             } else {
@@ -57,9 +62,11 @@ class SessionViewModel(
                         }
                     }
                 }
+
                 QRScannerResult.Canceled -> {
                     _viewState.value = state.copy(qrError = "")
                 }
+
                 QRScannerResult.Failure -> {
                     _viewState.value = state.copy(qrError = "Ошибка при сканировании QR-кода")
 
@@ -76,21 +83,29 @@ class SessionViewModel(
         _viewAction.value = null
     }
 
-    private fun loadSessions(userId: Int) {
+    private fun loadSessions(userToken: String) {
+        d("server ui", "loading sessions")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Thread.sleep(2000)
-                val sessions = getUsersSessionsUseCase.execute(userId)
+                val sessions = getUsersSessionsUseCase.execute()
                 _viewState.value = SessionState.Main(sessions)
             }
         }
     }
 
     private fun sessionSelected(session: SessionModel) {
-        _viewAction.value = SessionAction.NavigateToCharacterCreation(session.id)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                accessSharedPrefsUseCase.saveSessionId(id = session.id)
+                Log.d("server", "sessionSelected: ${session.id}")
+                val character = getCharacterBySessionIdUseCase.execute(session.id)
+                Log.d("server", "character: ${character?.name}")
+                accessSharedPrefsUseCase.saveSessionId(session.id)
+                if (character != null) {
+                    accessSharedPrefsUseCase.saveCharacterId(character.id)
+                    _viewAction.value = SessionAction.NavigateToMain
+                } else {
+                    _viewAction.value = SessionAction.NavigateToCharacterCreation(session.id)
+                }
             }
         }
     }

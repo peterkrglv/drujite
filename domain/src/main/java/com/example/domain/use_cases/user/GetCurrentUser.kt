@@ -5,8 +5,8 @@ import com.example.domain.repos.SharedPrefsRepository
 import com.example.domain.repos.UserRepository
 
 class GetCurrentUser(private val sharedPrefs: SharedPrefsRepository, val repo: UserRepository) {
-    suspend fun execute(): UserModel {
-        val userId = sharedPrefs.getUserId()
-        return repo.getUserById(userId)
+    suspend fun execute(): UserModel? {
+        val userToken = sharedPrefs.getUserToken()
+        return userToken?.let { repo.getUserByToken(it) }
     }
 }

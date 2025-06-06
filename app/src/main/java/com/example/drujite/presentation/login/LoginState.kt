@@ -20,6 +20,6 @@ sealed class LoginEvent {
 
 sealed class LoginAction {
     data object NavigateToSignup: LoginAction()
-    data class NavigateToSessionSelection(val userId: Int) : LoginAction()
+    data class NavigateToSessionSelection(val userToken: String) : LoginAction()
 }
 
