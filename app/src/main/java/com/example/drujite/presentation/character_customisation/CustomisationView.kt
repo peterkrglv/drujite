@@ -17,6 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -94,6 +96,10 @@ fun MainState(
     onOptionChosen: (CustomisationCategory, Int) -> Unit,
     onProceedClicked: () -> Unit
 ) {
+    val customOptions = state.options.filter {
+        state.firstCustom != it.isEditable
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -137,8 +143,8 @@ fun MainState(
                 contentPadding = PaddingValues(vertical = 24.dp, horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(state.options.size) { index ->
-                    val category = state.options[index]
+                items(customOptions.size) { index ->
+                    val category = customOptions[index]
                     ItemChoice(
                         category = category,
                         chosenItem = state.chosenOptions[category] ?: 0,

@@ -43,6 +43,7 @@ class CustomisationViewModel(
 
     fun clearAction() {
         _viewAction.value = null
+        _viewState.value = CustomisationState.Initialization
     }
 
     private fun loadOptions(characterId: Int) {
@@ -65,7 +66,8 @@ class CustomisationViewModel(
             _viewState.value = CustomisationState.Main(
                 options = options,
                 chosenOptions = chosenOptions,
-                characterId = characterId
+                characterId = characterId,
+                firstCustom = items.isEmpty()
             )
         }
     }

@@ -23,6 +23,12 @@ interface CustomisationApi {
         @Query("id") characterId: Int
     ): List<CustomisationOption>
 
+    @GET("characters-clothing/editable")
+    suspend fun getEditableCharactersItems(
+        @Header("Authorization") token: String,
+        @Query("id") characterId: Int
+    ): List<CustomisationOption>
+
     @POST("characters-clothing")
     suspend fun saveCharactersItems(
         @Header("Authorization") token: String,

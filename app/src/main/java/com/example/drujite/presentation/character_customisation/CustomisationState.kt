@@ -8,7 +8,8 @@ sealed class CustomisationState {
     data class Main(
         val options: List<CustomisationCategory> = emptyList(),
         val chosenOptions: Map<CustomisationCategory, Int> = emptyMap(),
-        val characterId: Int
+        val characterId: Int,
+        val firstCustom: Boolean
     ) : CustomisationState()
     data object Loading : CustomisationState()
 }

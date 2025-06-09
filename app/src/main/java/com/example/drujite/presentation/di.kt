@@ -10,6 +10,7 @@ import com.example.domain.use_cases.character.GetCharactersBySessionIdUseCase
 import com.example.domain.use_cases.character.GetUsersCharactersUseCase
 import com.example.domain.use_cases.customisation.GetCharacterItemsUseCase
 import com.example.domain.use_cases.customisation.GetCustomisationOptionsUseCase
+import com.example.domain.use_cases.customisation.GetEditableCharacterItemsUseCase
 import com.example.domain.use_cases.customisation.SaveCharacterImageUseCase
 import com.example.domain.use_cases.customisation.SaveCharacterItemsUseCase
 import com.example.domain.use_cases.goal.GetCharacterGoals
@@ -65,6 +66,7 @@ val domainModule = module {
     factory<SaveCharacterImageUseCase> { SaveCharacterImageUseCase(get()) }
     factory<GetCharacterItemsUseCase> { GetCharacterItemsUseCase(get()) }
     factory<GetCurrentSessionUseCase> { GetCurrentSessionUseCase(get()) }
+    factory<GetEditableCharacterItemsUseCase> { GetEditableCharacterItemsUseCase(get()) }
 }
 
 val appModule = module {

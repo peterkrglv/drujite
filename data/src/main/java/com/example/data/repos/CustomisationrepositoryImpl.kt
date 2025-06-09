@@ -23,6 +23,7 @@ class CustomisationrepositoryImpl(
                 CustomisationCategory(
                     id = it.id,
                     name = it.name,
+                    isEditable = it.isEditable,
                     items = it.items.map { item ->
                         CustomisationOption(
                             id = item.id,
@@ -60,6 +61,29 @@ class CustomisationrepositoryImpl(
             return chatacterItems
         } catch (e: Exception) {
             Log.e("server", "Error fetching character items: ${e.message}")
+            return emptyList()
+        }
+    }
+
+    override suspend fun getCharactersEditableItems(characterId: Int): List<CustomisationOption> {
+        try {
+            val token = sharedPrefs.getUserToken()
+            val items = api.getEditableCharactersItems(
+                characterId = characterId,
+                token = "Bearer $token"
+            )
+            val chatacterItems = items.map {
+                CustomisationOption(
+                    id = it.id,
+                    typeId = it.typeId,
+                    imageUrl = baseUrl + it.imageUrl,
+                    iconUrl = baseUrl + it.iconUrl,
+                )
+            }
+            Log.d("server", "Fetched editable character items: ${items.size}")
+            return chatacterItems
+        } catch (e: Exception) {
+            Log.e("server", "Error fetching editable character items: ${e.message}")
             return emptyList()
         }
     }

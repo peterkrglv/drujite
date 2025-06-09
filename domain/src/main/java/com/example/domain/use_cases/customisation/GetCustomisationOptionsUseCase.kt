@@ -18,5 +18,6 @@ data class CustomisationOption(
 data class CustomisationCategory(
     val id: Int,
     val name: String,
+    val isEditable: Boolean,
     val items: List<CustomisationOption>
 )

@@ -15,6 +15,10 @@ class CustomisationRepositoryTest : CustomisationRepository {
         return emptyList()
     }
 
+    override suspend fun getCharactersEditableItems(characterId: Int): List<CustomisationOption> {
+        return emptyList()
+    }
+
     override suspend fun saveCharactersItems(characterId: Int, itemsIds: List<Int>): Boolean {
         return true
     }

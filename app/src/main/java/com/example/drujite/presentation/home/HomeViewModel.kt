@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.models.GoalModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
 import com.example.domain.use_cases.character.GetCharacterByIdUseCase
-import com.example.domain.use_cases.customisation.GetCharacterItemsUseCase
+import com.example.domain.use_cases.customisation.GetEditableCharacterItemsUseCase
 import com.example.domain.use_cases.goal.GetCharacterGoals
 import com.example.domain.use_cases.goal.UpdateGoalStatusUseCase
 import com.example.domain.use_cases.session.GetCurrentSessionUseCase
@@ -20,7 +20,7 @@ class HomeViewModel(
     private val sharedPrefs: AccessSharedPrefsUseCase,
     private val getCharacterByIdUseCase: GetCharacterByIdUseCase,
     private val getCurrentSessionUseCase: GetCurrentSessionUseCase,
-    private val getCharacterItemsUseCase: GetCharacterItemsUseCase,
+    private val getEditableCharacterItemsUseCase: GetEditableCharacterItemsUseCase,
     private val getCharacterGoals: GetCharacterGoals,
     private val updateGoalStatusUseCase: UpdateGoalStatusUseCase,
 ) : ViewModel() {
@@ -94,7 +94,7 @@ class HomeViewModel(
                         return@withContext
                     }
                     val goals = getCharacterGoals.execute()
-                    val items = getCharacterItemsUseCase.execute(characterId)
+                    val items = getEditableCharacterItemsUseCase.execute(characterId)
                     _viewState.value = HomeState.Main(
                         character = character,
                         goals = goals,

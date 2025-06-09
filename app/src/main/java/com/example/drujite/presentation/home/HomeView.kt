@@ -5,25 +5,32 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -33,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
@@ -99,14 +107,22 @@ fun MainState(
     onGoalClick: (GoalModel) -> Unit,
     onCustomisationClick: () -> Unit
 ) {
-    val clothingItemsFirstThree = state.items.take(3)
-    val clothingItemsNextThree = state.items.drop(3)
+    val clothingItems = state.items
+    val clothingItemsFirstThree = clothingItems.take(3)
+    val clothingItemsNextThree = clothingItems.drop(3)
     val goals = state.goals
     val character = state.character
-    val painter =
-        if (character.imageUrl == null) painterResource(id = R.drawable.character) else rememberAsyncImagePainter(
-            model = character.imageUrl
-        )
+    var currentImageUrl by remember { mutableStateOf(character.imageUrl) }
+
+    LaunchedEffect(clothingItems) {
+        currentImageUrl = character.imageUrl?.let { "$it?t=${System.currentTimeMillis()}" }
+    }
+
+    val painter = if (currentImageUrl == null) {
+        painterResource(id = R.drawable.character)
+    } else {
+        rememberAsyncImagePainter(model = currentImageUrl)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -124,11 +140,12 @@ fun MainState(
             MyTitle(state.session.name)
         }
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().height(250.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
-                modifier = Modifier
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 clothingItemsFirstThree.forEach {
                     it.iconUrl?.let {
@@ -137,30 +154,15 @@ fun MainState(
                 }
 
             }
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(180.dp, 255.dp)
-            ) {
-                state.items.forEach { item ->
-                    val painter = rememberAsyncImagePainter(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(item.imageUrl)
-                            .decoderFactory(SvgDecoder.Factory())
-                            .build()
-                    )
-                    Image(
-                        painter = painter,
-                        contentDescription = item.id.toString(),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable { onCustomisationClick() },
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
+            Image(
+                painter = painter,
+                contentDescription = "Character image",
+                modifier = Modifier.fillMaxHeight().clickable { onCustomisationClick() },
+                contentScale = ContentScale.FillHeight
+            )
             Column(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 clothingItemsNextThree.forEach {
                     it.iconUrl?.let {
@@ -224,18 +226,11 @@ fun ClothingItem(iconUrl: String) {
             .build(),
     )
     Log.d("ClothingItem", "Icon URL: $iconUrl")
-    Box(
-        modifier = Modifier.padding(vertical = 4.dp)
-    ) {
-        Image(
-            painter = painter,
-            contentDescription = "Clothing",
-            modifier = Modifier
-                .size(80.dp)
-                .clip(RoundedCornerShape(12.dp)),
-            contentScale = ContentScale.Fit
-        )
-    }
+    Image(
+        painter = painter,
+        contentDescription = "Clothing",
+        modifier = Modifier.size(70.dp)
+    )
 }
 
 @Composable
