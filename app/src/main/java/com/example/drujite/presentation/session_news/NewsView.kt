@@ -1,7 +1,6 @@
 package com.example.drujite.presentation.session_news
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,19 +20,20 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import com.example.compose.AppTheme
 import com.example.domain.models.NewsModel
 import com.example.drujite.presentation.icons.ArrowIcon
+import com.example.drujite.presentation.my_composables.DropDownSearchBar
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyCard
 import com.example.drujite.presentation.my_composables.ShortenedText
@@ -74,6 +74,7 @@ fun MainState(
 ) {
     val news = state.displayedNews
     val query = state.query
+    val searchHistory = remember { mutableStateListOf<String>() }
 
 
     Column(
@@ -81,10 +82,15 @@ fun MainState(
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, top = 8.dp)
     ) {
-        MySearchBar(
-            query = query,
+        DropDownSearchBar(
+            searchQuery = query,
+            onSearch = {
+                onSearchClicked(it)
+                if (!searchHistory.contains(it)) searchHistory.add(it)
+            },
             onQueryChanged = onQueryChanged,
-            onSearchClicked = onSearchClicked
+            queryHistory = searchHistory,
+            onClearSearchHistoryClicked = { searchHistory.clear() }
         )
         LazyColumn {
             items(news) { newsItem ->
@@ -182,7 +188,6 @@ fun NewsItem(item: NewsModel) {
 @Preview(showSystemUi = true)
 @Composable
 fun NewsViewPreview() {
-
     AppTheme {
         MainState(
             state = NewsState.Main(

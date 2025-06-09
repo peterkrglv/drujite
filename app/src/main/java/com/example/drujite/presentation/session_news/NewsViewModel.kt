@@ -29,11 +29,21 @@ class NewsViewModel(
         if (state !is NewsState.Main) {
             return
         }
-        if (query == "") {
-            _viewState.value = state.copy(displayedNews = state.news, query = query)
+        val displayedNews = if (query == "") {
+            state.news
         } else {
-            _viewState.value = state.copy(query = query)
+//            state.news.filter {
+//                it.title.contains(query, ignoreCase = true) || it.content.contains(
+//                    query,
+//                    ignoreCase = true
+//                )
+//            }
+            state.displayedNews
         }
+        _viewState.value = state.copy(
+            query = query,
+            displayedNews = displayedNews
+        )
     }
 
     private fun search(query: String) {
