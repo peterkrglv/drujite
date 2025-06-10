@@ -32,8 +32,10 @@ import com.example.domain.models.CharacterModel
 import com.example.drujite.R
 import com.example.drujite.presentation.icons.ExpandArrowIcon
 import com.example.drujite.presentation.my_composables.BottomSheetCharacter
+import com.example.drujite.presentation.my_composables.DropDownSearchBar
 import com.example.drujite.presentation.my_composables.LazyGridCharacters
 import com.example.drujite.presentation.my_composables.LoadingScreen
+import com.example.drujite.presentation.my_composables.MyGradient
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -53,7 +55,9 @@ fun OtherCharactersView(
             MainState(
                 state = state,
                 onFilterCleared = { viewModel.obtainEvent(OtherCharactersEvent.ClearFilter) },
-                onFilterByClan = { viewModel.obtainEvent(OtherCharactersEvent.FilterByClan(it)) }
+                onFilterByClan = { viewModel.obtainEvent(OtherCharactersEvent.FilterByClan(it)) },
+                onQueryChanged = { viewModel.obtainEvent(OtherCharactersEvent.QueryChanged(it)) },
+                onSearchClicked = { viewModel.obtainEvent(OtherCharactersEvent.Search(it)) }
             )
         }
     }
@@ -65,7 +69,9 @@ fun OtherCharactersView(
 fun MainState(
     state: OtherCharactersState.Main,
     onFilterCleared: () -> Unit,
-    onFilterByClan: (String) -> Unit
+    onFilterByClan: (String) -> Unit,
+    onQueryChanged: (String) -> Unit,
+    onSearchClicked: (String) -> Unit,
 ) {
     val allClans = stringResource(R.string.all_clans)
     val displayedCharacters = state.displayedCharacters
@@ -74,6 +80,7 @@ fun MainState(
     val sheetState = rememberModalBottomSheetState()
     val chosenCharacter = remember { mutableStateOf<CharacterModel?>(null) }
     val selectedClan = remember { mutableStateOf("Все кланы") }
+    val query = state.query
 
     Column(
         modifier = Modifier
@@ -82,10 +89,17 @@ fun MainState(
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.End
     ) {
+        DropDownSearchBar(
+            searchQuery = query,
+            onSearch = onSearchClicked,
+            onQueryChanged = onQueryChanged,
+            onClearSearchHistoryClicked = {}
+        )
         CharacterChoiceMenu(
             clans = clans,
             selectedClan = selectedClan.value,
             onOptionSelected = {
+                selectedClan.value = it
                 if (it == allClans) {
                     onFilterCleared()
                 } else {
@@ -93,13 +107,19 @@ fun MainState(
                 }
             }
         )
-        LazyGridCharacters(
-            characters = displayedCharacters,
-            onCharacterClick = { character ->
-                chosenCharacter.value = character
-                showBottomSheet.value = true
-            }
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            LazyGridCharacters(
+                characters = displayedCharacters,
+                onCharacterClick = { character ->
+                    chosenCharacter.value = character
+                    showBottomSheet.value = true
+                }
+            )
+            MyGradient()
+        }
         if (showBottomSheet.value) {
             ModalBottomSheet(
                 onDismissRequest = { showBottomSheet.value = false },
@@ -119,7 +139,7 @@ fun CharacterChoiceMenu(
     onOptionSelected: (String) -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
-    val selected = remember { mutableStateOf(selectedClan) }
+    val selected = selectedClan
 
     ExposedDropdownMenuBox(
         expanded = expanded.value,
@@ -138,7 +158,7 @@ fun CharacterChoiceMenu(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 4.dp),
-                    text = selected.value,
+                    text = selected,
                     fontSize = 17.sp
                 )
                 Icon(

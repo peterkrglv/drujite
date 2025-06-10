@@ -2,6 +2,7 @@ package com.example.drujite.presentation.other_characters
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.models.CharacterModel
 import com.example.domain.use_cases.AccessSharedPrefsUseCase
 import com.example.domain.use_cases.character.GetCharactersBySessionIdUseCase
 import kotlinx.coroutines.Dispatchers
@@ -24,15 +25,45 @@ class OtherCharactersViewModel(
             is OtherCharactersEvent.LoadData -> loadData()
             is OtherCharactersEvent.ClearFilter -> clearFilter()
             is OtherCharactersEvent.FilterByClan -> filterByClan(event.clan)
+            is OtherCharactersEvent.QueryChanged -> queryChanged(event.query)
+            is OtherCharactersEvent.Search -> search(event.query)
         }
+    }
+
+    private fun search(query: String) {
+        val state = _viewState.value
+        if (state !is OtherCharactersState.Main) {
+            return
+        }
+        val displayedCharacters =
+            filterByQuery(characters = state.filteredCharacers, query = state.query)
+        _viewState.value = state.copy(displayedCharacters = displayedCharacters)
+    }
+
+    private fun queryChanged(query: String) {
+        val state = _viewState.value
+        if (state !is OtherCharactersState.Main) {
+            return
+        }
+        val displayedCharacters = if (query == "") {
+            state.filteredCharacers
+        } else {
+            state.displayedCharacters
+        }
+        _viewState.value = state.copy(displayedCharacters = displayedCharacters, query = query)
     }
 
     private fun filterByClan(clan: String) {
         val state = _viewState.value as? OtherCharactersState.Main ?: return
-        val displayedCharacters = state.characters.filter { character ->
+        val filteredCharacters = state.characters.filter { character ->
             character.clan == clan
         }
-        _viewState.value = state.copy(displayedCharacters = displayedCharacters)
+        val displayedCharacters =
+            filterByQuery(characters = state.filteredCharacers, query = state.query)
+        _viewState.value = state.copy(
+            displayedCharacters = displayedCharacters,
+            filteredCharacers = filteredCharacters
+        )
     }
 
     private fun clearFilter() {
@@ -49,7 +80,24 @@ class OtherCharactersViewModel(
                 _viewState.value = OtherCharactersState.Main(
                     characters = characters,
                     displayedCharacters = characters,
-                    clans = characters.map { it.clan }.distinct()
+                    clans = characters.map { it.clan }.distinct(),
+                    filteredCharacers = characters
+                )
+            }
+        }
+    }
+
+    private fun filterByQuery(
+        characters: List<CharacterModel>,
+        query: String
+    ): List<CharacterModel> {
+        return if (query == "") {
+            characters
+        } else {
+            characters.filter {
+                it.name.contains(query, ignoreCase = true) || it.name.contains(
+                    query,
+                    ignoreCase = true
                 )
             }
         }
