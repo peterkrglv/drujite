@@ -1,5 +1,6 @@
 package com.example.drujite.presentation.other_characters
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.CharacterModel
@@ -59,17 +60,18 @@ class OtherCharactersViewModel(
             character.clan == clan
         }
         val displayedCharacters =
-            filterByQuery(characters = state.filteredCharacers, query = state.query)
+            filterByQuery(characters = filteredCharacters, query = state.query)
         _viewState.value = state.copy(
             displayedCharacters = displayedCharacters,
             filteredCharacers = filteredCharacters
         )
     }
 
+
     private fun clearFilter() {
         val state = _viewState.value as? OtherCharactersState.Main ?: return
-        val displayedCharacters = state.characters
-        _viewState.value = state.copy(displayedCharacters = displayedCharacters)
+        val displayedCharacters = filterByQuery(state.characters, state.query)
+        _viewState.value = state.copy(displayedCharacters = displayedCharacters, filteredCharacers = state.characters)
     }
 
     private fun loadData() {

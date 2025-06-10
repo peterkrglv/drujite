@@ -7,14 +7,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
@@ -25,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,7 +37,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
@@ -140,7 +136,9 @@ fun MainState(
             MyTitle(state.session.name)
         }
         Row(
-            modifier = Modifier.fillMaxWidth().height(250.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
@@ -157,7 +155,9 @@ fun MainState(
             Image(
                 painter = painter,
                 contentDescription = "Character image",
-                modifier = Modifier.fillMaxHeight().clickable { onCustomisationClick() },
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .clickable { onCustomisationClick() },
                 contentScale = ContentScale.FillHeight
             )
             Column(
@@ -191,7 +191,7 @@ fun MainState(
                 fontFamily = MaterialTheme.typography.titleLarge.fontFamily
             )
             ShortenedTextBig(
-                text = character.story,
+                text = if (character.story != "") character.story else "У персонажа пока нет квенты",
                 maxLines = 4
             )
 
@@ -208,9 +208,16 @@ fun MainState(
                     fontFamily = MaterialTheme.typography.titleLarge.fontFamily
                 )
             }
-            goals.forEach {
-                GoalItem(it) {
-                    onGoalClick(it)
+            if (goals.isEmpty()) {
+                ShortenedTextBig(
+                    text = if (character.story != "") character.story else "У персонажа пока нет целей",
+                    maxLines = 4
+                )
+            } else {
+                goals.forEach {
+                    GoalItem(it) {
+                        onGoalClick(it)
+                    }
                 }
             }
         }
