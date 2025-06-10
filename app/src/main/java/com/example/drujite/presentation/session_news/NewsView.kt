@@ -76,8 +76,6 @@ fun MainState(
 ) {
     val news = state.displayedNews
     val query = state.query
-    val searchHistory = remember { mutableStateListOf<String>() }
-
 
     Column(
         modifier = Modifier
@@ -88,11 +86,8 @@ fun MainState(
             searchQuery = query,
             onSearch = {
                 onSearchClicked(it)
-                if (!searchHistory.contains(it)) searchHistory.add(it)
             },
             onQueryChanged = onQueryChanged,
-            queryHistory = searchHistory,
-            onClearSearchHistoryClicked = { searchHistory.clear() }
         )
         Box(
             modifier = Modifier.fillMaxSize(),

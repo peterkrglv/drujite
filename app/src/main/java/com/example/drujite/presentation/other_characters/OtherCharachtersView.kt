@@ -93,7 +93,6 @@ fun MainState(
             searchQuery = query,
             onSearch = onSearchClicked,
             onQueryChanged = onQueryChanged,
-            onClearSearchHistoryClicked = {}
         )
         CharacterChoiceMenu(
             clans = clans,

@@ -17,17 +17,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -154,105 +150,38 @@ fun MyPreview() {
 fun DropDownSearchBar(
     searchQuery: String,
     onSearch: (String) -> Unit,
-    queryHistory: List<String> = emptyList(),
     onQueryChanged: (String) -> Unit,
-    onClearSearchHistoryClicked: () -> Unit
 ) {
-    val expanded = remember { mutableStateOf(false) }
-    val history = queryHistory
-        .filter { it.contains(searchQuery, ignoreCase = true) && it != searchQuery }
-        .take(5)
-    ExposedDropdownMenuBox(
-        modifier = Modifier.fillMaxWidth(),
-        expanded = expanded.value,
-        onExpandedChange = { expanded.value = !expanded.value }
-    ) {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-                .menuAnchor(),
-            value = searchQuery,
-            onValueChange = {
-                onQueryChanged(it)
-                expanded.value = true
-            },
-            maxLines = 1,
-            shape = RoundedCornerShape(12.dp),
-            trailingIcon = {
-                MyCard(
-                    modifier = Modifier
-                        .padding(6.dp)
-                        .clickable {
-                            onSearch(searchQuery)
-                            expanded.value = false
-                        },
-                    containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    contentPadding = PaddingValues(8.dp)
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .aspectRatio(1f),
-                        imageVector = ArrowIcon,
-                        contentDescription = "Search",
-                        tint = Color(0xFFC8C8C8)
-                    )
-                }
-            },
-            leadingIcon = {
-                MyCard(
-                    modifier = Modifier
-                        .padding(6.dp)
-                        .clickable {
-                            onQueryChanged("")
-                            expanded.value = true
-                        },
-                    containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    contentPadding = PaddingValues(8.dp)
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .aspectRatio(1f),
-                        imageVector = Clear,
-                        contentDescription = "Clear",
-                        tint = Color(0xFFC8C8C8)
-                    )
-                }
-            }
-        )
-        if (history.isNotEmpty()) {
-            ExposedDropdownMenu(
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        value = searchQuery,
+        onValueChange = {
+            onQueryChanged(it)
+            onSearch(it)
+        },
+        maxLines = 1,
+        shape = RoundedCornerShape(12.dp),
+        trailingIcon = {
+            MyCard(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .background(MaterialTheme.colorScheme.surfaceContainerHighest),
-                expanded = expanded.value,
-                onDismissRequest = { expanded.value = false },
-            ) {
-                history.forEach { item ->
-                    DropdownMenuItem(
-                        text = { Text(item) },
-                        onClick = {
-                            onSearch(item)
-                            expanded.value = false
-                        }
-                    )
-                }
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = "Очистить историю",
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    },
-                    onClick = {
+                    .padding(6.dp)
+                    .clickable {
                         onQueryChanged("")
-                        onClearSearchHistoryClicked()
-                        expanded.value = false
-                    }
+                    },
+                containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                contentPadding = PaddingValues(8.dp)
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .aspectRatio(1f),
+                    imageVector = Clear,
+                    contentDescription = "Clear",
+                    tint = Color(0xFFC8C8C8)
                 )
             }
         }
-    }
+    )
 }
