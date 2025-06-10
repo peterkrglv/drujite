@@ -1,8 +1,8 @@
 package com.example.drujite.presentation.session_news
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -36,6 +37,7 @@ import com.example.drujite.presentation.icons.ArrowIcon
 import com.example.drujite.presentation.my_composables.DropDownSearchBar
 import com.example.drujite.presentation.my_composables.LoadingScreen
 import com.example.drujite.presentation.my_composables.MyCard
+import com.example.drujite.presentation.my_composables.MyGradient
 import com.example.drujite.presentation.my_composables.ShortenedText
 import org.koin.androidx.compose.koinViewModel
 
@@ -92,21 +94,26 @@ fun MainState(
             queryHistory = searchHistory,
             onClearSearchHistoryClicked = { searchHistory.clear() }
         )
-        LazyColumn {
-            items(news) { newsItem ->
-
-                MyCard(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                    contentPadding = PaddingValues(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 16.dp,
-                        bottom = 4.dp
-                    )
-                ) {
-                    NewsItem(item = newsItem)
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            LazyColumn {
+                items(news) { newsItem ->
+                    MyCard(
+                        modifier = Modifier.padding(vertical = 4.dp),
+                        contentPadding = PaddingValues(
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = 16.dp,
+                            bottom = 4.dp
+                        )
+                    ) {
+                        NewsItem(item = newsItem)
+                    }
                 }
             }
+            MyGradient()
         }
     }
 }
@@ -148,8 +155,6 @@ fun MySearchBar(
 
 @Composable
 fun NewsItem(item: NewsModel) {
-    Log.d("images:", "imageUrl:${item.imageUrl}")
-
     Column {
         Text(
             text = item.title,

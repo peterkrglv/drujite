@@ -35,6 +35,7 @@ import com.example.drujite.presentation.my_composables.BottomSheetCharacter
 import com.example.drujite.presentation.my_composables.DropDownSearchBar
 import com.example.drujite.presentation.my_composables.LazyGridCharacters
 import com.example.drujite.presentation.my_composables.LoadingScreen
+import com.example.drujite.presentation.my_composables.MyGradient
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -106,13 +107,19 @@ fun MainState(
                 }
             }
         )
-        LazyGridCharacters(
-            characters = displayedCharacters,
-            onCharacterClick = { character ->
-                chosenCharacter.value = character
-                showBottomSheet.value = true
-            }
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            LazyGridCharacters(
+                characters = displayedCharacters,
+                onCharacterClick = { character ->
+                    chosenCharacter.value = character
+                    showBottomSheet.value = true
+                }
+            )
+            MyGradient()
+        }
         if (showBottomSheet.value) {
             ModalBottomSheet(
                 onDismissRequest = { showBottomSheet.value = false },
