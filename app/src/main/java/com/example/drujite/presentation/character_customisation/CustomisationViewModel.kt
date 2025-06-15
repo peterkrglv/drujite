@@ -49,10 +49,11 @@ class CustomisationViewModel(
     private fun loadOptions(characterId: Int) {
         viewModelScope.launch {
             _viewState.value = CustomisationState.Loading
-            val options = getCustomisationOptions.execute()
+            val options = getCustomisationOptions.execute().sortedBy { it.id }
             val items = getCharacterItemsUseCase.execute(characterId)
             val chosenOptions =
                 options.associateWith { 0 }.toMutableMap()
+            Log.d("Clothing", "Characters items: $items")
             for (item in items) {
                 val category = options.find { it.id == item.typeId }
                 if (category != null) {
@@ -62,7 +63,8 @@ class CustomisationViewModel(
                     }
                 }
             }
-            Log.d("CustomisationViewModel", "Chosen options: $chosenOptions")
+            Log.d("Clothing", "Characters options: $options")
+            Log.d("Clothing", "Chosen options: $chosenOptions")
             _viewState.value = CustomisationState.Main(
                 options = options,
                 chosenOptions = chosenOptions,

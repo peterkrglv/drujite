@@ -30,7 +30,7 @@
     <string name="session_selection_subtitle">Выбери одну из смен, на которых ты был, либо отсканируй QR-код новой смены.</string>
     <string name="session_proceed">Выбрать</string>
     <string name="signup_title">Создадим аккаунт?</string>
-    <string name="singup_subtitle">Lorem Ipsum - это текст-\"рыба\", часто используемый в печати и вэб-дизайне.</string>
+    <string name="singup_subtitle">Давай создадим твой акаунт игрока, в котором будут храниться все твои персонажи!</string>
     <string name="signup_name">Имя и фамилия</string>
     <string name="password_confirm">Подтвердите пароль</string>
     <string name="gender_choice">Твой пол:</string>

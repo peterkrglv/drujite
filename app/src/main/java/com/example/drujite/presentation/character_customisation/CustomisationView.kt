@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,12 +16,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -45,7 +40,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CustomisationView(
     navController: NavController,
-    userId: String,
+    userToken: String,
     sessionId: Int,
     characterId: Int,
     viewModel: CustomisationViewModel = koinViewModel()
@@ -57,7 +52,7 @@ fun CustomisationView(
         is CustomisationAction.NavigateToMain -> {
             viewModel.clearAction()
             navController.navigate(Screen.Home.route) {
-                popUpTo(Screen.Home.route) {
+                popUpTo("${Screen.CharacterCustomisation.route}/${userToken}/${sessionId}/${characterId}") {
                     inclusive = true
                 }
                 launchSingleTop = true
@@ -96,9 +91,8 @@ fun MainState(
     onOptionChosen: (CustomisationCategory, Int) -> Unit,
     onProceedClicked: () -> Unit
 ) {
-    val customOptions = state.options.filter {
-        state.firstCustom != it.isEditable
-    }
+    val displayedOptions = if (state.firstCustom) state.chosenOptions.filter { !it.key.isEditable || it.key.name == "волосы" } else state.chosenOptions
+    val customOptions = state.options.filter { it.isEditable != state.firstCustom }
 
     Column(
         modifier = Modifier
@@ -118,7 +112,7 @@ fun MainState(
                 .padding(16.dp)
                 .size(180.dp, 255.dp)
         ) {
-            state.chosenOptions.forEach { (category, chosenIndex) ->
+            displayedOptions.forEach { (category, chosenIndex) ->
                 val selectedOption = category.items[chosenIndex]
                 val painter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(LocalContext.current)

@@ -79,7 +79,7 @@ fun SessionView(
         is SessionAction.NavigateToMain -> {
             viewModel.clearAction()
             navController.navigate(Screen.Home.route) {
-                popUpTo(Screen.Home.route) { inclusive = true }
+                popUpTo("${Screen.SessionSelection.route}/${userToken}") { inclusive = true }
                 launchSingleTop = true
             }
         }

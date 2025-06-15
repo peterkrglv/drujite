@@ -64,12 +64,10 @@ fun HomeView(
     when (val action = viewAction.value) {
         is HomeAction.NavigateToCustomization -> {
             navController.navigate("${Screen.CharacterCustomisation.route}/${action.userToken}/${action.sessionId}/${action.characterId}") {
-                popUpTo(Screen.Home.route) { inclusive = true }
                 launchSingleTop = true
             }
             viewModel.clearAction()
         }
-
         else -> {}
     }
 
